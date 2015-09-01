@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Musik | Web Application</title>
+    <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="{echo CDN}js/jPlayer/jplayer.flat.css" type="text/css" />
+    <link rel="stylesheet" href="{echo CDN}css/app.v1.css" type="text/css" />
+    <meta name="author" content="Hemant Mann">
+
+    <!--[if lt IE 9]> <script src="{echo CDN}js/ie/html5shiv.js"></script> <script src="{echo CDN}js/ie/respond.min.js"></script> <script src="{echo CDN}js/ie/excanvas.js"></script> <![endif]-->
+</head>
+
+<body class="">
+    <section class="vbox">
+        {include layouts/navigation/standard.html}
+        <section>
+            {ayield action}
+        </section>
+    </section>
+    <!-- Bootstrap -->
+    <!-- App -->
+    <script src="{echo CDN}js/app.v1.js"></script>
+    <script src="{echo CDN}js/app.plugin.js"></script>
+    <script type="text/javascript" src="{echo CDN}js/jPlayer/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="{echo CDN}js/jPlayer/add-on/jplayer.playlist.min.js"></script>
+    <script type="text/javascript" src="{echo CDN}js/jPlayer/demo.js"></script>
+</body>
+
+</html>

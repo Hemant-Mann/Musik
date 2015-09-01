@@ -1,0 +1,3 @@
+#Protecting files from browser access
+Order allow,deny
+Deny from all
