@@ -12,6 +12,36 @@ $routes = array(
         "pattern" => "home",
         "controller" => "home",
         "action" => "index"
+    ),
+    array(
+        "pattern" => "index",
+        "controller" => "home",
+        "action" => "index"
+    ),
+    array(
+        "pattern" => "genres",
+        "controller" => "home",
+        "action" => "genres"
+    ),
+    array(
+        "pattern" => "events",
+        "controller" => "home",
+        "action" => "events"
+    ),
+    array(
+        "pattern" => "listen",
+        "controller" => "home",
+        "action" => "listen"
+    ),
+    array(
+        "pattern" => "video",
+        "controller" => "home",
+        "action" => "video"
+    ),
+    array(
+        "pattern" => "video/:id",
+        "controller" => "home",
+        "action" => "videoDetail"
     )
 );
 
