@@ -1,41 +1,39 @@
 <?php
 
 /**
- * Description of file
+ * Description of an song
  *
- * @author Faizan Ayubi, Hemant Mann
+ * @author Hemant Mann
  */
-class File extends Shared\Model {
+class Song extends Shared\Model {
 
     /**
      * @column
      * @readwrite
      * @type text
-     * @length 255
      */
-    protected $_name;
+    protected $_title;
 
     /**
      * @column
      * @readwrite
-     * @type text
-     * @length 32
+     * @type time
      */
-    protected $_mime;
+    protected $_playtime;
+
+    /**
+     * @column
+     * @readwrite
+     * @type integer
+     * @length 5
+     */
+    protected $_bitrate;
 
     /**
      * @column
      * @readwrite
      * @type integer
      */
-    protected $_size;
-
-
-    /**
-     * @column
-     * @readwrite
-     * @type integer
-     */
-    protected $_user;
+    protected $_file_id;
 
 }
