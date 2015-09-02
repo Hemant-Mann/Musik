@@ -18,7 +18,7 @@ namespace Shared {
          * @readwrite
          */
         protected $_user;
-
+        
         /**
          * @protected
          */
@@ -28,13 +28,23 @@ namespace Shared {
             }
         }
 
+        public function noview() {
+            $this->willRenderLayoutView = false;
+            $this->willRenderActionView = false;
+        }
+
+        public function JSONview() {
+            $this->willRenderLayoutView = false;
+            $this->defaultExtension = "json";
+        }
+
         /**
          * @protected
          */
         public function _secure() {
             $user = $this->getUser();
             if (!$user) {
-                header("Location: /login.html");
+                header("Location: /login");
                 exit();
             }
         }

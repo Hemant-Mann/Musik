@@ -10,41 +10,22 @@ class User extends Shared\Model {
     /**
      * @column
      * @readwrite
-     * @primary
-     * @type autonumber
-     */
-    protected $_id;
-
-    /**
-     * @column
-     * @readwrite
      * @type text
-     * @length 100
+     * @length 255
      * 
-     * @validate required, alpha, min(3), max(32)
-     * @label first name
+     * @validate required, alpha, min(3), max(255)
+     * @label Name
      */
-    protected $_first;
+    protected $_name;
 
     /**
      * @column
      * @readwrite
      * @type text
-     * @length 100
-     * 
-     * @validate required, alpha, min(3), max(32)
-     * @label last name
-     */
-    protected $_last;
-
-    /**
-     * @column
-     * @readwrite
-     * @type text
-     * @length 100
+     * @length 255
      * @index
      * 
-     * @validate required, max(100)
+     * @validate required, max(255)
      * @label email address
      */
     protected $_email;

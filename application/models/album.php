@@ -35,7 +35,7 @@ class Album extends Shared\Model {
     /**
      * @column
      * @readwrite
-     * @type index
+     * @type integer
      * @index
      */
     protected $_genre_id;
