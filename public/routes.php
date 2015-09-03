@@ -3,11 +3,7 @@
 // define routes
 
 $routes = array(
-    array(
-        "pattern" => "features",
-        "controller" => "home",
-        "action" => "features"
-    ),
+    // Main Navigation routes
     array(
         "pattern" => "home",
         "controller" => "home",
@@ -42,6 +38,23 @@ $routes = array(
         "pattern" => "video/:id",
         "controller" => "home",
         "action" => "videoDetail"
+    ),
+
+    // user routes
+    array(
+        "pattern" => "signin",
+        "controller" => "users",
+        "action" => "signin"
+    ),
+    array(
+        "pattern" => "signup",
+        "controller" => "users",
+        "action" => "signup"
+    ),
+    array(
+        "pattern" => "profile",
+        "controller" => "users",
+        "action" => "profile"
     )
 );
 

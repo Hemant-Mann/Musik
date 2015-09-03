@@ -11,10 +11,20 @@
     <meta name="author" content="Hemant Mann">
     <!--[if lt IE 9]> <script src="{echo CDN}js/ie/html5shiv.js"></script> <script src="{echo CDN}js/ie/respond.min.js"></script> <script src="{echo CDN}js/ie/excanvas.js"></script> <![endif]-->
 </head>
+{script $url = explode("/", URL)}
+{script $url = array_pop($url)}
 
-<body class="">
+{if ($url == "signin") || ($url == "signup")}
+    {script $loggedIn = false}
+{/if}
+{else}
+    {script $loggedIn = true}
+{/else}
+<body class="{if !$loggedIn} bg-info {/if}">
     <section class="vbox">
-        {include layouts/navigation/standard.html}
+        {if $loggedIn}
+            {include layouts/navigation/headers.html}
+        {/if}
         <section>
             {ayield action}
         </section>
@@ -27,12 +37,14 @@
     <script type="text/javascript" src="{echo CDN}js/jPlayer/add-on/jplayer.playlist.min.js"></script>
     <script type="text/javascript" src="{echo CDN}js/jPlayer/demo.js"></script>
     
-    {script $url = explode("/", URL)}
-    {script $url = array_pop($url)}
     {if ($url == "events") || ($url == "events.html")}
     <!-- Page Based custom js -->
     <script src="{echo CDN}js/masonry/tiles.min.js"></script>
     <script src="{echo CDN}js/masonry/demo.js"></script>
+    {/if}
+
+    {if $url == "profile"}
+    <script src="{echo CDN}js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
     {/if}
 
 </body>

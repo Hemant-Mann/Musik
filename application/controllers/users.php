@@ -9,11 +9,11 @@ use Shared\Controller as Controller;
 
 class Users extends Controller {
 
-    public function index() {
+    public function profile() {
         
     }
 
-    public function login() {
+    public function signin() {
         
     }
 
