@@ -1,0 +1,46 @@
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/admin">
+            <i class="fa fa-user-secret fa-lg"></i> Admin Panel
+        </a>
+    </div>
+    <!-- /.navbar-header -->
+
+    <ul class="nav navbar-top-links navbar-right">
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i class="fa fa-user fa-fw"></i> {echo $user->name}  <i class="fa fa-caret-down"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li><a href="/admin"><i class="fa fa-gear fa-fw"></i> Dashboard</a></li>
+                <li class="divider"></li>
+                <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            <li><a href="/admin"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
+            <li><a href="/admin/search"><i class="fa fa-search fa-fw"></i> Search</a></li>
+            <li>
+                <a href="#"><i class="fa fa-folder fa-fw"></i> Manage<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="#">Albums</a></li>
+                    <li><a href="#">Artists</a></li>
+                    <li><a href="#">Genres</a></li>
+                    <li><a href="#">Songs</a></li>
+                    <li><a href="#">Tracks</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>

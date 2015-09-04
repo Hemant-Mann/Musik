@@ -1,0 +1,17 @@
+<div id="page-wrapper">
+    <div class="row col-lg-12">
+        <h1 class="page-header text-center">{echo ucfirst($model)}</h1>
+        <div class="panel panel-default">
+            <table class="table table-striped text-center table-hover">
+                <tbody>
+                {foreach $value in $values}
+                <tr>
+                    <td><b>{$value}</b></td>
+                    <td>{echo $items[$value]}</td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

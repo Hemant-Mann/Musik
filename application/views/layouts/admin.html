@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>{echo $seo->getTitle()}</title>
+        
+        <!-- Core CSS - Include with every page -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+        <!-- Plugin CSS  -->
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+
+        <!-- SB Admin CSS - Include with every page -->
+        <link href="{echo CDN}css/sb-admin.css" rel="stylesheet">
+
+        <script src="http://tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+        <script type="text/javascript">
+            tinymce.init({
+                selector: ".editor",
+                plugins: [
+                    "advlist autolink lists link image charmap print preview anchor",
+                    "searchreplace visualblocks code fullscreen",
+                    "insertdatetime media table contextmenu"
+                ],
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                autosave_ask_before_unload: false,
+                max_height: 200,
+                min_height: 160,
+                height: 180
+            });
+        </script>
+
+    </head>
+
+    <body>
+        <div id="wrapper">
+            {include layouts/navigation/admin.html}
+            
+            {ayield action}
+        </div>
+        <!-- /#wrapper -->
+
+        <!-- Core Scripts - Include with every page -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <script src="{echo CDN}js/metisMenu.min.js"></script>
+        <script src="{echo CDN}js/admin-1.0.js"></script>
+
+        <!-- Plugin Scripts  -->
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        
+    </body>
+</html>

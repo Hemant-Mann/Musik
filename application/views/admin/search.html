@@ -1,0 +1,84 @@
+<div id="page-wrapper">
+    <div class="row col-lg-12">
+        <h1 class="page-header text-center">Search</h1>
+        <form class="form-inline text-center" role="form" method="get" action="">
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only">Table</label>
+                    <select name="model" class="form-control" value="{$model}">
+                        <option value="attendances">Attendances</option>
+                        <option value="file">Files</option>
+                        <option value="member">Members</option>
+                        <option value="payment">payments</option>
+                        <option value="project">Pojects</option>
+                        <option value="user" selected="selected">Users</option>
+                        <option value="work">Works</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only">Field</label>
+                    <input type="text" style="width: 100px" name="key" class="form-control" placeholder="Field" value="{$property}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only">Sign</label>
+                    <select name="sign" class="form-control" value="{$sign}">
+                        <option value="equal">Equal</option>
+                        <option value="like">Like</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <label class="sr-only">Keyword</label>
+                    <input type="text" style="width: 300px" name="value" class="form-control" placeholder="value..." value="{$val}" />
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-list fa-fw"></i> Results
+            </div>
+            <div class="panel panel-body text-center" id="result_status">
+                {if(isset($success))}
+                {echo $success}
+                {/if}
+                {else}
+                    Select field to search and enter keyword and then click on search button to see results. For Fields list see <a href="https://raw.githubusercontent.com/Swiftintern/DBArchitecture/master/swiftintern.png" target="_blank">here</a>
+                {/else}
+            </div>
+            <table class="table table-striped text-center table-hover table-bordered">
+                <thead>
+                    <tr>
+                        {foreach $value in $values}
+                        <th>{$value}</th>
+                        {/foreach}
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {foreach $item in $items}
+                        <tr>
+                        {foreach $value in $values}
+                            <td>{echo $item[$value]}</td>
+                        {/foreach}
+                        <td>
+                            <a href="/admin/update/{$model}/{echo $item[id]}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                        </td>
+                        </tr>
+                    {/foreach}
+                </tbody>
+            </table>
+            <div class="text-center">
+                {if($count > 10)}
+                <a href="{echo URL}&page={echo $page+1}" class="btn btn-primary">Load More</a>
+                {/if}
+            </div>
+        </div>
+    </div>
+</div>
