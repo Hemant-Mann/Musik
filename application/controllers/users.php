@@ -69,7 +69,7 @@ class Users extends Controller {
 
     public function logout() {
         $this->setUser(false);
-        self::redirect("/login");
+        self::redirect("/signin");
     }
 
     /**

@@ -55,6 +55,11 @@ $routes = array(
         "pattern" => "profile",
         "controller" => "users",
         "action" => "profile"
+    ),
+    array(
+        "pattern" => "logout",
+        "controller" => "users",
+        "action" => "logout"
     )
 );
 
