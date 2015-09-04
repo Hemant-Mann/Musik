@@ -9,21 +9,21 @@ $(document).ready(function(){
       artist:"Miaow",
       mp3: "http://flatfull.com/themes/assets/musics/Miaow-07-Bubble.mp3",
       oga: "http://flatfull.com/themes/assets/musics/Miaow-07-Bubble.ogg",
-      poster: "images/m0.jpg"
+      poster: "http://playmusic.net/public/assets/images/m0.jpg"
     },
     {
       title:"Lentement",
       artist:"Miaow",
       mp3: "http://flatfull.com/themes/assets/musics/Miaow-03-Lentement.mp3",
       oga: "http://flatfull.com/themes/assets/musics/Miaow-03-Lentement.ogg",
-      poster: "images/m0.jpg"
+      poster: "http://playmusic.net/public/assets/images/m0.jpg"
     },
     {
       title:"Partir",
       artist:"Miaow",
       mp3: "http://flatfull.com/themes/assets/musics/Miaow-09-Partir.mp3",
       oga: "http://flatfull.com/themes/assets/musics/Miaow-09-Partir.ogg",
-      poster: "images/m0.jpg"
+      poster: "http://playmusic.net/public/assets/images/m0.jpg"
     }
   ], {
     playlistOptions: {
@@ -77,7 +77,7 @@ $(document).ready(function(){
         m4v: "http://flatfull.com/themes/assets/video/big_buck_bunny_trailer.m4v",
         ogv: "http://flatfull.com/themes/assets/video/big_buck_bunny_trailer.ogv",
         webmv: "http://flatfull.com/themes/assets/video/big_buck_bunny_trailer.webm",
-        poster: "images/m41.jpg"
+        poster: "http://playmusic.net/public/assets/images/m41.jpg"
       });
     },
     swfPath: "js",
