@@ -157,4 +157,11 @@ class Admin extends Users {
         }
     }
 
+    protected function checkValidRequest($key, $location = "/admin") {
+        if (empty($key) || !$key) {
+            self::redirect($location);
+        }
+        return;
+    }
+
 }

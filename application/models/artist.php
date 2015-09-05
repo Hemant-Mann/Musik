@@ -13,6 +13,6 @@ class Artist extends Shared\Model {
      * @type text
      * @length 255
      */
-    protected $_artist;
+    protected $_name;
 
 }

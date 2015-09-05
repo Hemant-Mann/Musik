@@ -27,7 +27,7 @@ class SongArtist extends Shared\Model {
      * @column
      * @readwrite
      * @type text
-     * @length 5
+     * @length 25
      */
     protected $_relation;
 

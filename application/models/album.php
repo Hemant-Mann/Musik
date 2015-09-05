@@ -18,7 +18,7 @@ class Album extends Shared\Model {
     /**
      * @column
      * @readwrite
-     * @type integer
+     * @type text
      * @length 4
      * @index
      */
