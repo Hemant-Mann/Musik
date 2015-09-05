@@ -153,7 +153,7 @@ class Admin extends Users {
         $this->setLayout();
 
         if ($this->user->admin != 1) {
-            die('Unauthorized access');
+            self::redirect("/404");
         }
     }
 
