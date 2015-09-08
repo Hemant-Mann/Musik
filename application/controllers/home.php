@@ -8,6 +8,7 @@
 use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
+use Framework\ArrayMethods as ArrayMethods;
 
 class Home extends Controller {
 
@@ -33,36 +34,38 @@ class Home extends Controller {
 
         if (RequestMethods::post("action") == "search") {
          	$q = RequestMethods::post("q");
-
-         	$client = Registry::get("gClient");
-         	$youtube = new Google_Service_YouTube($client);
+            $youtube = Registry::get("youtube");
          	
          	try {
-         	  $searchResponse = $youtube->search->listSearch('id,snippet', array(
-         	    'q' => $q,
-         	    'maxResults' => "25",
-         	    "type" => "video"
-         	  ));
+                $searchResponse = $youtube->search->listSearch('id,snippet', array(
+                    'q' => $q,
+                    'maxResults' => "15",
+                    "type" => "video"
+                ));
 
-         	  // Add each result to the appropriate list, and then display the lists of
-         	  // matching videos, channels, and playlists.
-         	  foreach ($searchResponse['items'] as $searchResult) {
-	 	          $thumbnail = $searchResult['snippet']['thumbnails']['medium']['url'];
-	 	          $title = $searchResult['snippet']['title'];
-	 	          $href = $searchResult['id']['videoId'];
+                // Add each result to the appropriate list, and then display the lists of
+                // matching videos, channels, and playlists.
+                $results = array();
+                foreach ($searchResponse['items'] as $searchResult) {
+                    $thumbnail = $searchResult['snippet']['thumbnails']['medium']['url'];
+                    $title = $searchResult['snippet']['title'];
+                    $href = $searchResult['id']['videoId'];
 
-	 	          $text .= "<li><a href=\"https://www.youtube.com/watch?v={$href}\" class=\"thumbnail\"><img src=\"$thumbnail\">$title</a></li><br />";
-	 	      
-         	  }
-         	  $results .= "<h3 class=\"page-heading\">Videos</h3>
-         	  <ul>$text</ul>";
-         	} catch (Google_Service_Exception $e) {
-         	  $results .= sprintf('<p>A service error occurred: <code>%s</code></p>',
-         	    htmlspecialchars($e->getMessage()));
-         	} catch (Google_Exception $e) {
-         	  $results .= sprintf('<p>An client error occurred: <code>%s</code></p>',
-         	    htmlspecialchars($e->getMessage()));
-         	}
+                    $results[] = array(
+                        "img" => $thumbnail,
+                        "title" => $title,
+                        "videoId" => $href
+                    );
+                }
+                $results = ArrayMethods::toObject($results);
+    
+                } catch (Google_Service_Exception $e) {
+                    $error = 'A Service error occured';
+                    $results = null;
+                } catch (Google_Exception $e) {
+                    $error = 'A Client error occured';
+                    $results = null;
+                }
         }
 
         $view->set("results", $results);

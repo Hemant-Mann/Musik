@@ -1,8 +1,10 @@
 <section class="hbox stretch">
     {include layouts/navigation/standard.html}
+    {include home/play_video.html}
     <section id="content">
         <section class="vbox" id="bjax-el">
             <section class="scrollable padder-lg">
+                {if !$results}
                 <h2 class="font-thin m-b">Videos</h2>
                 <div class="row row-sm">
                     <div class="col-xs-12 col-sm-4">
@@ -42,7 +44,6 @@
                         </div>
                     </div>
                 </div>
-                {if !$results}
                 <h3 class="font-thin m-b">Video List</h3>
                 <div class="row row-sm">
                     <div class="col-xs-6 col-sm-4 col-md-3">
@@ -179,9 +180,32 @@
                     </div>
                 </div>
                 {/if}
-                {else}
-                    {echo $results}
-                {/else}
+                {elseif $results}
+                    <h1 class="font-thin m-b">Your Results</h1>
+                    <div class="row row-sm">
+                    {foreach $result in $results}
+                        <div class="col-xs-6 col-sm-4 col-md-3">
+                            <div class="item">
+                                <div class="pos-rlt">
+                                    <div class="item-overlay opacity r r-2x bg-black">
+                                        <div class="center text-center m-t-n">
+                                            <a data-toggle="modal" data-target="#play_video" data-id="{echo $result->videoId}" href="#" class="play text-ellipsis"><i class="fa fa-play-circle i-2x"></i></a>
+                                        </div>
+                                    </div>
+                                    <img src="{echo $result->img}" alt="" class="r r-2x img-full">
+                                </div>
+                                <div class="padder-v">
+                                    <a data-toggle="modal" data-target="#play_video" data-id="{echo $result->videoId}" href="#" class="play text-ellipsis">{echo $result->title}</a>
+                                    <a href="https://www.youtube.com/watch?v={echo $result->videoId}" target="_blank">Open in <strong>Youtube</strong></a>
+                                </div>
+                            </div>
+                        </div>
+                    {/foreach}
+                    </div>
+                {/elseif}
+                {elseif $error}
+                    {echo $error}
+                {/elseif}
                 <ul class="pagination pagination">
                     <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
                     <li class="active"><a href="#">1</a></li>
