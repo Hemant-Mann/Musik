@@ -7,7 +7,7 @@ define("DEBUG", TRUE);
 
 define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
 define("URL", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
-define("CDN", "http://musik.io/public/assets/");
+define("CDN", "http://playmusic.net/public/assets/");
 
 try {
     
@@ -22,6 +22,21 @@ try {
         }
     });
 
+    // Google Library Autoloader
+    spl_autoload_register(function($className) {
+        $classPath = explode('_', $className);
+        if ($classPath[0] != 'Google') {
+            return;
+        }
+        // Drop 'Google', and maximum class file path depth in this project is 3.
+        $classPath = array_slice($classPath, 1, 2);
+
+        $filePath = APP_PATH . '/application/libraries/google-api-php-client/src/Google/' . implode('/', $classPath) . '.php';
+        if (file_exists($filePath)) {
+            require_once($filePath);
+        }
+    });
+    
     // 2. load the Core class that includes an autoloader
     require("framework/core.php");
     Framework\Core::initialize();

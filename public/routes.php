@@ -30,9 +30,9 @@ $routes = array(
         "action" => "listen"
     ),
     array(
-        "pattern" => "video",
+        "pattern" => "videos",
         "controller" => "home",
-        "action" => "video"
+        "action" => "videos"
     ),
     array(
         "pattern" => "video/:id",

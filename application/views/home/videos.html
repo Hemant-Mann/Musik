@@ -3,7 +3,7 @@
     <section id="content">
         <section class="vbox" id="bjax-el">
             <section class="scrollable padder-lg">
-                <h2 class="font-thin m-b">Video</h2>
+                <h2 class="font-thin m-b">Videos</h2>
                 <div class="row row-sm">
                     <div class="col-xs-12 col-sm-4">
                         <div class="item">
@@ -42,6 +42,7 @@
                         </div>
                     </div>
                 </div>
+                {if !$results}
                 <h3 class="font-thin m-b">Video List</h3>
                 <div class="row row-sm">
                     <div class="col-xs-6 col-sm-4 col-md-3">
@@ -177,6 +178,10 @@
                         </div>
                     </div>
                 </div>
+                {/if}
+                {else}
+                    {echo $results}
+                {/else}
                 <ul class="pagination pagination">
                     <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
                     <li class="active"><a href="#">1</a></li>
