@@ -21,14 +21,14 @@
     {script $loggedIn = true}
 {/else}
 <body class="{if !$loggedIn} bg-info {/if}">
-    
-        {if $loggedIn}
-            {include layouts/navigation/headers.html}
-        {/if}
-        
+    <section class="vbox">
+    {if $loggedIn}
+        {include layouts/navigation/headers.html}
+    {/if}
+        <section>
             {ayield action}
-
-    
+        </section>
+    </section>
     <!-- Bootstrap -->
     <!-- App -->
     <script src="{echo CDN}js/app.v1.js"></script>
