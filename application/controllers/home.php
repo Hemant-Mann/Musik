@@ -9,11 +9,34 @@ use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 use Framework\ArrayMethods as ArrayMethods;
+use LastFm\Src\Track as Track;
 
 class Home extends Controller {
 
     public function index() {
-        
+        $view = $this->getActionView();
+
+        if (RequestMethods::post("action") == "search") {
+            $q = RequestMethods::post("q");
+
+            $tracks = @Track::search($q, null, 30)->getResults();    // Will return an array of objects
+            // echo "<pre>". print_r($tracks, true). "</pre>";
+            
+            $results = array();
+            foreach ($tracks as $t) {
+                $results[] = array(
+                    "artist" => $t->getArtist(),
+                    "album" => $t->getAlbum(),
+                    "duration" => $t->getDuration(),
+                    "wiki" => $t->getWiki(),
+                    "mbid" => $t->getMbid(),
+                    "url" => $t->getUrl(),
+                    "image" => $t->getImage(2)
+                );
+            }
+            $results = ArrayMethods::toObject($results);
+            $view->set("results", $results);
+        }
     }
 
     public function genres() {
@@ -70,5 +93,5 @@ class Home extends Controller {
 
         $view->set("results", $results);
     }
-    
+
 }
