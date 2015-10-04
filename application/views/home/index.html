@@ -5,214 +5,39 @@
             <section>
                 {if !isset($results)}
                 <section class="vbox">
-                    <section class="scrollable padder-lg w-f-md" id="bjax-target"> <a href="#" class="pull-right text-muted m-t-lg" data-toggle="class:fa-spin"><i class="icon-refresh i-lg inline" id="refresh"></i></a>
-                        <h2 class="font-thin m-b">Discover <span class="musicbar animate inline m-l-sm" style="width:20px;height:20px"> <span class="bar1 a1 bg-primary lter"></span> <span class="bar2 a2 bg-info lt"></span> <span class="bar3 a3 bg-success"></span> <span class="bar4 a4 bg-warning dk"></span> <span class="bar5 a5 bg-danger dker"></span> </span></h2>
+                    <section class="scrollable padder-lg w-f-md" id="bjax-target">
+                        <a href="#" class="pull-right text-muted m-t-lg" data-toggle="class:fa-spin"><i class="icon-refresh i-lg inline" id="refresh"></i></a>
+                        <h2 class="font-thin m-b">Discover <span class="musicbar animate inline m-l-sm" style="width:20px;height:20px"> <span class="bar1 a1 bg-primary lter"></span> <span class="bar2 a2 bg-info lt"></span> <span class="bar3 a3 bg-success"></span> <span class="bar4 a4 bg-warning dk"></span> <span class="bar5 a5 bg-danger dker"></span> </span>
+                        </h2>
                         <div class="row row-sm">
+                        {foreach $art in $artists}
                             <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
                                 <div class="item">
                                     <div class="pos-rlt">
-                                        <div class="bottom"> <span class="badge bg-info m-l-sm m-b-sm">03:20</span> </div>
                                         <div class="item-overlay opacity r r-2x bg-black">
-                                            <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
-                                            <div class="center text-center m-t-n"> <a href="#"><i class="icon-control-play i-2x"></i></a> </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
-                                                <a href="#"> <i class="fa fa-plus-circle"></i> </a>
+                                            <div class="text-info padder m-t-sm text-sm">
+                                                {foreach $c in $count}
+                                                <i class="fa fa-star"></i>
+                                                {/foreach}
                                             </div>
-                                        </div>
-                                        <a href="#"><img src="{echo CDN}images/p1.jpg" alt="" class="r r-2x img-full"></a>
-                                    </div>
-                                    <div class="padder-v"> <a href="#" class="text-ellipsis">Tempered Song</a> <a href="#" class="text-ellipsis text-xs text-muted">Miaow</a> </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                                <div class="item">
-                                    <div class="pos-rlt">
-                                        <div class="item-overlay opacity r r-2x bg-black active">
-                                            <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> <i class="fa fa-star-o text-muted"></i> </div>
                                             <div class="center text-center m-t-n">
-                                                <a href="#" data-toggle="class"> <i class="icon-control-play i-2x text"></i> <i class="icon-control-pause i-2x text-active"></i> </a>
+                                                <a href="/listen/{echo urlencode($art->name)}" data-mid="{echo $art->mbid}"><i class="icon-control-play i-2x"></i></a>
                                             </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right active" data-toggle="class"> <i class="fa fa-heart-o text"></i> <i class="fa fa-heart text-active text-danger"></i> </a>
-                                                <a href="#" data-toggle="class"> <i class="fa fa-plus-circle text"></i> <i class="fa fa-check-circle text-active text-info"></i> </a>
-                                            </div>
-                                        </div>
-                                        <a href="#"><img src="{echo CDN}images/p2.jpg" alt="" class="r r-2x img-full"></a>
-                                    </div>
-                                    <div class="padder-v"> <a href="#" class="text-ellipsis">Vivamus vel tincidunt libero</a> <a href="#" class="text-ellipsis text-xs text-muted">Lauren Taylor</a> </div>
-                                </div>
-                            </div>
-                            <div class="clearfix visible-xs"></div>
-                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                                <div class="item">
-                                    <div class="pos-rlt">
-                                        <div class="item-overlay opacity r r-2x bg-black">
-                                            <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
-                                            <div class="center text-center m-t-n"> <a href="#"><i class="icon-control-play i-2x"></i></a> </div>
                                             <div class="bottom padder m-b-sm">
                                                 <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
                                                 <a href="#"> <i class="fa fa-plus-circle"></i> </a>
                                             </div>
                                         </div>
-                                        <a href="#"><img src="{echo CDN}images/p3.jpg" alt="" class="r r-2x img-full"></a>
+                                        <a href="#">
+                                            <img src="{echo $art->image}" alt="" class="r r-2x img-full">
+                                        </a>
                                     </div>
-                                    <div class="padder-v"> <a href="#" class="text-ellipsis">Morbi id neque quam liquam sollicitudin</a> <a href="#" class="text-ellipsis text-xs text-muted">Allen JH</a> </div>
+                                    <div class="padder-v">
+                                        <a href="/listen/{echo urlencode($art->name)}" data-mbid="{echo $art->mbid}" class="text-ellipsis">{echo $art->name}</a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                                <div class="item">
-                                    <div class="pos-rlt">
-                                        <div class="item-overlay opacity r r-2x bg-black">
-                                            <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
-                                            <div class="center text-center m-t-n"> <a href="#"><i class="icon-control-play i-2x"></i></a> </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
-                                                <a href="#"> <i class="fa fa-plus-circle"></i> </a>
-                                            </div>
-                                        </div>
-                                        <div class="top"> <span class="pull-right m-t-n-xs m-r-sm text-white"> <i class="fa fa-bookmark i-lg"></i> </span> </div>
-                                        <a href="#"><img src="{echo CDN}images/p4.jpg" alt="" class="r r-2x img-full"></a>
-                                    </div>
-                                    <div class="padder-v"> <a href="#" class="text-ellipsis">Tincidunt libero</a> <a href="#" class="text-ellipsis text-xs text-muted">Amanda Conlan</a> </div>
-                                </div>
-                            </div>
-                            <div class="clearfix visible-xs"></div>
-                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                                <div class="item">
-                                    <div class="pos-rlt">
-                                        <div class="item-overlay opacity r r-2x bg-black">
-                                            <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
-                                            <div class="center text-center m-t-n"> <a href="#"><i class="icon-control-play i-2x"></i></a> </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
-                                                <a href="#"> <i class="fa fa-plus-circle"></i> </a>
-                                            </div>
-                                        </div>
-                                        <a href="#"><img src="{echo CDN}images/p5.jpg" alt="" class="r r-2x img-full"></a>
-                                    </div>
-                                    <div class="padder-v"> <a href="#" class="text-ellipsis">Fermentum diam</a> <a href="#" class="text-ellipsis text-xs text-muted">Nisa Colen</a> </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                                <div class="item">
-                                    <div class="pos-rlt">
-                                        <div class="top"> <span class="pull-right m-t-sm m-r-sm badge bg-info">6</span> </div>
-                                        <div class="item-overlay opacity r r-2x bg-black">
-                                            <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
-                                            <div class="center text-center m-t-n"> <a href="#"><i class="icon-control-play i-2x"></i></a> </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
-                                                <a href="#"> <i class="fa fa-plus-circle"></i> </a>
-                                            </div>
-                                        </div>
-                                        <a href="#"><img src="{echo CDN}images/p6.jpg" alt="" class="r r-2x img-full"></a>
-                                    </div>
-                                    <div class="padder-v"> <a href="#" class="text-ellipsis">Habitant</a> <a href="#" class="text-ellipsis text-xs text-muted">Dan Doorack</a> </div>
-                                </div>
-                            </div>
-                            <div class="clearfix visible-xs"></div>
-                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                                <div class="item">
-                                    <div class="pos-rlt">
-                                        <div class="item-overlay opacity r r-2x bg-black">
-                                            <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
-                                            <div class="center text-center m-t-n"> <a href="#"><i class="icon-control-play i-2x"></i></a> </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
-                                                <a href="#"> <i class="fa fa-plus-circle"></i> </a>
-                                            </div>
-                                        </div>
-                                        <div class="top"> <span class="pull-right m-t-sm m-r-sm badge bg-white">12</span> </div>
-                                        <a href="#"><img src="{echo CDN}images/p7.jpg" alt="" class="r r-2x img-full"></a>
-                                    </div>
-                                    <div class="padder-v"> <a href="#" class="text-ellipsis">Vivamus vel tincidunt libero</a> <a href="#" class="text-ellipsis text-xs text-muted">Ligula H</a> </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                                <div class="item">
-                                    <div class="pos-rlt">
-                                        <div class="item-overlay opacity r r-2x bg-black">
-                                            <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
-                                            <div class="center text-center m-t-n"> <a href="#"><i class="icon-control-play i-2x"></i></a> </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
-                                                <a href="#"> <i class="fa fa-plus-circle"></i> </a>
-                                            </div>
-                                        </div>
-                                        <a href="#"><img src="{echo CDN}images/p8.jpg" alt="" class="r r-2x img-full"></a>
-                                    </div>
-                                    <div class="padder-v"> <a href="#" class="text-ellipsis">Aliquam sollicitudin venenati</a> <a href="#" class="text-ellipsis text-xs text-muted">James East</a> </div>
-                                </div>
-                            </div>
-                            <div class="clearfix visible-xs"></div>
-                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                                <div class="item">
-                                    <div class="pos-rlt">
-                                        <div class="item-overlay opacity r r-2x bg-black">
-                                            <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
-                                            <div class="center text-center m-t-n"> <a href="#"><i class="icon-control-play i-2x"></i></a> </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
-                                                <a href="#"> <i class="fa fa-plus-circle"></i> </a>
-                                            </div>
-                                        </div>
-                                        <a href="#"><img src="{echo CDN}images/p9.jpg" alt="" class="r r-2x img-full"></a>
-                                    </div>
-                                    <div class="padder-v"> <a href="#" class="text-ellipsis">Lementum ligula vitae</a> <a href="#" class="text-ellipsis text-xs text-muted">Lauren Taylor</a> </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                                <div class="item">
-                                    <div class="pos-rlt">
-                                        <div class="item-overlay r r-2x bg-light dker active">
-                                            <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
-                                            <div class="center text-center m-t-n">
-                                                <a href="#" data-toggle="class" class="active"> <i class="icon-control-play i-2x text"></i> <i class="icon-control-pause i-2x text-active"></i> </a>
-                                            </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right" data-toggle="class"> <i class="fa fa-heart-o text"></i> <i class="fa fa-heart text-active text-danger"></i> </a>
-                                                <a href="#" class="active" data-toggle="class"> <i class="fa fa-plus-circle text"></i> <i class="fa fa-check-circle text-active text-info"></i> </a>
-                                            </div>
-                                        </div>
-                                        <a href="#"><img src="{echo CDN}images/p10.jpg" alt="" class="r r-2x img-full"></a>
-                                    </div>
-                                    <div class="padder-v"> <a href="#" class="text-ellipsis">Egestas dui nec fermentum </a> <a href="#" class="text-ellipsis text-xs text-muted">Chris Fox</a> </div>
-                                </div>
-                            </div>
-                            <div class="clearfix visible-xs"></div>
-                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                                <div class="item">
-                                    <div class="pos-rlt">
-                                        <div class="item-overlay opacity r r-2x bg-black">
-                                            <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
-                                            <div class="center text-center m-t-n"> <a href="#"><i class="icon-control-play i-2x"></i></a> </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
-                                                <a href="#"> <i class="fa fa-plus-circle"></i> </a>
-                                            </div>
-                                        </div>
-                                        <a href="#"><img src="{echo CDN}images/p11.jpg" alt="" class="r r-2x img-full"></a>
-                                    </div>
-                                    <div class="padder-v"> <a href="#" class="text-ellipsis">Aliquam sollicitudin venenatis ipsum</a> <a href="#" class="text-ellipsis text-xs text-muted">Jack Jason</a> </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                                <div class="item">
-                                    <div class="pos-rlt">
-                                        <div class="item-overlay opacity r r-2x bg-black">
-                                            <div class="text-info padder m-t-sm text-sm"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o text-muted"></i> </div>
-                                            <div class="center text-center m-t-n"> <a href="#"><i class="icon-control-play i-2x"></i></a> </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
-                                                <a href="#"> <i class="fa fa-plus-circle"></i> </a>
-                                            </div>
-                                        </div>
-                                        <a href="#"><img src="{echo CDN}images/p12.jpg" alt="" class="r r-2x img-full"></a>
-                                    </div>
-                                    <div class="padder-v"> <a href="#" class="text-ellipsis">Vestibulum ullamcorper</a> <a href="#" class="text-ellipsis text-xs text-muted">MM &amp; DD</a> </div>
-                                </div>
-                            </div>
+                        {/foreach}
                         </div>
                         <div class="row">
                             <div class="col-md-7">
@@ -222,88 +47,144 @@
                                         <div class="item">
                                             <div class="pos-rlt">
                                                 <div class="item-overlay opacity r r-2x bg-black">
-                                                    <div class="center text-center m-t-n"> <a href="#"><i class="fa fa-play-circle i-2x"></i></a> </div>
+                                                    <div class="center text-center m-t-n">
+                                                        <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
+                                                    </div>
                                                 </div>
-                                                <a href="#"><img src="{echo CDN}images/a2.png" alt="" class="r r-2x img-full"></a>
+                                                <a href="#">
+                                                    <img src="{echo CDN}images/a2.png" alt="" class="r r-2x img-full">
+                                                </a>
                                             </div>
-                                            <div class="padder-v"> <a href="#" class="text-ellipsis">Spring rain</a> <a href="#" class="text-ellipsis text-xs text-muted">Miaow</a> </div>
+                                            <div class="padder-v">
+                                                <a href="#" class="text-ellipsis">Spring rain</a>
+                                                <a href="#" class="text-ellipsis text-xs text-muted">Miaow</a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xs-6 col-sm-3">
                                         <div class="item">
                                             <div class="pos-rlt">
                                                 <div class="item-overlay opacity r r-2x bg-black">
-                                                    <div class="center text-center m-t-n"> <a href="#"><i class="fa fa-play-circle i-2x"></i></a> </div>
+                                                    <div class="center text-center m-t-n">
+                                                        <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
+                                                    </div>
                                                 </div>
-                                                <a href="#"><img src="{echo CDN}images/a3.png" alt="" class="r r-2x img-full"></a>
+                                                <a href="#">
+                                                    <img src="{echo CDN}images/a3.png" alt="" class="r r-2x img-full">
+                                                </a>
                                             </div>
-                                            <div class="padder-v"> <a href="#" class="text-ellipsis">Hope</a> <a href="#" class="text-ellipsis text-xs text-muted">Miya</a> </div>
+                                            <div class="padder-v">
+                                                <a href="#" class="text-ellipsis">Hope</a>
+                                                <a href="#" class="text-ellipsis text-xs text-muted">Miya</a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xs-6 col-sm-3">
                                         <div class="item">
                                             <div class="pos-rlt">
                                                 <div class="item-overlay opacity r r-2x bg-black">
-                                                    <div class="center text-center m-t-n"> <a href="#"><i class="fa fa-play-circle i-2x"></i></a> </div>
+                                                    <div class="center text-center m-t-n">
+                                                        <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
+                                                    </div>
                                                 </div>
-                                                <a href="#"><img src="{echo CDN}images/a8.png" alt="" class="r r-2x img-full"></a>
+                                                <a href="#">
+                                                    <img src="{echo CDN}images/a8.png" alt="" class="r r-2x img-full">
+                                                </a>
                                             </div>
-                                            <div class="padder-v"> <a href="#" class="text-ellipsis">Listen wind</a> <a href="#" class="text-ellipsis text-xs text-muted">Soyia Jess</a> </div>
+                                            <div class="padder-v">
+                                                <a href="#" class="text-ellipsis">Listen wind</a>
+                                                <a href="#" class="text-ellipsis text-xs text-muted">Soyia Jess</a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xs-6 col-sm-3">
                                         <div class="item">
                                             <div class="pos-rlt">
                                                 <div class="item-overlay opacity r r-2x bg-black">
-                                                    <div class="center text-center m-t-n"> <a href="#"><i class="fa fa-play-circle i-2x"></i></a> </div>
+                                                    <div class="center text-center m-t-n">
+                                                        <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
+                                                    </div>
                                                 </div>
-                                                <a href="#"><img src="{echo CDN}images/a9.png" alt="" class="r r-2x img-full"></a>
+                                                <a href="#">
+                                                    <img src="{echo CDN}images/a9.png" alt="" class="r r-2x img-full">
+                                                </a>
                                             </div>
-                                            <div class="padder-v"> <a href="#" class="text-ellipsis">Breaking me</a> <a href="#" class="text-ellipsis text-xs text-muted">Pett JA</a> </div>
+                                            <div class="padder-v">
+                                                <a href="#" class="text-ellipsis">Breaking me</a>
+                                                <a href="#" class="text-ellipsis text-xs text-muted">Pett JA</a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xs-6 col-sm-3">
                                         <div class="item">
                                             <div class="pos-rlt">
                                                 <div class="item-overlay opacity r r-2x bg-black">
-                                                    <div class="center text-center m-t-n"> <a href="#"><i class="fa fa-play-circle i-2x"></i></a> </div>
+                                                    <div class="center text-center m-t-n">
+                                                        <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
+                                                    </div>
                                                 </div>
-                                                <a href="#"><img src="{echo CDN}images/a1.png" alt="" class="r r-2x img-full"></a>
+                                                <a href="#">
+                                                    <img src="{echo CDN}images/a1.png" alt="" class="r r-2x img-full">
+                                                </a>
                                             </div>
-                                            <div class="padder-v"> <a href="#" class="text-ellipsis">Nothing</a> <a href="#" class="text-ellipsis text-xs text-muted">Willion</a> </div>
+                                            <div class="padder-v">
+                                                <a href="#" class="text-ellipsis">Nothing</a>
+                                                <a href="#" class="text-ellipsis text-xs text-muted">Willion</a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xs-6 col-sm-3">
                                         <div class="item">
                                             <div class="pos-rlt">
                                                 <div class="item-overlay opacity r r-2x bg-black">
-                                                    <div class="center text-center m-t-n"> <a href="#"><i class="fa fa-play-circle i-2x"></i></a> </div>
+                                                    <div class="center text-center m-t-n">
+                                                        <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
+                                                    </div>
                                                 </div>
-                                                <a href="#"><img src="{echo CDN}images/a6.png" alt="" class="r r-2x img-full"></a>
+                                                <a href="#">
+                                                    <img src="{echo CDN}images/a6.png" alt="" class="r r-2x img-full">
+                                                </a>
                                             </div>
-                                            <div class="padder-v"> <a href="#" class="text-ellipsis">Panda Style</a> <a href="#" class="text-ellipsis text-xs text-muted">Lionie</a> </div>
+                                            <div class="padder-v">
+                                                <a href="#" class="text-ellipsis">Panda Style</a>
+                                                <a href="#" class="text-ellipsis text-xs text-muted">Lionie</a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xs-6 col-sm-3">
                                         <div class="item">
                                             <div class="pos-rlt">
                                                 <div class="item-overlay opacity r r-2x bg-black">
-                                                    <div class="center text-center m-t-n"> <a href="#"><i class="fa fa-play-circle i-2x"></i></a> </div>
+                                                    <div class="center text-center m-t-n">
+                                                        <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
+                                                    </div>
                                                 </div>
-                                                <a href="#"><img src="{echo CDN}images/a7.png" alt="" class="r r-2x img-full"></a>
+                                                <a href="#">
+                                                    <img src="{echo CDN}images/a7.png" alt="" class="r r-2x img-full">
+                                                </a>
                                             </div>
-                                            <div class="padder-v"> <a href="#" class="text-ellipsis">Hook Me</a> <a href="#" class="text-ellipsis text-xs text-muted">Gossi</a> </div>
+                                            <div class="padder-v">
+                                                <a href="#" class="text-ellipsis">Hook Me</a>
+                                                <a href="#" class="text-ellipsis text-xs text-muted">Gossi</a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-xs-6 col-sm-3">
                                         <div class="item">
                                             <div class="pos-rlt">
                                                 <div class="item-overlay opacity r r-2x bg-black">
-                                                    <div class="center text-center m-t-n"> <a href="#"><i class="fa fa-play-circle i-2x"></i></a> </div>
+                                                    <div class="center text-center m-t-n">
+                                                        <a href="#"><i class="fa fa-play-circle i-2x"></i></a>
+                                                    </div>
                                                 </div>
-                                                <a href="#"><img src="{echo CDN}images/a5.png" alt="" class="r r-2x img-full"></a>
+                                                <a href="#">
+                                                    <img src="{echo CDN}images/a5.png" alt="" class="r r-2x img-full">
+                                                </a>
                                             </div>
-                                            <div class="padder-v"> <a href="#" class="text-ellipsis">Tempered Song</a> <a href="#" class="text-ellipsis text-xs text-muted">Miaow</a> </div>
+                                            <div class="padder-v">
+                                                <a href="#" class="text-ellipsis">Tempered Song</a>
+                                                <a href="#" class="text-ellipsis text-xs text-muted">Miaow</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -338,60 +219,15 @@
                         </div>
                     </section>
                     <footer class="footer bg-dark">
-                        <div id="jp_container_N">
-                            <div class="jp-type-playlist">
-                                <div id="jplayer_N" class="jp-jplayer hide"></div>
-                                <div class="jp-gui">
-                                    <div class="jp-video-play hide"> <a class="jp-video-play-icon">play</a> </div>
-                                    <div class="jp-interface">
-                                        <div class="jp-controls">
-                                            <div><a class="jp-previous"><i class="icon-control-rewind i-lg"></i></a></div>
-                                            <div> <a class="jp-play"><i class="icon-control-play i-2x"></i></a> <a class="jp-pause hid"><i class="icon-control-pause i-2x"></i></a> </div>
-                                            <div><a class="jp-next"><i class="icon-control-forward i-lg"></i></a></div>
-                                            <div class="hide"><a class="jp-stop"><i class="fa fa-stop"></i></a></div>
-                                            <div><a class="" data-toggle="dropdown" data-target="#playlist"><i class="icon-list"></i></a></div>
-                                            <div class="jp-progress hidden-xs">
-                                                <div class="jp-seek-bar dk">
-                                                    <div class="jp-play-bar bg-info"> </div>
-                                                    <div class="jp-title text-lt">
-                                                        <ul>
-                                                            <li></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="hidden-xs hidden-sm jp-current-time text-xs text-muted"></div>
-                                            <div class="hidden-xs hidden-sm jp-duration text-xs text-muted"></div>
-                                            <div class="hidden-xs hidden-sm"> <a class="jp-mute" title="mute"><i class="icon-volume-2"></i></a> <a class="jp-unmute hid" title="unmute"><i class="icon-volume-off"></i></a> </div>
-                                            <div class="hidden-xs hidden-sm jp-volume">
-                                                <div class="jp-volume-bar dk">
-                                                    <div class="jp-volume-bar-value lter"></div>
-                                                </div>
-                                            </div>
-                                            <div> <a class="jp-shuffle" title="shuffle"><i class="icon-shuffle text-muted"></i></a> <a class="jp-shuffle-off hid" title="shuffle off"><i class="icon-shuffle text-lt"></i></a> </div>
-                                            <div> <a class="jp-repeat" title="repeat"><i class="icon-loop text-muted"></i></a> <a class="jp-repeat-off hid" title="repeat off"><i class="icon-loop text-lt"></i></a> </div>
-                                            <div class="hide"> <a class="jp-full-screen" title="full screen"><i class="fa fa-expand"></i></a> <a class="jp-restore-screen" title="restore screen"><i class="fa fa-compress text-lt"></i></a> </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="jp-playlist dropup" id="playlist">
-                                    <ul class="dropdown-menu aside-xl dker">
-                                        <!-- The method Playlist.displayPlaylist() uses this unordered list -->
-                                        <li class="list-group-item"></li>
-                                    </ul>
-                                </div>
-                                <div class="jp-no-solution hide"> <span>Update Required</span> To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>. </div>
-                            </div>
-                        </div>
+                        {include layouts/navigation/footers.html}
                     </footer>
                 </section>
-                {/if}
-                {else}
+                {/if} {else}
                 <section class="vbox" id="bjax-el">
                     <section class="scrollable padder-lg">
                         <h1 class="font-thin m-b">Your Results</h1>
                         <div class="row row-sm">
-                        {foreach $result in $results}
+                            {foreach $result in $results}
                             <div class="col-xs-6 col-sm-4 col-md-3">
                                 <div class="item">
                                     <div class="pos-rlt">
@@ -407,7 +243,7 @@
                                     </div>
                                 </div>
                             </div>
-                        {/foreach}
+                            {/foreach}
                         </div>
                     </section>
                 </section>
@@ -415,69 +251,7 @@
             </section>
             <!-- side content -->
             <aside class="aside-md bg-light dk" id="sidebar">
-                <section class="vbox animated fadeInRight">
-                    <section class="w-f-md scrollable hover">
-                        <h4 class="font-thin m-l-md m-t">Connected</h4>
-                        <ul class="list-group no-bg no-borders auto m-t-n-xxs">
-                            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="{echo CDN}images/a1.png" alt="..." class="img-circle"> <i class="on b-light right sm"></i> </span>
-                                <div class="clear">
-                                    <div><a href="#">Chris Fox</a></div> <small class="text-muted">New York</small> </div>
-                            </li>
-                            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="{echo CDN}images/a2.png" alt="..."> <i class="on b-light right sm"></i> </span>
-                                <div class="clear">
-                                    <div><a href="#">Amanda Conlan</a></div> <small class="text-muted">France</small> </div>
-                            </li>
-                            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="{echo CDN}images/a3.png" alt="..."> <i class="busy b-light right sm"></i> </span>
-                                <div class="clear">
-                                    <div><a href="#">Dan Doorack</a></div> <small class="text-muted">Hamburg</small> </div>
-                            </li>
-                            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="{echo CDN}images/a4.png" alt="..."> <i class="away b-light right sm"></i> </span>
-                                <div class="clear">
-                                    <div><a href="#">Lauren Taylor</a></div> <small class="text-muted">London</small> </div>
-                            </li>
-                            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="{echo CDN}images/a5.png" alt="..." class="img-circle"> <i class="on b-light right sm"></i> </span>
-                                <div class="clear">
-                                    <div><a href="#">Chris Fox</a></div> <small class="text-muted">Milan</small> </div>
-                            </li>
-                            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="{echo CDN}images/a6.png" alt="..."> <i class="on b-light right sm"></i> </span>
-                                <div class="clear">
-                                    <div><a href="#">Amanda Conlan</a></div> <small class="text-muted">Copenhagen</small> </div>
-                            </li>
-                            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="{echo CDN}images/a7.png" alt="..."> <i class="busy b-light right sm"></i> </span>
-                                <div class="clear">
-                                    <div><a href="#">Dan Doorack</a></div> <small class="text-muted">Barcelona</small> </div>
-                            </li>
-                            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="{echo CDN}images/a8.png" alt="..."> <i class="away b-light right sm"></i> </span>
-                                <div class="clear">
-                                    <div><a href="#">Lauren Taylor</a></div> <small class="text-muted">Tokyo</small> </div>
-                            </li>
-                            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="{echo CDN}images/a9.png" alt="..." class="img-circle"> <i class="on b-light right sm"></i> </span>
-                                <div class="clear">
-                                    <div><a href="#">Chris Fox</a></div> <small class="text-muted">UK</small> </div>
-                            </li>
-                            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="{echo CDN}images/a1.png" alt="..."> <i class="on b-light right sm"></i> </span>
-                                <div class="clear">
-                                    <div><a href="#">Amanda Conlan</a></div> <small class="text-muted">Africa</small> </div>
-                            </li>
-                            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="{echo CDN}images/a2.png" alt="..."> <i class="busy b-light right sm"></i> </span>
-                                <div class="clear">
-                                    <div><a href="#">Dan Doorack</a></div> <small class="text-muted">Paris</small> </div>
-                            </li>
-                            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="{echo CDN}images/a3.png" alt="..."> <i class="away b-light right sm"></i> </span>
-                                <div class="clear">
-                                    <div><a href="#">Lauren Taylor</a></div> <small class="text-muted">Brussels</small> </div>
-                            </li>
-                        </ul>
-                    </section>
-                    <footer class="footer footer-md bg-black">
-                        <form class="" role="search">
-                            <div class="form-group clearfix m-b-none">
-                                <div class="input-group m-t m-b"> <span class="input-group-btn"> <button type="submit" class="btn btn-sm bg-empty text-muted btn-icon"><i class="fa fa-search"></i></button> </span>
-                                    <input type="text" class="form-control input-sm text-white bg-empty b-b b-dark no-border" placeholder="Search members"> </div>
-                            </div>
-                        </form>
-                    </footer>
-                </section>
+                {include layouts/navigation/sidebar.html}
             </aside>
             <!-- / side content -->
         </section>

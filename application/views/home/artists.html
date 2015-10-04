@@ -1,0 +1,61 @@
+<section class="hbox stretch">
+    {include layouts/navigation/standard.html}
+    <section id="content">
+        <section class="hbox stretch">
+            <section>
+                <section class="vbox">
+                    <section class="scrollable padder-lg w-f-md" id="bjax-target">
+                        <a href="#" class="pull-right text-muted m-t-lg" data-toggle="class:fa-spin"><i class="icon-refresh i-lg inline" id="refresh"></i></a>
+
+                        <h2 class="font-thin m-b">{echo $title} <span class="musicbar animate inline m-l-sm" style="width:20px;height:20px"> <span class="bar1 a1 bg-primary lter"></span> <span class="bar2 a2 bg-info lt"></span> <span class="bar3 a3 bg-success"></span> <span class="bar4 a4 bg-warning dk"></span> <span class="bar5 a5 bg-danger dker"></span> </span>
+                        </h2>
+                        {if isset($artists)}
+                        <div class="row row-sm">
+                         {foreach $art in $artists}
+                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                                <div class="item">
+                                    <div class="pos-rlt">
+                                        <div class="item-overlay opacity r r-2x bg-black">
+                                            <div class="text-info padder m-t-sm text-sm">
+                                                {foreach $c in $count}
+                                                <i class="fa fa-star"></i>
+                                                {/foreach}
+                                            </div>
+                                            <div class="center text-center m-t-n">
+                                                <a href="/artists/{echo urlencode($art->name)}" data-mid="{echo $art->mbid}"><i class="icon-control-play i-2x"></i></a>
+                                            </div>
+                                            <div class="bottom padder m-b-sm">
+                                                <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
+                                                <a href="#"> <i class="fa fa-plus-circle"></i> </a>
+                                            </div>
+                                        </div>
+                                        <a href="#">
+                                            <img src="{echo $art->image}" alt="" class="r r-2x img-full">
+                                        </a>
+                                    </div>
+                                    <div class="padder-v">
+                                        <a href="/artists/{echo urlencode($art->name)}" data-mbid="{echo $art->mbid}" class="text-ellipsis">{echo $art->name}</a>
+                                    </div>
+                                </div>
+                            </div>
+                         {/foreach}
+                        </div>       
+                        {/if}
+                        {else}
+                            <h3 class="page-heading">Something went wrong</h3>
+                        {/else}
+                    </section>
+                    <footer class="footer bg-dark">
+                        {include layouts/navigation/footers.html}
+                    </footer>
+                </section>
+            </section>
+            <!-- side content -->
+            <aside class="aside-md bg-light dk" id="sidebar">
+                {include layouts/navigation/sidebar.html}
+            </aside>
+            <!-- / side content -->
+        </section>
+        <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+    </section>
+</section>

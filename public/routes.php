@@ -25,7 +25,7 @@ $routes = array(
         "action" => "events"
     ),
     array(
-        "pattern" => "listen",
+        "pattern" => "listen/:artist",
         "controller" => "home",
         "action" => "listen"
     ),
@@ -38,6 +38,11 @@ $routes = array(
         "pattern" => "video/:id",
         "controller" => "home",
         "action" => "videoDetail"
+    ),
+    array(
+        "pattern" => "artists",
+        "controller" => "home",
+        "action" => "artists"
     ),
 
     // user routes

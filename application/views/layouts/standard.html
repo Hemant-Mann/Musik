@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <link rel="stylesheet" href="{echo CDN}js/jPlayer/jplayer.flat.css" type="text/css" />
     <link rel="stylesheet" href="{echo CDN}css/app.v1.css" type="text/css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <meta name="author" content="Hemant Mann">
     <!--[if lt IE 9]> <script src="{echo CDN}js/ie/html5shiv.js"></script> <script src="{echo CDN}js/ie/respond.min.js"></script> <script src="{echo CDN}js/ie/excanvas.js"></script> <![endif]-->
 </head>
@@ -29,24 +30,14 @@
             {ayield action}
         </section>
     </section>
-    <!-- Bootstrap -->
-    <!-- App -->
+    
     <script src="{echo CDN}js/app.v1.js"></script>
     <script src="{echo CDN}js/app.plugin.js"></script>
     <script type="text/javascript" src="{echo CDN}js/jPlayer/jquery.jplayer.min.js"></script>
     <script type="text/javascript" src="{echo CDN}js/jPlayer/add-on/jplayer.playlist.min.js"></script>
     <script type="text/javascript" src="{echo CDN}js/jPlayer/demo.js"></script>
+    <script type="text/javascript" src="{echo CDN}js/model.js"></script>
     <script src="{echo CDN}js/public.js"></script>
-    
-    {if ($url == "events") || ($url == "events.html")}
-    <!-- Page Based custom js -->
-    <script src="{echo CDN}js/masonry/tiles.min.js"></script>
-    <script src="{echo CDN}js/masonry/demo.js"></script>
-    {/if}
-
-    {if $url == "profile"}
-    <script src="{echo CDN}js/charts/easypiechart/jquery.easy-pie-chart.js"></script>
-    {/if}
 
 </body>
 
