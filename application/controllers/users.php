@@ -14,13 +14,13 @@ class Users extends Controller {
         
     }
 
-    public function signin() {
+    public function login() {
         if ($this->user){
             self::redirect("/profile");
         }
         $view = $this->getActionView();
 
-        if (RequestMethods::post("action") == "signin") {
+        if (RequestMethods::post("action") == "login") {
             $password = RequestMethods::post("password");
             $email = RequestMethods::post("email");
 
@@ -62,14 +62,14 @@ class Users extends Controller {
                 $view->set("message", "Passwords do not match!");
             } else {
                 $user->save();
-                $view->set("message", 'You are registered!! Please <a href="/signin">signin</a> to continue');
+                $view->set("message", 'You are registered!! Please <a href="/login">Login</a> to continue');
             }
         }
     }
 
     public function logout() {
         $this->setUser(false);
-        self::redirect("/signin");
+        self::redirect("/login");
     }
 
     /**

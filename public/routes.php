@@ -42,9 +42,9 @@ $routes = array(
 
     // user routes
     array(
-        "pattern" => "signin",
+        "pattern" => "login",
         "controller" => "users",
-        "action" => "signin"
+        "action" => "login"
     ),
     array(
         "pattern" => "signup",

@@ -14,7 +14,7 @@
 {script $url = explode("/", URL)}
 {script $url = array_pop($url)}
 
-{if ($url == "signin") || ($url == "signup")}
+{if ($url == "login") || ($url == "signup")}
     {script $loggedIn = false}
 {/if}
 {else}
