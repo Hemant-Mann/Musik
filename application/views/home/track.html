@@ -1,0 +1,72 @@
+<section class="hbox stretch">
+    {include layouts/navigation/standard.html}
+    <section id="content">
+        <section class="vbox" id="bjax-el">
+            <section class="scrollable wrapper-lg">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="panel wrapper-lg">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <img src="{echo $track->image}" class="img-full m-b"> </div>
+                                    <div class="col-sm-7">
+                                        <h2 class="m-t-none text-black">{echo $track->name}</h2>
+                                        <h3 class="m-t-none text-grey">{echo $track->artist}</h3>
+                                        <h4 class="m-t-none text-grey">{echo $track->album}</h4>
+                                        <div class="clearfix m-b-lg">
+                                            <h6 class="page-heading">Play Count: <strong>{echo $track->playCount}</strong></h6>
+                                            <h6 class="page-heading">Duration: <strong>{echo $track->duration}</strong></h6>
+                                        </div>
+                                        <div> Tags:
+                                        {foreach $tag in $track->tags}
+                                            <a href="#" class="badge bg-light">{echo $tag->name}</a>
+                                        {/foreach}
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="m-t">
+                                <p>{echo $track->wiki->summary}</p>
+                            </div>
+                            <h4 class="m-t-lg m-b">Play List</h4>
+                            <ul class="list-group list-group-lg">
+                            {foreach $track in $tracks}
+                                <li class="list-group-item">
+                                    <div class="pull-right m-l">
+                                        <a href="#" class="viewTrackInfo" data-mbid="{echo $track->mbid}"><i class="m-r-sm icon-info"></i></a>
+                                        <a href="#" class="m-r-sm"><i class="icon-cloud-download"></i></a>
+                                        <a href="#" class="m-r-sm"><i class="icon-plus"></i></a>
+                                        <a href="#"><i class="icon-close"></i></a>
+                                    </div>
+                                    <a href="#" class="jp-play-me m-r-sm pull-left"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
+                                    <div class="clear text-ellipsis"> <span>{echo $track->name}</span> </div>
+                                </li>
+                            {/foreach}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Similar Tracks</div>
+                            <div class="panel-body">
+                                {foreach $s in $similar}
+                                <article class="media">
+                                    <a href="#" class="pull-left thumb-md m-t-xs">
+                                        <img src="{echo $s->thumbnail}"> </a>
+                                    <div class="media-body">
+                                        <a href="#" data-mbid="{echo $s->mbid}" class="font-semibold">{echo $s->name}</a>
+                                        <div class="text-xs block m-t-xs">
+                                            <a href="/artists/view/{echo urlencode($s->name)}">{echo $s->artist}</a>
+                                            <a href="#" class="jp-play-me m-r-sm pull-left"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
+                                        </div>
+                                    </div>
+                                </article>
+                                {/foreach}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+    </section>
+</section>

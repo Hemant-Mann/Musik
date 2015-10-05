@@ -76,10 +76,10 @@ class Track extends Media {
 
 	/** The tracks wiki information.
 	 *
-	 * @var string
+	 * @var array
 	 * @access	private
 	 */
-	private $wiki;
+	private $wiki = array();
 
 	/** The unix timestamp indicating when this track was last played.
 	 *
@@ -112,7 +112,7 @@ class Track extends Media {
 	public function __construct($artist, $album, $name, $mbid, $url,
 								array $images, $listeners, $playCount,
 								$duration, array $topTags, $id, $location,
-								$streamable, $fullTrack, $wiki, $lastPlayed){
+								$streamable, $fullTrack, $wiki = array(), $lastPlayed){
 		parent::__construct($name, $mbid, $url, $images, $listeners, $playCount);
 
 		$this->artist     = $artist;
@@ -286,11 +286,12 @@ class Track extends Media {
 	 * @access	public
 	 * @throws	Error
 	 */
-	public static function getSimilar($artist, $track, $mbid = null){
+	public static function getSimilar($artist, $track, $mbid = null, $limit = 20){
 		$xml = CallerFactory::getDefaultCaller()->call('track.getSimilar', array(
 			'artist' => $artist,
 			'track'  => $track,
-			'mbid'   => $mbid
+			'mbid'   => $mbid,
+			'limit'  => $limit
 		));
 
 		$tracks = array();
@@ -509,6 +510,8 @@ class Track extends Media {
 	public static function fromSimpleXMLElement(\SimpleXMLElement $xml){
 		$images  = array();
 		$topTags = array();
+		$wiki = array();
+		$album = array();
 
 		if(count($xml->image) > 1){
 			foreach($xml->image as $image){
@@ -522,6 +525,13 @@ class Track extends Media {
 		if($xml->toptags){
 			foreach($xml->toptags->children() as $tag){
 				$topTags[] = Tag::fromSimpleXMLElement($tag);
+			}
+		}
+
+		if ($xml->album) {
+			foreach ($xml->album->children() as $tag) {
+				$key = Util::toString($tag->getName());
+				$album["{$key}"] = $tag;
 			}
 		}
 
@@ -555,11 +565,19 @@ class Track extends Media {
 			$name = '';
 		}
 
+		// New feature: WIKI
+		if ($xml->wiki) {
+			foreach ($xml->wiki->children() as $tag) {
+				$key = Util::toString($tag->getName());
+				$wiki["{$key}"] = Util::toString($tag);
+			}
+		}
+
 		// TODO: <extension application="http://www.last.fm">
 
 		return new Track(
 			$artist,
-			Util::toString($xml->album),
+			$album,
 			$name,
 			Util::toString($xml->mbid),
 			Util::toString($xml->url),
@@ -572,7 +590,7 @@ class Track extends Media {
 			Util::toString($xml->location),
 			Util::toBoolean($xml->streamable),
 			Util::toBoolean($xml->streamable['fulltrack']),
-			$xml->wiki, // TODO: Wiki object
+			$wiki,
 			Util::toTimestamp($xml->date)
 		);
 	}

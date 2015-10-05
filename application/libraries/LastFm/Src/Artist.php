@@ -47,7 +47,7 @@ class Artist extends Media {
 	 * @var		array
 	 * @access	private
 	 */
-	private $biography;
+	private $biography = array();
 
 	/** Stores a similarity value.
 	 *
@@ -74,7 +74,7 @@ class Artist extends Media {
 	 */
 	public function __construct($name, $mbid, $url, array $images, $streamable,
 								$listeners, $playCount, array $tags,
-								array $similar, $biography, $match){
+								array $similar, $biography = array(), $match){
 		parent::__construct($name, $mbid, $url, $images, $listeners, $playCount);
 
 		$this->streamable = $streamable;
@@ -277,9 +277,10 @@ class Artist extends Media {
 	 * @access	public
 	 * @throws	Error
 	 */
-	public static function getTopAlbums($artist){
+	public static function getTopAlbums($artist, $mbid = null){
 		$xml = CallerFactory::getDefaultCaller()->call('artist.getTopAlbums', array(
-			'artist' => $artist
+			'artist' => $artist,
+			'mbid' => $mbid
 		));
 
 		$albums = array();
@@ -325,9 +326,10 @@ class Artist extends Media {
 	 * @access	public
 	 * @throws	Error
 	 */
-	public static function getTopTags($artist){
+	public static function getTopTags($artist, $mbid = null){
 		$xml = CallerFactory::getDefaultCaller()->call('artist.getTopTags', array(
-			'artist' => $artist
+			'artist' => $artist,
+			'mbid' => $mbid
 		));
 
 		$tags = array();
@@ -349,9 +351,12 @@ class Artist extends Media {
 	 * @access	public
 	 * @throws	Error
 	 */
-	public static function getTopTracks($artist){
+	public static function getTopTracks($artist, $mbid = null, $page = 1, $limit = 36){
 		$xml = CallerFactory::getDefaultCaller()->call('artist.getTopTracks', array(
-			'artist' => $artist
+			'artist' => $artist,
+			'mbid' => $mbid,
+			'page' => $page,
+			'limit' => $limit
 		));
 
 		$tracks = array();
@@ -465,6 +470,7 @@ class Artist extends Media {
 		$images  = array();
 		$tags    = array();
 		$similar = array();
+		$bio 	 = array();
 
 		/* NOTE: image, image_small... this sucks! */
 
@@ -495,20 +501,26 @@ class Artist extends Media {
 			}
 		}
 
+		// New feature: WIKI
+		if ($xml->bio) {
+			foreach ($xml->bio->children() as $tag) {
+				$key = Util::toString($tag->getName());
+				$bio["{$key}"] = Util::toString($tag);
+			}
+		}
+
 		return new Artist(
 			Util::toString($xml->name),
 			Util::toString($xml->mbid),
 			Util::toString($xml->url),
 			$images,
 			Util::toBoolean($xml->streamable),
-			Util::toInteger($xml->listeners),
-			Util::toInteger($xml->playcount),
+			Util::toInteger($xml->stats->listeners),
+			Util::toInteger($xml->stats->playcount),
 			$tags,
 			$similar,
-			($xml->bio)?Util::toString($xml->bio->summary):"", // TODO: Biography object
+			$bio,
 			Util::toFloat($xml->match)
 		);
 	}
 }
-
-

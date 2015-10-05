@@ -44,11 +44,7 @@ $routes = array(
         "controller" => "home",
         "action" => "videoDetail"
     ),
-    array(
-        "pattern" => "artists",
-        "controller" => "home",
-        "action" => "artists"
-    ),
+
 
     // user routes
     array(

@@ -46,6 +46,14 @@ class Album extends Media {
 	 */
 	private $topTags;
 
+	/**
+	 * Wiki of an album
+	 * 
+	 * @var object
+	 * @access private
+	 */
+	private $wiki = array();
+
 	/** Create an album object.
 	 *
 	 * @param mixed		$artist			An artist object or string.
@@ -58,18 +66,20 @@ class Album extends Media {
 	 * @param integer	$playCount		Play count of this album.
 	 * @param integer	$releaseDate	Release date of this album.
 	 * @param array		$topTags		An array of top tags of this album.
+	 * @param array 	$wiki 			An array of wiki of the album
 	 *
 	 * @access	public
 	 */
 	public function __construct($artist, $name, $id, $mbid, $url, array $images,
 								$listeners, $playCount, $releaseDate,
-								array $topTags){
+								array $topTags, array $wiki = array()){
 		parent::__construct($name, $mbid, $url, $images, $listeners, $playCount);
 
 		$this->artist      = $artist;
 		$this->id          = $id;
 		$this->releaseDate = $releaseDate;
 		$this->topTags     = $topTags;
+		$this->wiki    	   = $wiki;
 	}
 
 	/** Returns the artist of this album.
@@ -108,6 +118,16 @@ class Album extends Media {
 	 */
 	public function getTopTags(){
 		return $this->topTags;
+	}
+
+	/**
+	 * Returns the wiki of this album
+	 *
+	 * @return array An array of Wiki containing 'published', 'summary', 'content'
+	 * @access public
+	 */
+	public function getWiki() {
+		return $this->wiki;
 	}
 
 	/** Tag an album using a list of user supplied tags.
@@ -266,6 +286,7 @@ class Album extends Media {
 	public static function fromSimpleXMLElement(\SimpleXMLElement $xml){
 		$images  = array();
 		$topTags = array();
+		$wiki = array();
 
 		/* TODO: tagcount | library.getAlbums */
 
@@ -308,6 +329,14 @@ class Album extends Media {
 			$artist = Util::toString($xml->artist);
 		}
 
+		// New feature: WIKI
+		if ($xml->wiki) {
+			foreach ($xml->wiki->children() as $tag) {
+				$key = Util::toString($tag->getName());
+				$wiki["{$key}"] = Util::toString($tag);
+			}
+		}
+
 		return new Album(
 			$artist,
 			Util::toString($xml->name),
@@ -318,7 +347,8 @@ class Album extends Media {
 			Util::toInteger($xml->listeners),
 			Util::toInteger($xml->playcount),
 			Util::toTimestamp($xml->releasedate),
-			$topTags
+			$topTags,
+			$wiki
 		);
 	}
 }

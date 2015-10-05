@@ -90,6 +90,11 @@ final class CurlCaller extends Caller {
 		}
 		else{
 			/* Build request query */
+			$key = array_key_exists("lang", $params);
+
+			if ($key !== FALSE && empty($params["lang"])) {
+				unset($params["lang"]);
+			}
 			$query = http_build_query($params, '', '&');
 
 			/* Set request options. */

@@ -29,7 +29,7 @@
                                             <div class="pos-rlt">
                                                 <div class="item-overlay opacity r r-2x bg-black">
                                                     <div class="center text-center m-t-n">
-                                                        <a href="#" data-artist="{echo $track->artist}" data-track="{echo $track->name}"><i class="fa fa-play-circle i-2x"></i></a>
+                                                        <a href="#" class="play-track" data-artist="{echo $track->artist}" data-track="{echo $track->name}"><i class="fa fa-play-circle i-2x"></i></a>
                                                     </div>
                                                 </div>
                                                 <a href="track-detail.html">
@@ -37,7 +37,7 @@
                                                 </a>
                                             </div>
                                             <div class="padder-v">
-                                                <a href="#" data-artist="{echo $track->artist}" class="text-ellipsis">{echo $track->name}</a>
+                                                <a href="#" class="play-track" data-artist="{echo $track->artist}" class="text-ellipsis">{echo $track->name}</a>
                                                 <a href="/listen/{echo urlencode($track->artist)}" class="text-ellipsis text-xs text-muted">{echo $track->artist}</a>
                                             </div>
                                         </div>

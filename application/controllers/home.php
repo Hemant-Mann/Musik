@@ -121,6 +121,7 @@ class Home extends Controller {
     public function listen($artistName) {
         $view = $this->getActionView();
 
+        // find artist by name
         if (isset($artistName)) {
             $artist = Artst::getInfo($artistName);
 
@@ -129,103 +130,163 @@ class Home extends Controller {
             $art["listeners"] = $artist->getPlayCount();
             $art["image"] = $artist->getImage(4);
             $art["mbid"] = $artist->getMbid();
+
+            $similarArtists = $artist->getSimilarArtists();
             $artist = ArrayMethods::toObject($art);
 
-            $topTracks = Artst::getTopTracks($artistName);
+            $topTracks = Artst::getTopTracks(null, $artist->mbid);
 
             $view->set("artist", $artist);
         } else {
-            $topTracks = Geo::getTopTracks("India");
+            self::redirect("/404");
         }
 
+        // Get top tracks
         $tracks = array();
         foreach ($topTracks as $track) {
             $tracks[] = array(
-                "duration" => $track->getDuration(),
-                "album" => $track->getAlbum(),
+                "mbid" => $track->getMbid(),
                 "name" => $track->getName(),
-                "artist" => $track->getArtist()
+                "artist" => $track->getArtist()->getName()
             );
 
         }
-        $tracks = ArrayMethods::toObject($tracks);
 
-        $view->set("tracks", $tracks);
+        // Get similar artists
+        $similar = array();
+        foreach ($similarArtists as $art) {
+            $similar[] = array(
+                "name" => $art->getName(),
+                "thumbnail" => $art->getImage(0)
+            );
+        }
+        $similar = ArrayMethods::toObject($similar);
+        $tracks = ArrayMethods::toObject($tracks);
         
+        $view->set("tracks", $tracks);
+        $view->set("similar", $similar);
     }
 
     public function videos() {
     	$view = $this->getActionView();
     	$results = null; $text = '';
 
+        $q = 'latest';
         if (RequestMethods::post("action") == "search") {
          	$q = RequestMethods::post("q");
-            $youtube = Registry::get("youtube");
-         	
-         	try {
-                $searchResponse = $youtube->search->listSearch('id,snippet', array(
-                    'q' => $q,
-                    'maxResults' => "15",
-                    "type" => "video"
-                ));
 
-                // Add each result to the appropriate list, and then display the lists of
-                // matching videos, channels, and playlists.
-                $results = array();
-                foreach ($searchResponse['items'] as $searchResult) {
-                    $thumbnail = $searchResult['snippet']['thumbnails']['medium']['url'];
-                    $title = $searchResult['snippet']['title'];
-                    $href = $searchResult['id']['videoId'];
-
-                    $results[] = array(
-                        "img" => $thumbnail,
-                        "title" => $title,
-                        "videoId" => $href
-                    );
-                }
-                $results = ArrayMethods::toObject($results);
-    
-                } catch (Google_Service_Exception $e) {
-                    $error = 'A Service error occured';
-                    $results = null;
-                } catch (Google_Exception $e) {
-                    $error = 'A Client error occured';
-                    $results = null;
-                }
         }
+        $youtube = Registry::get("youtube");
+     	
+     	try {
+            $searchResponse = $youtube->search->listSearch('id,snippet', array(
+                'q' => $q,
+                'maxResults' => "15",
+                "type" => "video"
+            ));
 
+            // Add each result to the appropriate list, and then display the lists of
+            // matching videos, channels, and playlists.
+            $results = array();
+            foreach ($searchResponse['items'] as $searchResult) {
+                $thumbnail = $searchResult['snippet']['thumbnails']['medium']['url'];
+                $title = $searchResult['snippet']['title'];
+                $href = $searchResult['id']['videoId'];
+
+                $results[] = array(
+                    "img" => $thumbnail,
+                    "title" => $title,
+                    "videoId" => $href
+                );
+            }
+            $results = ArrayMethods::toObject($results);
+
+        } catch (Google_Service_Exception $e) {
+            $error = 'A Service error occured';
+            $results = null;
+        } catch (Google_Exception $e) {
+            $error = 'A Client error occured';
+            $results = null;
+        }
+        
         $view->set("results", $results);
     }
 
-    public function artists() {
+    public function track($mbid = null) {
         $view = $this->getActionView();
+        $session = Registry::get("session");
+        
+        // Save the mbid got through post request
+        if (RequestMethods::post("action") == "findTrackInfo") {
+            $mbid = RequestMethods::post("mbid");
+            $session->set("trackMbid", $mbid);
 
-
-        $title = "Top Artists";
-        // Show top Artist by country
-        $topArtists = Geo::getTopArtists("India");
-
-        $artists = array();
-        $i = 1;
-        foreach ($topArtists as $art) {
-            $artists[] = array(
-                "mbid" => $art->getMbid(),
-                "name" => $art->getName(),
-                "image" => $art->getImage(4)
-            );
-            ++$i;
-
-            if ($i > 30) break;
         }
-        $artists = ArrayMethods::toObject($artists);    
 
-        $view->set("count", array(1,2,3,4,5));
-        $view->set("artists", $artists);
+        $mbid = (empty($mbid)) ? $session->get("trackMbid") : $mbid;
+        if (!$mbid) {
+            self::redirect("/404");
+        }
+        $track = Trck::getInfo(null, null, $mbid);
 
+        // Store track info
+        $t = array();
+        $t["name"] = $track->getName();
+        $t["duration"] = $track->getDuration();
+        $t["mbid"] = $track->getMbid();
+        $t["artist"] = $track->getArtist()->getName();
+        $t["artistMbid"] = $track->getArtist()->getMbid();
+        $t["playCount"] = $track->getPlayCount();
+        $t["wiki"] = $track->getWiki();
 
-        $view->set("title", $title);
+        // Album of the track
+        $album = $track->getAlbum();
+        $t["album"] = $album["title"];
+        $t["image"] = $album["image"][0];
+
+        // Find the tags of the song
+        $tags = $track->getTrackTopTags();
+        foreach ($tags as $tag) {
+            $t["tags"][] = array(
+                "name" => $tag->getName()
+            );
+        }
+
+        // Also find Top Tracks of the Artist
+        $topTracks = Artst::getTopTracks(null, $t["artistMbid"]);
+        $tracks = array();
+        foreach ($topTracks as $track) {
+            $tracks[] = array(
+                "name" => $track->getName(),
+                "playCount" => $track->getPlayCount(),
+                "mbid" => $track->getMbid()
+            );
+        }
+        $tracks = ArrayMethods::toObject($tracks);
+        $t = ArrayMethods::toObject($t);
+
+        // Also find similar tracks
+        $similarTracks = Trck::getSimilar(null, null, $t->mbid);
+        $similar = array();
+        foreach ($similarTracks as $track) {
+            $similar[] = array(
+                "name" => $track->getName(),
+                "mbid" => $track->getMbid(),
+                "playCount" => $track->getPlayCount(),
+                "artist" => $track->getArtist()->getName(),
+                "thumbnail" => $track->getImage(2)
+            );
+        }
+        $similar = ArrayMethods::toObject($similar);
+
+        $track = ArrayMethods::toObject($t);
+        $view->set("success", "Found the track");
+        $view->set("track", $t);
+        $view->set("tracks", $tracks);
+        $view->set("similar", $similar);
+
     }
-
+    
     public function playTrack() {
         $view = $this->getActionView();
 

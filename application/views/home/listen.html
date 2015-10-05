@@ -5,7 +5,7 @@
             <section class="w-f-md">
                 <section class="hbox stretch bg-black dker">
                     <!-- side content -->
-                    <aside class="col-sm-5 no-padder" id="sidebar">
+                    <aside class="col-sm-7 no-padder" id="sidebar">
                         <section class="vbox animated fadeInUp">
                             <section class="scrollable">
                             {if isset($artist)}
@@ -19,12 +19,13 @@
                                     {foreach $track in $tracks}
                                     <li class="list-group-item">
                                         <div class="pull-right m-l">
+                                            <a href="#" class="m-r-sm viewTrackInfo" data-mbid="{echo $track->mbid}"><i class="icon-info"></i></a>
                                             <a href="#" class="m-r-sm"><i class="icon-cloud-download"></i></a>
                                             <a href="#" class="m-r-sm"><i class="icon-plus"></i></a>
                                             <a href="#"><i class="icon-close"></i></a>
                                         </div>
                                         <a href="#" class="jp-play-me m-r-sm pull-left"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                        <div class="clear text-ellipsis"> <span>{echo $track->name} - {echo $track->album}</span> <span class="text-muted"> -- {echo $track->duration}</span> </div>
+                                        <div class="clear text-ellipsis"> <span>{echo $track->name}</span> <span class="text-muted"></span> </div>
                                     </li>
                                     {/foreach}
                                 </ul>
@@ -33,116 +34,20 @@
                         </section>
                     </aside>
                     <!-- / side content -->
-                    <section class="col-sm-4 no-padder bg">
+                    <section class="col-sm-5 no-padder bg">
                         <section class="vbox">
                             <section class="scrollable hover">
                                 <ul class="list-group list-group-lg no-bg auto m-b-none m-t-n-xxs">
+                                    <h2 class="font-thin m-b">Similar Artists</h2>
+                                    {foreach $s in $similar}
                                     <li class="list-group-item clearfix">
                                         <a href="#" class="jp-play-me pull-right m-t-sm m-l text-md"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
                                         <a href="#" class="pull-left thumb-sm m-r">
-                                            <img src="{echo CDN}images/m0.jpg" alt="..."> </a>
-                                        <a class="clear" href="#"> <span class="block text-ellipsis">Little Town</span> <small class="text-muted">by Soph Ashe</small> </a>
+                                            <img src="{echo $s->thumbnail}" alt="Artist Image"> </a>
+                                        <a class="clear" href="/artists/view/{echo urlencode($s->name)}"> <span class="block text-ellipsis">{echo $s->name}</span> </a>
                                     </li>
-                                    <li class="list-group-item clearfix">
-                                        <a href="#" class="jp-play-me pull-right m-t-sm m-l text-md"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                        <a href="#" class="pull-left thumb-sm m-r">
-                                            <img src="{echo CDN}images/a1.png" alt="..."> </a>
-                                        <a class="clear" href="#"> <span class="block text-ellipsis">Get lacinia odio sem nec elit</span> <small class="text-muted">by Filex</small> </a>
-                                    </li>
-                                    <li class="list-group-item clearfix">
-                                        <a href="#" class="jp-play-me pull-right m-t-sm m-l text-md"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                        <a href="#" class="pull-left thumb-sm m-r">
-                                            <img src="{echo CDN}images/a2.png" alt="..."> </a>
-                                        <a class="clear" href="#"> <span class="block text-ellipsis">Donec sed odio du</span> <small class="text-muted">by Dan Doorack</small> </a>
-                                    </li>
-                                    <li class="list-group-item clearfix">
-                                        <a href="#" class="jp-play-me pull-right m-t-sm m-l text-md"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                        <a href="#" class="pull-left thumb-sm m-r">
-                                            <img src="{echo CDN}images/a3.png" alt="..."> </a>
-                                        <a class="clear" href="#"> <span class="block text-ellipsis">Curabitur blandit tempu</span> <small class="text-muted">by Foxes</small> </a>
-                                    </li>
-                                    <li class="list-group-item clearfix">
-                                        <a href="#" class="jp-play-me pull-right m-t-sm m-l text-md"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                        <a href="#" class="pull-left thumb-sm m-r">
-                                            <img src="{echo CDN}images/a4.png" alt="..."> </a>
-                                        <a class="clear" href="#"> <span class="block text-ellipsis">Urna mollis ornare vel eu leo</span> <small class="text-muted">by Chris Fox</small> </a>
-                                    </li>
-                                    <li class="list-group-item clearfix">
-                                        <a href="#" class="jp-play-me pull-right m-t-sm m-l text-md"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                        <a href="#" class="pull-left thumb-sm m-r">
-                                            <img src="{echo CDN}images/a5.png" alt="..."> </a>
-                                        <a class="clear" href="#"> <span class="block text-ellipsis">Faucibus dolor auctor</span> <small class="text-muted">by Lauren Taylor</small> </a>
-                                    </li>
-                                    <li class="list-group-item clearfix">
-                                        <a href="#" class="jp-play-me pull-right m-t-sm m-l text-md"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                        <a href="#" class="pull-left thumb-sm m-r">
-                                            <img src="{echo CDN}images/a6.png" alt="..."> </a>
-                                        <a class="clear" href="#"> <span class="block text-ellipsis">Praesent commodo cursus magn</span> <small class="text-muted">by Chris Fox</small> </a>
-                                    </li>
-                                    <li class="list-group-item clearfix">
-                                        <a href="#" class="jp-play-me pull-right m-t-sm m-l text-md"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                        <a href="#" class="pull-left thumb-sm m-r">
-                                            <img src="{echo CDN}images/a7.png" alt="..."> </a>
-                                        <a class="clear" href="#"> <span class="block text-ellipsis">Vestibulum id</span> <small class="text-muted">by Milian</small> </a>
-                                    </li>
-                                    <li class="list-group-item clearfix">
-                                        <a href="#" class="jp-play-me pull-right m-t-sm m-l text-md"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                        <a href="#" class="pull-left thumb-sm m-r">
-                                            <img src="{echo CDN}images/a8.png" alt="..."> </a>
-                                        <a class="clear" href="#"> <span class="block text-ellipsis">Blandit tempu</span> <small class="text-muted">by Amanda Conlan</small> </a>
-                                    </li>
-                                    <li class="list-group-item clearfix">
-                                        <a href="#" class="jp-play-me pull-right m-t-sm m-l text-md"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                        <a href="#" class="pull-left thumb-sm m-r">
-                                            <img src="{echo CDN}images/a9.png" alt="..."> </a>
-                                        <a class="clear" href="#"> <span class="block text-ellipsis">Vestibulum ullamcorpe quis malesuada augue mco rpe</span> <small class="text-muted">by Dan Doorack</small> </a>
-                                    </li>
-                                    <li class="list-group-item clearfix">
-                                        <a href="#" class="jp-play-me pull-right m-t-sm m-l text-md"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                        <a href="#" class="pull-left thumb-sm m-r">
-                                            <img src="{echo CDN}images/a10.png" alt="..."> </a>
-                                        <a class="clear" href="#"> <span class="block text-ellipsis">Natis ipsum ac feugiat</span> <small class="text-muted">by Hamburg</small> </a>
-                                    </li>
-                                    <li class="list-group-item clearfix">
-                                        <a href="#" class="jp-play-me pull-right m-t-sm m-l text-md"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                        <a href="#" class="pull-left thumb-sm m-r">
-                                            <img src="{echo CDN}images/a0.png" alt="..."> </a>
-                                        <a class="clear" href="#"> <span class="block text-ellipsis">Sec condimentum au</span> <small class="text-muted">by Amanda Conlan</small> </a>
-                                    </li>
+                                    {/foreach}
                                 </ul>
-                            </section>
-                        </section>
-                    </section>
-                    <section class="col-sm-3 no-padder lt">
-                        <section class="vbox">
-                            <section class="scrollable hover">
-                                <div class="m-t-n-xxs">
-                                    <div class="item pos-rlt">
-                                        <a href="#" class="item-overlay active opacity wrapper-md font-xs"> <span class="block h3 font-bold text-info">Find</span> <span class="text-muted">Search the music you like</span> <span class="bottom wrapper-md block">- <i class="icon-arrow-right i-lg pull-right"></i></span> </a>
-                                        <a href="#">
-                                            <img class="img-full" src="{echo CDN}images/m40.jpg" alt="..."> </a>
-                                    </div>
-                                    <div class="item pos-rlt">
-                                        <a href="#" class="item-overlay active opacity wrapper-md font-xs text-right"> <span class="block h3 font-bold text-warning text-u-c">Listen</span> <span class="text-muted">Find the peace in your heart</span> <span class="bottom wrapper-md block"><i class="icon-arrow-right i-lg pull-left"></i> -</span> </a>
-                                        <a href="#">
-                                            <img class="img-full" src="{echo CDN}images/m41.jpg" alt="..."> </a>
-                                    </div>
-                                    <div class="item pos-rlt">
-                                        <a href="#" class="item-overlay active opacity wrapper-md font-xs"> <span class="block h3 font-bold text-success text-u-c">Share</span> <span class="text-muted">Share the good songs with your loves</span> <span class="bottom wrapper-md block">- <i class="icon-arrow-right i-lg pull-right"></i></span> </a>
-                                        <a href="#">
-                                            <img class="img-full" src="{echo CDN}images/m42.jpg" alt="..."> </a>
-                                    </div>
-                                    <div class="item pos-rlt">
-                                        <a href="#" class="item-overlay active opacity wrapper-md font-xs text-right"> <span class="block h3 font-bold text-white text-u-c">2014</span> <span class="text-muted">Find, Listen &amp; Share</span> <span class="bottom wrapper-md block"><i class="icon-arrow-right i-lg pull-left"></i> -</span> </a>
-                                        <a href="#">
-                                            <img class="img-full" src="{echo CDN}images/m44.jpg" alt="..."> </a>
-                                    </div>
-                                    <div class="item pos-rlt">
-                                        <a href="#" class="item-overlay active opacity wrapper-md font-xs"> <span class="block h3 font-bold text-danger-lter text-u-c">Top10</span> <span class="text-muted">Selected songs</span> <span class="bottom wrapper-md block">- <i class="icon-arrow-right i-lg pull-right"></i></span> </a>
-                                        <a href="#">
-                                            <img class="img-full" src="{echo CDN}images/m45.jpg" alt="..."> </a>
-                                    </div>
-                                </div>
                             </section>
                         </section>
                     </section>

@@ -155,7 +155,7 @@ class Tag {
 	 * @throws	Error
 	 */
 	public static function getTopTags(){
-		$xml = CallerFactory::getDefaultCaller()->call('tag.getTopTags');
+		$xml = CallerFactory::getDefaultCaller()->call('tag.getTopTags', array());
 
 		$tags = array();
 
@@ -291,5 +291,3 @@ class Tag {
 		);
 	}
 }
-
-
