@@ -175,9 +175,11 @@ class Tag {
 	 * @access	public
 	 * @throws	Error
 	 */
-	public static function getTopTracks($tag){
+	public static function getTopTracks($tag, $page = 1, $limit = 36){
 		$xml = CallerFactory::getDefaultCaller()->call('tag.getTopTracks', array(
-			'tag' => $tag
+			'tag' => $tag,
+			'page' => $page,
+			'limit' => $limit
 		));
 
 		$tracks = array();

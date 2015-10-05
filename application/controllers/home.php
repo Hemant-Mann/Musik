@@ -12,28 +12,33 @@ use Framework\ArrayMethods as ArrayMethods;
 use LastFm\Src\Track as Trck;
 use LastFm\Src\Geo as Geo;
 use LastFm\Src\Artist as Artst;
+use LastFm\Src\Tag as Tag;
 
 class Home extends Controller {
 
     public function index() {
         $view = $this->getActionView();
 
-        // Show top Artist by country
-        $topArtists = Geo::getTopArtists("India");
+        $session = Registry::get("session");
+        if (!$session->get("topArtists")) {
+            // Show top Artist by country
+            $topArtists = Geo::getTopArtists("India");
 
-        $artists = array();
-        $i = 1;
-        foreach ($topArtists as $art) {
-            $artists[] = array(
-                "mbid" => $art->getMbid(),
-                "name" => $art->getName(),
-                "image" => $art->getImage(4)
-            );
-            ++$i;
+            $artists = array();
+            $i = 1;
+            foreach ($topArtists as $art) {
+                $artists[] = array(
+                    "mbid" => $art->getMbid(),
+                    "name" => $art->getName(),
+                    "image" => $art->getImage(4)
+                );
+                ++$i;
 
-            if ($i > 30) break;
+                if ($i > 30) break;
+            }
+            $artists = ArrayMethods::toObject($artists);    
+            $session->set("topArtists", $artists);
         }
-        $artists = ArrayMethods::toObject($artists);
 
         if (RequestMethods::post("action") == "search") {
             $q = RequestMethods::post("q");
@@ -58,10 +63,54 @@ class Home extends Controller {
         }
 
         $view->set("count", array(1,2,3,4,5));
-        $view->set("artists", $artists);
+        $view->set("artists", $session->get("topArtists"));
     }
 
-    public function genres() {
+    public function genres($name = null) {
+        $view = $this->getActionView();
+        $session = Registry::get("session");
+
+        if (!$name) {
+            $name = "acoustic";
+        }
+
+        // Get top Tags for displaying - currently not working (Last Fm Fault)        
+        if (!$session->get("topTags")) {
+            $topTags = Genre::all(array(), array("title"));
+            // $topTags = Tag::getTopTags();
+            $tags = array();
+            foreach ($topTags as $t) {
+                $tags[] = array(
+                    // "name" => $t->getName()
+                    "name" => $t->title
+                );
+            }
+            $tags = ArrayMethods::toObject($tags);
+            $session->set("topTags", $tags);
+        }
+        
+        // Display songs for 'Genre' if given
+        $tracks = array();
+        if (!$session->get("tagGetTracks") || $session->get("tagGetTracks") != $name) {
+            $topTracks = Tag::getTopTracks($name);
+
+            foreach ($topTracks as $t) {
+                $tracks[] = array(
+                    "name" => $t->getName(),
+                    "mbid" => $t->getMbid(),
+                    "artist" => $t->getArtist()->getName(),
+                    "artistId" => $t->getArtist()->getMbid(),
+                    "image" => $t->getImage(2)
+                );
+            }
+            $tracks = ArrayMethods::toObject($tracks);
+            $session->set("tagGetTracks", $name);
+            $session->set("tagTopTracks", $tracks);
+        }
+
+        $view->set("genre", ucfirst($name));
+        $view->set("tags", $session->get("topTags"));
+        $view->set("tracks", $session->get("tagTopTracks"));
         
     }
 
@@ -73,7 +122,6 @@ class Home extends Controller {
         $view = $this->getActionView();
 
         if (isset($artistName)) {
-
             $artist = Artst::getInfo($artistName);
 
             $art = array();
@@ -89,7 +137,6 @@ class Home extends Controller {
         } else {
             $topTracks = Geo::getTopTracks("India");
         }
-
 
         $tracks = array();
         foreach ($topTracks as $track) {
@@ -177,6 +224,40 @@ class Home extends Controller {
 
 
         $view->set("title", $title);
+    }
+
+    public function playTrack() {
+        $view = $this->getActionView();
+
+        if (RequestMethods::post("action") == "findTrack") {
+            $q = RequestMethods::post("query");
+            try {
+               $searchResponse = $youtube->search->listSearch('id', array(
+                   'q' => $q,
+                   'maxResults' => "1",
+                   "type" => "video"
+               ));
+
+               $videoId = null; $error = null;
+               foreach ($searchResponse['items'] as $searchResult) {
+                   $videoId = $searchResult['id']['videoId'];
+               }
+               
+            } catch (Google_Service_Exception $e) {
+                $error = 'An error occured';                 
+            } catch (Google_Exception $e) {
+                $error = 'An error occured';
+            }
+
+            if ($videoId) {
+                $this->getLayoutView()->set("play", true);
+                $view->set("songId", $videoId);
+            } elseif ($error) {
+                $view->set("error", $error);
+            }
+        } else {
+            self::redirect("/404");
+        }
     }
 
 }

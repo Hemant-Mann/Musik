@@ -15,6 +15,11 @@ $routes = array(
         "action" => "index"
     ),
     array(
+        "pattern" => "genres/:name",
+        "controller" => "home",
+        "action" => "genres"
+    ),
+    array(
         "pattern" => "genres",
         "controller" => "home",
         "action" => "genres"
