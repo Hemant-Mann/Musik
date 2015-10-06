@@ -55,7 +55,7 @@
                                     <div class="media-body">
                                         <a href="#" data-mbid="{echo $s->mbid}" class="font-semibold">{echo $s->name}</a>
                                         <div class="text-xs block m-t-xs">
-                                            <a href="/artists/view/{echo urlencode($s->name)}">{echo $s->artist}</a>
+                                            <a href="/artists/view/{echo Framework\StringMethods::url($s->name)}">{echo $s->artist}</a>
                                             <a href="#" class="jp-play-me m-r-sm pull-left"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
                                         </div>
                                     </div>

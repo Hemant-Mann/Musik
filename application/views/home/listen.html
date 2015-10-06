@@ -24,7 +24,7 @@
                                             <a href="#" class="m-r-sm"><i class="icon-plus"></i></a>
                                             <a href="#"><i class="icon-close"></i></a>
                                         </div>
-                                        <a href="#" class="jp-play-me m-r-sm pull-left"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
+                                        <a href="#" class="jp-play-me m-r-sm pull-left playThisTrack" data-artist="{echo $track->artist}" data-track="{echo $track->name}"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
                                         <div class="clear text-ellipsis"> <span>{echo $track->name}</span> <span class="text-muted"></span> </div>
                                     </li>
                                     {/foreach}

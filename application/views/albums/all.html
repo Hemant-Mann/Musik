@@ -18,14 +18,14 @@
                         {foreach $album in $albums}
                         <tr>
                             <td>{echo $i}</td>
-                            <td><a href="/albums/view/{echo urlencode($album->title)}/{echo $album->id}" target="_blank" >{echo $album->title}</a></td>
+                            <td><a href="/albums/view/{echo Framework\StringMethods::url($album->title)}/{echo $album->id}" target="_blank" >{echo $album->title}</a></td>
                             <td>{echo $album->year}</td>
                             {script $genre = Genre::first(array("id = ?" => $album->genre_id))}
                             <td><a href="/albums/genres/{echo $genre->title}">{echo ucfirst($genre->title)}</a></td>
                             <td>
                                 <a href="/albums/tracks/{echo $album->id}" class="btn btn-xs btn-info"><i class="fa fa-music"></i> Tracks</a>&nbsp;
                                 <a href="/albums/artists/{echo $album->id}" class="btn btn-xs btn-info"><i class="fa fa-users"></i> Artists</a>&nbsp;
-                                <a href="/albums/edit/{echo urlencode($album->title)}/{$album->id}" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit </a>
+                                <a href="/albums/edit/{echo Framework\StringMethods::url($album->title)}/{$album->id}" class="btn btn-success btn-xs"><i class="fa fa-edit"></i> Edit </a>
                             </td>
                         </tr>
                         {script $i++}

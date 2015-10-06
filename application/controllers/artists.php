@@ -41,7 +41,7 @@ class Artists extends Admin {
         $similar = ArrayMethods::toObject($similar);
 
         // Tags of artist
-        $tags = Art::getTopTags(null, $art->getMbid());
+        $tags = Art::getTopTags($art->getName());
         foreach ($tags as $t) {
             $artist["tags"][] = array(
                 "name" => $t->getName()
@@ -50,7 +50,7 @@ class Artists extends Admin {
         $artist = ArrayMethods::toObject($artist);
         
         // Top tracks of an artist
-        $topTracks = Art::getTopTracks(null, $art->getMbid());
+        $topTracks = Art::getTopTracks($art->getName());
         $tracks = array();
         foreach ($topTracks as $t) {
             $tracks[] = array(
@@ -72,9 +72,15 @@ class Artists extends Admin {
 
         $title = "Top Artists";
         
+        if (!$session->get("country")) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $country = $this->getCountry($ip);
+            $session->set("country", $country);
+        }
+
         if (!$session->get("topArtistsCountry")) {
         	// Show top Artist by country
-        	$topArtists = Geo::getTopArtists("India");
+        	$topArtists = Geo::getTopArtists($session->get("country"));
 
         	$artists = array();
         	$i = 1;

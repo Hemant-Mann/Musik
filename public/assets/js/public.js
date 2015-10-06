@@ -40,6 +40,29 @@ $(document).ready(function() {
 			}
 		});
 	});
+
+	$("a.playThisTrack").on("click", function (e) {
+		e.preventDefault();
+
+		var action = "findTrack",
+			artist = $(this).attr("data-artist"),
+			track = $(this).attr("data-track");
+		
+		request.create({
+			action: '/home/playTrack',
+			data: {action: action, artist: artist, track: track},
+			callback: function (data) {
+				// if (data.videoId) {
+				// 	conosle.log(data.videoId);
+				// 	// code to play this video in YTPlayer and jPlayer
+				// } else {
+				// 	console.log(data.error);
+				// 	// do something with the error
+				// }
+				console.log(data);
+			}
+		});
+	});
 });
 
 function playTrack(selector) {

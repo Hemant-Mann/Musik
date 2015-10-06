@@ -18,12 +18,17 @@ class Home extends Controller {
 
     public function index() {
         $view = $this->getActionView();
-
         $session = Registry::get("session");
+
+        if (!$session->get("country")) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $country = $this->getCountry($ip);
+            $session->set("country", $country);
+        }
+
         if (!$session->get("topArtists")) {
             // Show top Artist by country
             $topArtists = Geo::getTopArtists("India");
-
             $artists = array();
             $i = 1;
             foreach ($topArtists as $art) {
@@ -134,7 +139,7 @@ class Home extends Controller {
             $similarArtists = $artist->getSimilarArtists();
             $artist = ArrayMethods::toObject($art);
 
-            $topTracks = Artst::getTopTracks(null, $artist->mbid);
+            $topTracks = Artst::getTopTracks($artistName);
 
             $view->set("artist", $artist);
         } else {
@@ -288,18 +293,22 @@ class Home extends Controller {
     }
     
     public function playTrack() {
-        $view = $this->getActionView();
+        $view = $this->noview();
 
         if (RequestMethods::post("action") == "findTrack") {
-            $q = RequestMethods::post("query");
+            $artist = RequestMethods::post("artist");
+            $track = RequestMethods::post("track");
+
+            $videoId = null; $error = null;
+            $q = $track. " ". $artist;
+            $youtube = Registry::get("youtube");
             try {
                $searchResponse = $youtube->search->listSearch('id', array(
                    'q' => $q,
                    'maxResults' => "1",
                    "type" => "video"
                ));
-
-               $videoId = null; $error = null;
+               // $view->set("response", $searchResponse);
                foreach ($searchResponse['items'] as $searchResult) {
                    $videoId = $searchResult['id']['videoId'];
                }
@@ -311,14 +320,35 @@ class Home extends Controller {
             }
 
             if ($videoId) {
-                $this->getLayoutView()->set("play", true);
-                $view->set("songId", $videoId);
+                echo "$videoId";
             } elseif ($error) {
-                $view->set("error", $error);
+                echo "Error: ".$error;
             }
         } else {
             self::redirect("/404");
         }
+    }
+
+    protected function getCountry($ip) {
+        $ip = ($ip == '127.0.0.1') ? '203.122.5.25' : $ip;
+
+        // $ip = '203.122.5.25';
+        $this->noview();
+
+        $url = 'http://www.geoplugin.net/json.gp?ip='.$ip;
+        $ch = curl_init(); 
+
+        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36');
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,15);
+        curl_setopt($ch,CURLOPT_FOLLOWLOCATION,1);                
+        curl_setopt($ch, CURLOPT_URL, $url); 
+        
+        $data = curl_exec($ch);
+        $data = json_decode($data);
+        curl_close($ch);
+
+        return $data->geoplugin_countryName;
     }
 
 }

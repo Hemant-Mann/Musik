@@ -223,8 +223,8 @@ namespace Framework {
         }
 
         public static function url($url) {
-            $pattern = array(' ', '?', '.', ':', '\'', '/', '(', ')', ',', '&');
-            $replace = array('-', '', '', '', '', '', '', '', '', '');
+            $pattern = array('?', '.', ':', '\'', '/', '(', ')', ',', '&');
+            $replace = array('', '', '', '', '', '', '', '', '');
             return urlencode(str_replace($pattern, $replace, $url));
         }
 

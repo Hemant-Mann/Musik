@@ -11,7 +11,7 @@
                                 <div class="list-group no-radius no-border no-bg m-t-n-xxs m-b-none auto">
                                     <a href="/genres/all" class="list-group-item"> All</a>
                                 {foreach $tag in $tags}
-                                    <a href="/genres/{echo urlencode($tag->name)}" class="list-group-item"> {echo ucfirst($tag->name)}</a>
+                                    <a href="/genres/{echo Framework\StringMethods::url($tag->name)}" class="list-group-item"> {echo ucfirst($tag->name)}</a>
                                 {/foreach}
                                 </div>
                             </section>
@@ -29,16 +29,16 @@
                                             <div class="pos-rlt">
                                                 <div class="item-overlay opacity r r-2x bg-black">
                                                     <div class="center text-center m-t-n">
-                                                        <a href="#" class="play-track" data-artist="{echo $track->artist}" data-track="{echo $track->name}"><i class="fa fa-play-circle i-2x"></i></a>
+                                                        <a href="#" class="play-track playThisTrack" data-artist="{echo $track->artist}" data-mbid="{echo $track->mbid}" data-track="{echo $track->name}"><i class="fa fa-play-circle i-2x"></i></a>
                                                     </div>
                                                 </div>
-                                                <a href="track-detail.html">
+                                                <a href="#" class="playThisTrack" data-artist="{echo $track->artist}" data-track="{echo $track->name}">
                                                     <img src="{echo $track->image}" alt="Track Image" class="r r-2x img-full">
                                                 </a>
                                             </div>
                                             <div class="padder-v">
-                                                <a href="#" class="play-track" data-artist="{echo $track->artist}" class="text-ellipsis">{echo $track->name}</a>
-                                                <a href="/listen/{echo urlencode($track->artist)}" class="text-ellipsis text-xs text-muted">{echo $track->artist}</a>
+                                                <a href="#" class="play-track viewTrackInfo" data-mbid="{echo $track->mbid}" data-artist="{echo $track->artist}" class="text-ellipsis">{echo $track->name}</a>
+                                                <a href="/listen/{echo Framework\StringMethods::url($track->artist)}" class="text-ellipsis text-xs text-muted">{echo $track->artist}</a>
                                             </div>
                                         </div>
                                     </div>

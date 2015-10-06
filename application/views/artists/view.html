@@ -111,7 +111,7 @@
                                     <a href="#" class="pull-left thumb-md m-t-xs">
                                         <img src="{echo $s->thumbnail}"> </a>
                                     <div class="media-body">
-                                        <a href="/artists/view/{echo urlencode($s->name)}" class="font-semibold">{echo $s->name}</a>
+                                        <a href="/artists/view/{echo Framework\StringMethods::url($s->name)}" class="font-semibold">{echo $s->name}</a>
                                     </div>
                                 </article>
                             {/foreach}
