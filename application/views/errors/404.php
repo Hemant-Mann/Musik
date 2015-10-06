@@ -25,7 +25,6 @@
                 <div class="list-group auto m-b-sm m-b-lg">
                     <a href="/index" class="list-group-item"> <i class="fa fa-chevron-right icon-muted"></i> <i class="fa fa-fw fa-home icon-muted"></i> Goto homepage </a>
                     <a href="#" class="list-group-item"> <i class="fa fa-chevron-right icon-muted"></i> <i class="fa fa-fw fa-question icon-muted"></i> Send us a tip </a>
-                    <a href="#" class="list-group-item"> <i class="fa fa-chevron-right icon-muted"></i> <span class="badge bg-info lt">Phone No.</span> <i class="fa fa-fw fa-phone icon-muted"></i> Call us </a>
                 </div>
             </div>
         </div>
