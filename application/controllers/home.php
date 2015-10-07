@@ -176,7 +176,7 @@ class Home extends Controller {
     	$view = $this->getActionView();
     	$results = null; $text = '';
 
-        $q = 'latest';
+        $q = 'latest songs';
         if (RequestMethods::post("action") == "search") {
          	$q = RequestMethods::post("q");
 

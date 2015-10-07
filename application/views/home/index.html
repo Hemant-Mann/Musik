@@ -35,19 +35,15 @@
                             </div>
                         {/foreach}
                         </div>
+                        {if !isset($user)}
                         <div class="row m-t-lg m-b-lg">
                             <div class="col-sm-12">
                                 <div class="bg-primary wrapper-md r">
                                     <a href="/login"> <span class="h4 m-b-xs block"><i class=" icon-user-follow i-lg"></i> Login or Create account</span> <span class="text-muted">Save and share your playlist with your friends when you log in or create an account.</span> </a>
                                 </div>
                             </div>
-                            <!--
-                            <div class="col-sm-6">
-                                <div class="bg-black wrapper-md r">
-                                    <a href="#"> <span class="h4 m-b-xs block"><i class="icon-cloud-download i-lg"></i> Download our app</span> <span class="text-muted">Get the apps for desktop and mobile to start listening music at anywhere and anytime.</span> </a>
-                                </div>
-                            </div>-->
                         </div>
+                        {/if}
                     </section>
                     <footer class="footer bg-dark">
                         {include layouts/navigation/footers.html}

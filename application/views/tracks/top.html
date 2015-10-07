@@ -1,0 +1,53 @@
+<section class="hbox stretch">
+    {include layouts/navigation/standard.html}
+    <section id="content">
+        <section class="hbox stretch">
+            <section>
+                <section class="vbox">
+                    <section class="scrollable padder-lg w-f-md" id="bjax-target">
+                        <a href="#" class="pull-right text-muted m-t-lg" data-toggle="class:fa-spin"><i class="icon-refresh i-lg inline" id="refresh"></i></a>
+                        <h2 class="font-thin m-b">Discover Tracks<span class="musicbar animate inline m-l-sm" style="width:20px;height:20px"> <span class="bar1 a1 bg-primary lter"></span> <span class="bar2 a2 bg-info lt"></span> <span class="bar3 a3 bg-success"></span> <span class="bar4 a4 bg-warning dk"></span> <span class="bar5 a5 bg-danger dker"></span> </span>
+                        </h2>
+                        <div class="row row-sm">
+                        {foreach $t in $tracks}
+                            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                                <div class="item">
+                                    <div class="pos-rlt">
+                                        <div class="item-overlay opacity r r-2x bg-black">
+                                            <div class="text-info padder m-t-sm text-sm">
+                                                {foreach $c in $count}
+                                                <i class="fa fa-star"></i>
+                                                {/foreach}
+                                            </div>
+                                            <div class="center text-center m-t-n">
+                                                <a href="/tracks/view/{echo Framework\StringMethods::url($t->name)}/{echo Framework\StringMethods::url($t->artist)}"><i class="icon-info i-2x"></i></a>
+                                            </div>
+                                        </div>
+                                        <a href="#" class="playThisTrack" data-artist="{echo $t->artist}" data-mbid="{echo $t->mbid}" data-track="{echo $t->name}">
+                                            <img src="{echo $t->image}" alt="" class="r r-2x img-full">
+                                        </a>
+                                    </div>
+                                    <div class="padder-v">
+                                        <a href="/tracks/view/{echo Framework\StringMethods::url($t->name)}/{echo Framework\StringMethods::url($t->artist)}" data-replace="true" class="text-ellipsis">{echo $t->name}</a>
+                                        <a href="/artists/view/{echo Framework\StringMethods::url($t->artist)}" data-mbid="{echo $t->mbid}" data-replace="true" class="text-ellipsis">{echo $t->artist}</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {/foreach}
+                        </div>
+                    </section>
+                    <footer class="footer bg-dark">
+                        {include layouts/navigation/footers.html}
+                    </footer>
+                </section>
+            </section>
+            <!-- side content -->
+            <aside class="aside-md bg-light dk" id="sidebar">
+                {include layouts/navigation/sidebar.html}
+            </aside>
+            <!-- / side content -->
+        </section>
+        <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+    </section>
+</section>

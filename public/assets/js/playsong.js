@@ -120,13 +120,16 @@ function playThis(track, id) {
 }
 
 function alreadyFound(track, artist) {
-    var found = false;
+    var found = false,
+        yid = false;
     playlist.forEach(function (current, index) {
         if (playlist[index].track == track && playlist[index].artist == artist) {
+            yid = playlist[index].yid;
             found = true;
+            return false;
         }
     });
-    return found;
+    return (found) ? yid : found;
 }
 
 /** Add Track to the playlist **/
@@ -322,8 +325,11 @@ function onPlayerStateChange(event) {
 }
 
 function findSong(track, artist, mbid) {
-    if (alreadyFound(track, artist)) {
-        return false;
+    yid = alreadyFound(track, artist);
+    if (yid) {
+        if (alsoPlay) {
+            playThis(track, yid);
+        }
     } else {
         request.create({
             action: '/home/findTrack',

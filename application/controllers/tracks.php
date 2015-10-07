@@ -14,8 +14,40 @@ use Framework\ArrayMethods as ArrayMethods;
 use LastFm\Src\Util as Util;
 
 class Tracks extends Admin {
+	
 	public function top() {
-		
+		$view = $this->getActionView();
+		$session = Registry::get("session");
+
+		// if (!$session->get("country")) {
+  //           $ip = $_SERVER['REMOTE_ADDR'];
+  //           $country = $this->getCountry($ip);
+  //           $session->set("country", $country);
+  //       }
+		if (!$session->get('Tracks\Top:$tracks')) {
+			try {
+				$topTracks = Geo::getTopTracks("india");
+
+				$tracks = array();
+				foreach ($topTracks as $track) {
+					$tracks[] = array(
+						"name" => $track->getName(),
+						"mbid" => $track->getMbid(),
+						"image" => $track->getImage(4),
+						"artist" => $track->getArtist()->getName()
+					);
+				}
+				$tracks = ArrayMethods::toObject($tracks);
+
+				$session->set('Tracks\Top:$tracks', $tracks);
+
+			} catch (\Exception $e) {
+				self::redirect("/404");
+			}	
+		}
+
+		$view->set("tracks", $session->get('Tracks\Top:$tracks'));
+		$view->set("count", array(1,2,3,4,5));
 	}
 
 	public function view($track, $artist) {

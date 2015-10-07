@@ -3,24 +3,21 @@
     <section class="w-f-md scrollable hover">
         <h4 class="font-thin m-l-md m-t">Connected</h4>
         <ul class="list-group no-bg no-borders auto m-t-n-xxs">
-            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="" alt="No Image" class="img-circle"> <i class="on b-light right sm"></i> </span>
+            <li class="list-group-item"> <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm"> <img src="" alt="Pic" class="img-circle"> <i class="on b-light right sm"></i> </span>
                 <div class="clear">
                     <div>
                         <a href="#">Test User</a>
-                    </div> <small class="text-muted">New York</small> </div>
+                    </div> <small class="text-muted">Your Place</small> </div>
             </li>
         </ul>
     </section>
-    <footer class="footer footer-md bg-black">
-        <form class="" role="search">
-            <div class="form-group clearfix m-b-none">
-                <div class="input-group m-t m-b"> <span class="input-group-btn"> <button type="submit" class="btn btn-sm bg-empty text-muted btn-icon"><i class="fa fa-search"></i></button> </span>
-                    <input type="text" class="form-control input-sm text-white bg-empty b-b b-dark no-border" placeholder="Search members"> </div>
-            </div>
-        </form>
-    </footer>
     {/if}
+    {if !isset($user)}
     <div class="bg-primary wrapper-md r">
         <a href="/login"> <span class="h4 m-b-xs block"><i class=" icon-user-follow i-lg"></i> Login or Create account</span> <span class="text-muted">Save and share your playlist with your friends when you log in or create an account.</span> </a>
     </div>
+    {/if}
+    {else}
+        <a href="#" class="btn btn-success"><i class="icon-info"></i> Save Playlist</a>
+    {/else}
 </section>
