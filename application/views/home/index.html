@@ -21,11 +21,7 @@
                                                 {/foreach}
                                             </div>
                                             <div class="center text-center m-t-n">
-                                                <a href="/listen/{echo Framework\StringMethods::url($art->name)}" data-mid="{echo $art->mbid}"><i class="icon-control-play i-2x"></i></a>
-                                            </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
-                                                <a href="#"> <i class="fa fa-plus-circle"></i> </a>
+                                                <a href="/artists/view/{echo Framework\StringMethods::url($art->name)}" data-mid="{echo $art->mbid}"><i class="icon-info i-2x"></i></a>
                                             </div>
                                         </div>
                                         <a href="#">
@@ -33,7 +29,7 @@
                                         </a>
                                     </div>
                                     <div class="padder-v">
-                                        <a href="/listen/{echo Framework\StringMethods::url($art->name)}" data-mbid="{echo $art->mbid}" class="text-ellipsis">{echo $art->name}</a>
+                                        <a href="/artists/view/{echo Framework\StringMethods::url($art->name)}" data-mbid="{echo $art->mbid}" class="text-ellipsis">{echo $art->name}</a>
                                     </div>
                                 </div>
                             </div>

@@ -9,62 +9,9 @@ $(document).ready(function() {
 	$("a.play.text-ellipsis").on("click", function (e) {
 		e.preventDefault();
 
-		var current = $(this);
-		console.log(current);
-		var id = current.attr("data-id");
-		var src = "https://www.youtube.com/embed/" + id;
+		var src = "https://www.youtube.com/embed/" + $(this).attr("data-id");
 		
 		var iframe = $("#embedIt").attr("src", src);
 	});
 	
-	$("a.play-track").on("click", function (e) {
-		e.preventDefault();
-
-		playTrack($(this));
-	});
-
-	$("a.viewTrackInfo").on("click", function (e) {
-		e.preventDefault();
-
-		var action = "findTrackInfo",
-			mbid = $(this).attr("data-mbid");
-		console.log(mbid);
-		
-		request.create({
-			action: '/home/track',
-			data: {action: action, mbid: mbid},
-			callback: function (data) {
-				if (data.success) {
-					window.location.href = "/home/track";
-				}
-			}
-		});
-	});
-
-	$("a.playThisTrack").on("click", function (e) {
-		e.preventDefault();
-
-		var action = "findTrack",
-			artist = $(this).attr("data-artist"),
-			track = $(this).attr("data-track");
-		
-		request.create({
-			action: '/home/playTrack',
-			data: {action: action, artist: artist, track: track},
-			callback: function (data) {
-				// if (data.videoId) {
-				// 	conosle.log(data.videoId);
-				// 	// code to play this video in YTPlayer and jPlayer
-				// } else {
-				// 	console.log(data.error);
-				// 	// do something with the error
-				// }
-				console.log(data);
-			}
-		});
-	});
 });
-
-function playTrack(selector) {
-	console.log(selector);
-}

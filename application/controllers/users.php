@@ -18,6 +18,7 @@ class Users extends Controller {
         if ($this->user){
             self::redirect("/profile");
         }
+        $this->getLayoutView()->set("change", true);
         $view = $this->getActionView();
 
         if (RequestMethods::post("action") == "login") {
@@ -44,6 +45,7 @@ class Users extends Controller {
         if ($this->user) {
             self::redirect("/profile");
         }
+        $this->getLayoutView()->set("change", true);
         $view = $this->getActionView();
 
         if (RequestMethods::post("action") == "signup") {

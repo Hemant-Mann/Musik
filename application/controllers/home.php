@@ -28,7 +28,7 @@ class Home extends Controller {
 
         if (!$session->get("topArtists")) {
             // Show top Artist by country
-            $topArtists = Geo::getTopArtists("India");
+            $topArtists = Geo::getTopArtists($session->get("country"));
             $artists = array();
             $i = 1;
             foreach ($topArtists as $art) {
@@ -217,82 +217,7 @@ class Home extends Controller {
         $view->set("results", $results);
     }
 
-    public function track($mbid = null) {
-        $view = $this->getActionView();
-        $session = Registry::get("session");
-        
-        // Save the mbid got through post request
-        if (RequestMethods::post("action") == "findTrackInfo") {
-            $mbid = RequestMethods::post("mbid");
-            $session->set("trackMbid", $mbid);
-
-        }
-
-        $mbid = (empty($mbid)) ? $session->get("trackMbid") : $mbid;
-        if (!$mbid) {
-            self::redirect("/404");
-        }
-        $track = Trck::getInfo(null, null, $mbid);
-
-        // Store track info
-        $t = array();
-        $t["name"] = $track->getName();
-        $t["duration"] = $track->getDuration();
-        $t["mbid"] = $track->getMbid();
-        $t["artist"] = $track->getArtist()->getName();
-        $t["artistMbid"] = $track->getArtist()->getMbid();
-        $t["playCount"] = $track->getPlayCount();
-        $t["wiki"] = $track->getWiki();
-
-        // Album of the track
-        $album = $track->getAlbum();
-        $t["album"] = $album["title"];
-        $t["image"] = $album["image"][0];
-
-        // Find the tags of the song
-        $tags = $track->getTrackTopTags();
-        foreach ($tags as $tag) {
-            $t["tags"][] = array(
-                "name" => $tag->getName()
-            );
-        }
-
-        // Also find Top Tracks of the Artist
-        $topTracks = Artst::getTopTracks(null, $t["artistMbid"]);
-        $tracks = array();
-        foreach ($topTracks as $track) {
-            $tracks[] = array(
-                "name" => $track->getName(),
-                "playCount" => $track->getPlayCount(),
-                "mbid" => $track->getMbid()
-            );
-        }
-        $tracks = ArrayMethods::toObject($tracks);
-        $t = ArrayMethods::toObject($t);
-
-        // Also find similar tracks
-        $similarTracks = Trck::getSimilar(null, null, $t->mbid);
-        $similar = array();
-        foreach ($similarTracks as $track) {
-            $similar[] = array(
-                "name" => $track->getName(),
-                "mbid" => $track->getMbid(),
-                "playCount" => $track->getPlayCount(),
-                "artist" => $track->getArtist()->getName(),
-                "thumbnail" => $track->getImage(2)
-            );
-        }
-        $similar = ArrayMethods::toObject($similar);
-
-        $track = ArrayMethods::toObject($t);
-        $view->set("success", "Found the track");
-        $view->set("track", $t);
-        $view->set("tracks", $tracks);
-        $view->set("similar", $similar);
-
-    }
-    
-    public function playTrack() {
+    public function findTrack() {
         $view = $this->noview();
 
         if (RequestMethods::post("action") == "findTrack") {
@@ -322,7 +247,7 @@ class Home extends Controller {
             if ($videoId) {
                 echo "$videoId";
             } elseif ($error) {
-                echo "Error: ".$error;
+                echo "Error";
             }
         } else {
             self::redirect("/404");
