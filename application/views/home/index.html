@@ -3,7 +3,6 @@
     <section id="content">
         <section class="hbox stretch">
             <section>
-                {if !isset($results)}
                 <section class="vbox">
                     <section class="scrollable padder-lg w-f-md" id="bjax-target">
                         <a href="#" class="pull-right text-muted m-t-lg" data-toggle="class:fa-spin"><i class="icon-refresh i-lg inline" id="refresh"></i></a>
@@ -49,32 +48,6 @@
                         {include layouts/navigation/footers.html}
                     </footer>
                 </section>
-                {/if} {else}
-                <section class="vbox" id="bjax-el">
-                    <section class="scrollable padder-lg">
-                        <h1 class="font-thin m-b">Your Results</h1>
-                        <div class="row row-sm">
-                            {foreach $result in $results}
-                            <div class="col-xs-6 col-sm-4 col-md-3">
-                                <div class="item">
-                                    <div class="pos-rlt">
-                                        <div class="item-overlay opacity r r-2x bg-black">
-                                            <div class="center text-center m-t-n">
-                                                <a data-toggle="modal" target="_blank" data-id="{echo $result->mbid}" href="{echo $result->url}" class="play text-ellipsis"><i class="fa fa-play-circle i-2x"></i></a>
-                                            </div>
-                                        </div>
-                                        <img src="{echo $result->image}" alt="" class="r r-2x img-full">
-                                    </div>
-                                    <div class="padder-v">
-                                        <h5 class="page-heading">Artist: <strong><a href="{echo $result->url}" class="play text-ellipsis">{echo $result->artist}</a></strong></h5>
-                                    </div>
-                                </div>
-                            </div>
-                            {/foreach}
-                        </div>
-                    </section>
-                </section>
-                {/else}
             </section>
             <!-- side content -->
             <aside class="aside-md bg-light dk" id="sidebar">

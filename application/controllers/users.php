@@ -75,6 +75,43 @@ class Users extends Controller {
     }
 
     /**
+     * @before _secure
+     */
+    public function savePlaylist() {
+        $view = $this->getActionView();
+
+        if (RequestMethods::post("action") == "savePlaylist") {
+            // @todo - check code and make a new model of playlist
+            
+            // code to process sent playlist
+            $playlist = RequestMethods::post("playlist");
+
+            /*
+            foreach ($playlist as $p) {
+                $track = Strack::first(array("yid = ?" => $p["yid"]), array("id"));
+
+                if (!$track) {
+                    $track = new Strack(array(
+                        "track" => $p["track"],
+                        "mbid" => $p["mbid"],
+                        "artist" => $p["artist"],
+                        "yid" => $p["yid"],
+                    ));
+                    $track->save();
+                }
+                $plist = new Playlist(array(
+                    "user_id" => $this->user->id,
+                    "strack_id" => $track->id
+                ));
+                $plist->save();
+            }*/
+            $view->set("success", true);
+        } else {
+            self::redirect("/404"); // prevent direct access
+        }
+    }
+
+    /**
      * Generates a salt for hashing the password
      */
     private function generateSalt($length) {

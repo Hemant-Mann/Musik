@@ -26,7 +26,7 @@ class Home extends Controller {
             $session->set("country", $country);
         }
 
-        if (!$session->get("topArtists")) {
+        if (!$session->get('Home\Index:$topArtists')) {
             // Show top Artist by country
             $topArtists = Geo::getTopArtists($session->get("country"));
             $artists = array();
@@ -42,33 +42,11 @@ class Home extends Controller {
                 if ($i > 30) break;
             }
             $artists = ArrayMethods::toObject($artists);    
-            $session->set("topArtists", $artists);
-        }
-
-        if (RequestMethods::post("action") == "search") {
-            $q = RequestMethods::post("q");
-
-            $tracks = @Trck::search($q, null, 30)->getResults();    // Will return an array of objects
-            // echo "<pre>". print_r($tracks, true). "</pre>";
-            
-            $results = array();
-            foreach ($tracks as $t) {
-                $results[] = array(
-                    "artist" => $t->getArtist(),
-                    "album" => $t->getAlbum(),
-                    "duration" => $t->getDuration(),
-                    "wiki" => $t->getWiki(),
-                    "mbid" => $t->getMbid(),
-                    "url" => $t->getUrl(),
-                    "image" => $t->getImage(4)
-                );
-            }
-            $results = ArrayMethods::toObject($results);
-            $view->set("results", $results);
+            $session->set('Home\Index:$topArtists', $artists);
         }
 
         $view->set("count", array(1,2,3,4,5));
-        $view->set("artists", $session->get("topArtists"));
+        $view->set("artists", $session->get('Home\Index:$topArtists'));
     }
 
     public function genres($name = null) {
@@ -177,46 +155,19 @@ class Home extends Controller {
     	$results = null; $text = '';
 
         $q = 'latest songs';
-        if (RequestMethods::post("action") == "search") {
-         	$q = RequestMethods::post("q");
+        $results = $this->searchYoutube($q);
 
+        // @todo add error checking in videos page
+        if (!is_object($results) && $results == "Error") {
+            $view->set("error", $results);
+        } else {
+            $view->set("results", $results);    
         }
-        $youtube = Registry::get("youtube");
-     	
-     	try {
-            $searchResponse = $youtube->search->listSearch('id,snippet', array(
-                'q' => $q,
-                'maxResults' => "15",
-                "type" => "video"
-            ));
-
-            // Add each result to the appropriate list, and then display the lists of
-            // matching videos, channels, and playlists.
-            $results = array();
-            foreach ($searchResponse['items'] as $searchResult) {
-                $thumbnail = $searchResult['snippet']['thumbnails']['medium']['url'];
-                $title = $searchResult['snippet']['title'];
-                $href = $searchResult['id']['videoId'];
-
-                $results[] = array(
-                    "img" => $thumbnail,
-                    "title" => $title,
-                    "videoId" => $href
-                );
-            }
-            $results = ArrayMethods::toObject($results);
-
-        } catch (Google_Service_Exception $e) {
-            $error = 'A Service error occured';
-            $results = null;
-        } catch (Google_Exception $e) {
-            $error = 'A Client error occured';
-            $results = null;
-        }
-        
-        $view->set("results", $results);
     }
 
+    /**
+     * Finds the youtube video id of a given song
+     */
     public function findTrack() {
         $view = $this->noview();
 
@@ -226,34 +177,45 @@ class Home extends Controller {
 
             $videoId = null; $error = null;
             $q = $track. " ". $artist;
-            $youtube = Registry::get("youtube");
-            try {
-               $searchResponse = $youtube->search->listSearch('id', array(
-                   'q' => $q,
-                   'maxResults' => "1",
-                   "type" => "video"
-               ));
-               // $view->set("response", $searchResponse);
-               foreach ($searchResponse['items'] as $searchResult) {
-                   $videoId = $searchResult['id']['videoId'];
-               }
-               
-            } catch (Google_Service_Exception $e) {
-                $error = 'An error occured';                 
-            } catch (Google_Exception $e) {
-                $error = 'An error occured';
+
+            $videoId = $this->searchYoutube($q, 1, true);
+            echo $videoId;
+
+        } else {
+            self::redirect("/404");
+        }
+    }
+
+    /**
+     * Searches for music from the supplied query on last.fm | Youtube
+     */
+    public function searchMusic() {
+        $view = $this->getActionView();
+
+        if (RequestMethods::post("action") == "searchMusic") {
+            $type = RequestMethods::post("type");
+            $q = RequestMethods::post("q");
+
+            if ($type == 'song') {
+                $results = $this->searchLastFm($q);
+            } elseif ($type == 'video') {
+                $results = $this->searchYoutube($q);
             }
 
-            if ($videoId) {
-                echo "$videoId";
-            } elseif ($error) {
-                echo "Error";
+            if (!is_object($results) && $results == "Error") {
+            	$view->set("error", "Error");
+            } else {
+            	$view->set("type", $type);
+            	$view->set("results", $results);
             }
         } else {
             self::redirect("/404");
         }
     }
 
+    /**
+     * Searches for country name based on client's IP Address
+     */
     protected function getCountry($ip) {
         $ip = ($ip == '127.0.0.1') ? '203.122.5.25' : $ip;
 
@@ -276,4 +238,69 @@ class Home extends Controller {
         return $data->geoplugin_countryName;
     }
 
+    /**
+     * Searches last.fm for the given song
+     */
+    protected function searchLastFm($q) {
+    	try {
+    		$tracks = @Trck::search($q, null, 30)->getResults();    // Will return an array of objects
+    		// echo "<pre>". print_r($tracks, true). "</pre>";
+    		
+    		$results = array();
+    		foreach ($tracks as $t) {
+    		    $results[] = array(
+    		    	"name" => $t->getName(),
+    		        "artist" => $t->getArtist(),
+    		        "album" => $t->getAlbum(),
+    		        "wiki" => $t->getWiki(),
+    		        "mbid" => $t->getMbid(),
+    		        "image" => $t->getImage(4)
+    		    );
+    		}
+    		$results = ArrayMethods::toObject($results);
+    		
+    		return $results;	
+    	} catch (\Exception $e) {
+    		return "Error";
+    	}
+        
+    }
+
+    /**
+     * Searches youtube for a given query
+     * @return object|string
+     */
+    protected function searchYoutube($q, $max = 15, $returnId = false) {
+        $youtube = Registry::get("youtube");
+        
+        try {
+            $searchResponse = $youtube->search->listSearch('id,snippet', array(
+                'q' => $q,
+                'maxResults' => $max,
+                "type" => "video"
+            ));
+
+            // Add each result to the appropriate list, and then display the lists of
+            // matching videos, channels, and playlists.
+            $results = array();
+            foreach ($searchResponse['items'] as $searchResult) {
+                $thumbnail = $searchResult['snippet']['thumbnails']['medium']['url'];
+                $title = $searchResult['snippet']['title'];
+                $href = $searchResult['id']['videoId'];
+
+                $results[] = array(
+                    "img" => $thumbnail,
+                    "title" => $title,
+                    "videoId" => $href
+                );
+            }
+            $results = ArrayMethods::toObject($results);
+            return ($returnId) ? $href : $results;
+
+        } catch (Google_Service_Exception $e) {
+            return "Error";
+        } catch (Google_Exception $e) {
+            return "Error";
+        }
+    }
 }

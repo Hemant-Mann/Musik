@@ -15,7 +15,8 @@ $(document).ready(function() {
 	$("a.playThisVideo").on("click", function (e) {
 		e.preventDefault();
 
-		var id = $(this).attr("data-id"),
+		var this = $(this),
+			id = $(this).attr("data-id"),
 			track = $(this).attr("data-track"),
 			artist = $(this).attr("data-artist"),
 			model = $("#play_video");
@@ -27,6 +28,7 @@ $(document).ready(function() {
 				callback: function (data) {
 				    if (data != "Error") {
 				        thisVideoId = data;
+				        this.attr("data-id", thisVideoId);
 				        embedId(data);
 				       	model.modal('show');
 				    }
@@ -38,6 +40,19 @@ $(document).ready(function() {
 		}
 		
 	});
+
+	// $("#searchMusic").on("submit", function (e) {
+	// 	e.preventDefault();
+	// 	data = $(this).serialize();
+
+	// 	request.create({
+	// 		action: '/home/searchMusic',
+	// 		data: data,
+	// 		callback: function (data) {
+	// 			console.log(data);
+	// 		}
+	// 	});
+	// })
 });
 
 function embedId(id) {

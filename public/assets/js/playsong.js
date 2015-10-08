@@ -7,6 +7,13 @@ var ytplayer = "",
     tVar,
     alsoPlay = false;
 
+function emptyPlaylist() {
+    if (playlist.length === 0) {
+        return true;
+    }
+    return false;
+}
+
 // initialize YTPlayer
 function onYouTubeIframeAPIReady() {
     ytplayer = new YT.Player('ytplayer', {
@@ -106,8 +113,12 @@ function playThis(track, id) {
         return false;
     }
 
+    if (emptyPlaylist()) {
+        return false;
+    }
+
     // check if current track is the playing track
-    while (playlist.length !== 0 && playlist[index].yid != id) {
+    while (playlist[index].yid != id) {
         ++index;    // find the index of current playing track
         if (playlist.length == index) {
             index = 0;
@@ -134,7 +145,10 @@ function alreadyFound(track, artist) {
 
 /** Add Track to the playlist **/
 function addToPlaylist(track, artist, mbid, yid) {
-    var inPlaylist = false;
+    var inPlaylist = false,
+        utracks = $("#userTracks"),
+        i;
+
     if (playlist.length == 0) {
         index = 0;
         playThis(track, yid);
@@ -147,6 +161,7 @@ function addToPlaylist(track, artist, mbid, yid) {
         });
     }
 
+    i = playlist.length;
     if (!inPlaylist) {
         playlist.push({
             mbid: mbid,
@@ -154,12 +169,14 @@ function addToPlaylist(track, artist, mbid, yid) {
             track: track,
             artist: artist
         });
+
+        utracks.append('<div><a href="#" data-index="'+i+'" class="playThisTrack" data-yid="'+yid+'" data-mbid="'+mbid+'" data-track="'+track+'" data-artist="'+artist+'"><p><strong>'+track+'</strong></p><p>'+artist+'</p></a><div>');
     }
 }
 
 /** Play next song **/
 function playNextSong() {
-    if (playlist.length == 0) {
+    if (emptyPlaylist()) {
         return false;
     }
 
@@ -174,7 +191,7 @@ function playNextSong() {
 
 /** Play previous song **/
 function playPrevSong() {
-    if (playlist.length == 0) {
+    if (emptyPlaylist()) {
         return false;
     }
 
@@ -203,39 +220,62 @@ $(document).ready(function () {
     // Adding a song to playlist
     $(".addToPlaylist").on("click", function () {
         var track = $(this).attr("data-track"),
+            this = $(this),
+            yid = $(this).attr("data-yid"),
             artist = $(this).attr("data-artist"),
             mbid = $(this).attr("data-mbid");
 
         alsoPlay = false;
-        findSong(track, artist, mbid);
+        if (typeof yid === undefined) {
+            findSong(track, artist, mbid, this);    
+        } else {
+            addToPlaylist(track, artist, mbid, yid);
+        }
+        
     });
 
     // playing a song
     $(".playThisTrack").on("click", function () {
         var track = $(this).attr("data-track"),
+            this = $(this),
+            yid = $(this).attr("data-yid"),
             artist = $(this).attr("data-artist"),
             mbid = $(this).attr("data-mbid");
 
         alsoPlay = true;
-        findSong(track, artist, mbid);
+        if (typeof yid === undefined) {
+            findSong(track, artist, mbid, this);    
+        } else {
+            playThis(track, yid);
+        }
+        
     });
 
     // clearing the playlist
-    $(".clearPlaylist").on("click", function () {
-        ytplayer.stopVideo();
+    $("#clearPlaylist").on("click", function () {
+        if (emptyPlaylist()) {
+            return false;
+        }
         stopTimer();
-        stopjPlayer();
+        clearPlaylist();
+    });
+
+    $("#savePlaylist").on("click", function () {
+        if (emptyPlaylist()) {
+            return false;
+        }
+        savePlaylist();
     });
 
     /****** Player controls *********/
     // Play/pause
     $(".jp-play").on("click", function () {
-        if (playlist.length !== 0) {
-            ytplayer.playVideo();
-            startTimer();    
-        } else {
+        if (emptyPlaylist()) {
             return false;
         }
+
+        ytplayer.playVideo();
+        startTimer();
 
         $(this).css({
             display: 'none'
@@ -257,6 +297,10 @@ $(document).ready(function () {
 
     // Volume Controls = Mute/Unmute
     $(".jp-mute").on("click", function () {
+        if (emptyPlaylist()) {
+            return false;
+        }
+
         $(this).css({
             display: 'none'
         });
@@ -266,6 +310,10 @@ $(document).ready(function () {
         ytplayer.setVolume(0);
     });
     $(".jp-unmute").on("click", function () {
+        if (emptyPlaylist()) {
+            return false;
+        }
+
         $(this).css({
             display: 'none'
         });
@@ -324,7 +372,7 @@ function onPlayerStateChange(event) {
     if (state == YT.PlayerState.CUED) {}
 }
 
-function findSong(track, artist, mbid) {
+function findSong(track, artist, mbid, selector) {
     yid = alreadyFound(track, artist);
     if (yid) {
         if (alsoPlay) {
@@ -337,7 +385,7 @@ function findSong(track, artist, mbid) {
             callback: function (data) {
                 if (data != "Error") {
                     addToPlaylist(track, artist, mbid, data);
-
+                    selector.attr("data-yid", data);
                     if (alsoPlay) {
                         playThis(track, data);
                     }
@@ -345,6 +393,33 @@ function findSong(track, artist, mbid) {
             }
         });    
     }
+}
 
+function savePlaylist() {
+    request.create({
+        action: '/users/savePlaylist',
+        data: {action: 'savePlaylist', playlist: playlist},
+        callback: function (data) {
+            if (data.success) {
+                // alert the user
+                alert('Your playlist has been saved');
+            }
+        }
+    });
+}
+
+function clearPlaylist() {
+    $('#userTracks').html("");
+    ytplayer.stopVideo();
     
+    var width = $(".jp-play-bar").width();
+    while (width != '0%') {
+        stopjPlayer();
+        width = $(".jp-play-bar").width();
+    }
+}
+
+function removeTrack(index) {
+    // @todo remove given track from playlist
+    // unset playlist[index];
 }

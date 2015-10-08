@@ -9,14 +9,18 @@
             <a href="#nav,.navbar-header" data-toggle="class:nav-xs,nav-xs" class="text-muted"> <i class="fa fa-indent text"></i> <i class="fa fa-dedent text-active"></i> </a>
         </li>
     </ul>
-    <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" action="" method="post" role="search">
+    <form class="navbar-form navbar-left input-s-lg m-t m-l-n-xs hidden-xs" action="" method="post" role="search" id="searchMusic">
         <div class="form-group">
             <div class="input-group">
-                <input type="text" class="form-control input-sm no-border rounded" name="q" placeholder="Search songs, albums...">
-            <input type="hidden" name="action" value="search">
+                <input type="text" class="form-control input-sm no-border rounded" name="q" placeholder="I want to listen.......">
+            <input type="hidden" name="action" value="searchMusic">
             <span class="input-group-btn">
                 <button type="submit" class="btn btn-sm bg-white btn-icon rounded"><i class="fa fa-search"></i></button> 
             </span>    
+            </div>
+            <div class="input-group">
+                <input type="checkbox" name="type" required="" value="song" checked> Song
+                <input type="checkbox" name="type" required="" value="video"> Video
             </div>
         </div>
     </form>
