@@ -220,14 +220,14 @@ $(document).ready(function () {
     // Adding a song to playlist
     $(".addToPlaylist").on("click", function () {
         var track = $(this).attr("data-track"),
-            this = $(this),
+            self = $(this),
             yid = $(this).attr("data-yid"),
             artist = $(this).attr("data-artist"),
             mbid = $(this).attr("data-mbid");
 
         alsoPlay = false;
         if (typeof yid === undefined) {
-            findSong(track, artist, mbid, this);    
+            findSong(track, artist, mbid, self);    
         } else {
             addToPlaylist(track, artist, mbid, yid);
         }
@@ -237,14 +237,14 @@ $(document).ready(function () {
     // playing a song
     $(".playThisTrack").on("click", function () {
         var track = $(this).attr("data-track"),
-            this = $(this),
+            self = $(this),
             yid = $(this).attr("data-yid"),
             artist = $(this).attr("data-artist"),
             mbid = $(this).attr("data-mbid");
 
         alsoPlay = true;
         if (typeof yid === undefined) {
-            findSong(track, artist, mbid, this);    
+            findSong(track, artist, mbid, self);    
         } else {
             playThis(track, yid);
         }

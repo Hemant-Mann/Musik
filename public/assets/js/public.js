@@ -15,7 +15,7 @@ $(document).ready(function() {
 	$("a.playThisVideo").on("click", function (e) {
 		e.preventDefault();
 
-		var this = $(this),
+		var self = $(this),
 			id = $(this).attr("data-id"),
 			track = $(this).attr("data-track"),
 			artist = $(this).attr("data-artist"),
@@ -28,7 +28,7 @@ $(document).ready(function() {
 				callback: function (data) {
 				    if (data != "Error") {
 				        thisVideoId = data;
-				        this.attr("data-id", thisVideoId);
+				        self.attr("data-id", thisVideoId);
 				        embedId(data);
 				       	model.modal('show');
 				    }
