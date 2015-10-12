@@ -38,7 +38,6 @@ class Tracks extends Admin {
 					);
 				}
 				$tracks = ArrayMethods::toObject($tracks);
-
 				$session->set('Tracks\Top:$tracks', $tracks);
 
 			} catch (\Exception $e) {
@@ -60,11 +59,10 @@ class Tracks extends Admin {
 
 		if ($session->get('Tracks\View:track') != $track || $session->get('Tracks\View:artist') != $artist) {
 			try {
-				$track = Trck::getInfo($artist, $track, $mbid);
+				$session->set('Tracks\View:track', $track);
+				$session->set('Tracks\View:artist', $artist);
 
-				// $session->set('Tracks\View:track', $track);
-				// $session->set('Tracks\View:artist', $artist);
-
+				$track = Trck::getInfo($artist, $track);
 				/*** Track Info ***/
 				$t = array();
 				$t["name"] = $track->getName();
@@ -73,7 +71,8 @@ class Tracks extends Admin {
 				$t["artist"] = $track->getArtist()->getName();
 				$t["artistMbid"] = $track->getArtist()->getMbid();
 				$t["playCount"] = $track->getPlayCount();
-				$t["wiki"] = $track->getWiki();
+				$wiki = $track->getWiki();
+				$t["wiki"] = $wiki["summary"];
 
 				/*** Track - Album ***/
 				$album = $track->getAlbum();
@@ -87,9 +86,10 @@ class Tracks extends Admin {
 				        "name" => $tag->getName()
 				    );
 				}
+				$t = ArrayMethods::toObject($t);
 
 				/*** Track - Artist => TopTracks ***/
-				$topTracks = Artst::getTopTracks($t["artist"]);
+				$topTracks = Artst::getTopTracks($t->artist);
 				$tracks = array();
 				foreach ($topTracks as $track) {
 				    $tracks[] = array(
@@ -99,10 +99,9 @@ class Tracks extends Admin {
 				    );
 				}
 				$tracks = ArrayMethods::toObject($tracks);
-				$t = ArrayMethods::toObject($t);
 
 				// Also find similar tracks
-				$similarTracks = Trck::getSimilar(null, null, $t->mbid);
+				$similarTracks = Trck::getSimilar($t->artist, $t->name);
 				$similar = array();
 				foreach ($similarTracks as $track) {
 				    $similar[] = array(
@@ -114,29 +113,22 @@ class Tracks extends Admin {
 				    );
 				}
 				$similar = ArrayMethods::toObject($similar);
-				// echo "<pre>". print_r($t, true). "</pre>";
-				// var_dump($tracks);
-				// var_dump($similar);
-				// $session->set('Tracks\View:$trackInfo', $t);
-				// $session->set('Tracks\View:$topTracks', $tracks);
-				// $session->set('Tracks\View:$similarTracks', $similar);
+
+				$session->set('Tracks\View:$trackInfo', $t);
+				$session->set('Tracks\View:$topTracks', $tracks);
+				$session->set('Tracks\View:$similarTracks', $similar);
 			} catch (\Exception $e) {
-				// $session->erase('Tracks\View:track');
-				// $session->erase('Tracks\View:artist');
-				// $session->erase('Tracks\View:$trackInfo');
-				// $session->erase('Tracks\View:$topTracks');
-				// $session->erase('Tracks\View:$similarTracks');
-				// self::redirect("/404");
-				var_dump($e);
+				$session->erase('Tracks\View:track');
+				$session->erase('Tracks\View:artist');
+				$session->erase('Tracks\View:$trackInfo');
+				$session->erase('Tracks\View:$topTracks');
+				$session->erase('Tracks\View:$similarTracks');
+				self::redirect("/404");
 			}
 		}
 		
-		// $view->set('Track', $session->get('Tracks\View:$trackInfo'));
-		// $view->set('Tracks', $session->get('Tracks\View:$topTracks'));
-		// $view->set('similar', $session->get('Tracks\View:$similarTracks'));
-
-		$view->set('track', $t);
-		$view->set('tracks', $tracks);
-		$view->set('similar', $similar);
+		$view->set('track', $session->get('Tracks\View:$trackInfo'));
+		$view->set('tracks', $session->get('Tracks\View:$topTracks'));
+		$view->set('similar', $session->get('Tracks\View:$similarTracks'));
 	}
 }

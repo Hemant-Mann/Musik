@@ -88,10 +88,10 @@ class Users extends Controller {
 
             /*
             foreach ($playlist as $p) {
-                $track = Strack::first(array("yid = ?" => $p["yid"]), array("id"));
+                $track = SavedTrack::first(array("yid = ?" => $p["yid"]), array("id"));
 
                 if (!$track) {
-                    $track = new Strack(array(
+                    $track = new SavedTrack(array(
                         "track" => $p["track"],
                         "mbid" => $p["mbid"],
                         "artist" => $p["artist"],

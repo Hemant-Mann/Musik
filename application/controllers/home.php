@@ -1,9 +1,9 @@
 <?php
 
 /**
- * The Default Example Controller Class
+ * The Home Controller
  *
- * @author Faizan Ayubi
+ * @author Hemant Mann
  */
 use Shared\Controller as Controller;
 use Framework\Registry as Registry;
@@ -20,6 +20,8 @@ class Home extends Controller {
         $view = $this->getActionView();
         $session = Registry::get("session");
 
+        // @TODO find a better way to do this because this is preventing site
+        // from loading on first time
         if (!$session->get("country")) {
             $ip = $_SERVER['REMOTE_ADDR'];
             $country = $this->getCountry($ip);
@@ -58,7 +60,7 @@ class Home extends Controller {
         }
 
         // Get top Tags for displaying - currently not working (Last Fm Fault)        
-        if (!$session->get("topTags")) {
+        if (!$session->get('Home\Genres:$topTags')) {
             $topTags = Genre::all(array(), array("title"));
             // $topTags = Tag::getTopTags();
             $tags = array();
@@ -69,12 +71,12 @@ class Home extends Controller {
                 );
             }
             $tags = ArrayMethods::toObject($tags);
-            $session->set("topTags", $tags);
+            $session->set('Home\Genres:$topTags', $tags);
         }
         
         // Display songs for 'Genre' if given
         $tracks = array();
-        if (!$session->get("tagGetTracks") || $session->get("tagGetTracks") != $name) {
+        if (!$session->get('Home\Genre:$set') || $session->get('Home\Genre:$set') != $name) {
             $topTracks = Tag::getTopTracks($name);
 
             foreach ($topTracks as $t) {
@@ -87,13 +89,13 @@ class Home extends Controller {
                 );
             }
             $tracks = ArrayMethods::toObject($tracks);
-            $session->set("tagGetTracks", $name);
-            $session->set("tagTopTracks", $tracks);
+            $session->set('Home\Genre:$set', $name);
+            $session->set('Home\Genre:$topTracks', $tracks);
         }
 
-        $view->set("genre", ucfirst($name));
-        $view->set("tags", $session->get("topTags"));
-        $view->set("tracks", $session->get("tagTopTracks"));
+        $view->set("genre",  $session->get('Home\Genre:$set'));
+        $view->set("tags", $session->get('Home\Genres:$topTags'));
+        $view->set("tracks", $session->get('Home\Genre:$topTracks'));
         
     }
 
@@ -102,52 +104,7 @@ class Home extends Controller {
     }
 
     public function listen($artistName) {
-        $view = $this->getActionView();
-
-        // find artist by name
-        if (isset($artistName)) {
-            $artist = Artst::getInfo($artistName);
-
-            $art = array();
-            $art["name"] = $artist->getName();
-            $art["listeners"] = $artist->getPlayCount();
-            $art["image"] = $artist->getImage(4);
-            $art["mbid"] = $artist->getMbid();
-
-            $similarArtists = $artist->getSimilarArtists();
-            $artist = ArrayMethods::toObject($art);
-
-            $topTracks = Artst::getTopTracks($artistName);
-
-            $view->set("artist", $artist);
-        } else {
-            self::redirect("/404");
-        }
-
-        // Get top tracks
-        $tracks = array();
-        foreach ($topTracks as $track) {
-            $tracks[] = array(
-                "mbid" => $track->getMbid(),
-                "name" => $track->getName(),
-                "artist" => $track->getArtist()->getName()
-            );
-
-        }
-
-        // Get similar artists
-        $similar = array();
-        foreach ($similarArtists as $art) {
-            $similar[] = array(
-                "name" => $art->getName(),
-                "thumbnail" => $art->getImage(0)
-            );
-        }
-        $similar = ArrayMethods::toObject($similar);
-        $tracks = ArrayMethods::toObject($tracks);
-        
-        $view->set("tracks", $tracks);
-        $view->set("similar", $similar);
+        self::redirect("/404");
     }
 
     public function videos() {

@@ -1,3 +1,8 @@
+(function (window, Model) {
+    window.request = Model.initialize();
+    window.opts = {};
+}(window, window.Model));
+
 var ytplayer = "",
     index = -1,
     playlist = [],
@@ -130,24 +135,11 @@ function playThis(track, id) {
     initjPlayer(track);
 }
 
-function alreadyFound(track, artist) {
-    var found = false,
-        yid = false;
-    playlist.forEach(function (current, index) {
-        if (playlist[index].track == track && playlist[index].artist == artist) {
-            yid = playlist[index].yid;
-            found = true;
-            return false;
-        }
-    });
-    return (found) ? yid : found;
-}
-
 /** Add Track to the playlist **/
 function addToPlaylist(track, artist, mbid, yid) {
     var inPlaylist = false,
         utracks = $("#userTracks"),
-        i;
+        i = playlist.length;
 
     if (playlist.length == 0) {
         index = 0;
@@ -161,7 +153,6 @@ function addToPlaylist(track, artist, mbid, yid) {
         });
     }
 
-    i = playlist.length;
     if (!inPlaylist) {
         playlist.push({
             mbid: mbid,
@@ -170,7 +161,9 @@ function addToPlaylist(track, artist, mbid, yid) {
             artist: artist
         });
 
-        utracks.append('<div><a href="#" data-index="'+i+'" class="playThisTrack" data-yid="'+yid+'" data-mbid="'+mbid+'" data-track="'+track+'" data-artist="'+artist+'"><p><strong>'+track+'</strong></p><p>'+artist+'</p></a><div>');
+        utracks.append('<a data-index="'+i+'" data-yid="'+yid+'" data-track="'+track+'" data-artist="'+artist+'" href="#" class="list-group-item"><span class="pull-right"><button class="btn btn-danger btn-xs removeThisTrack"><i class="fa fa-trash-o"></i></button> <button class="btn btn-primary btn-xs playThisTrack"><i class="fa fa-play"></i></button></span><span class="glyphicon glyphicon-music"></span><span class="btn-track-info" data-track="'+track+'" data-artist="'+artist+'"> '+track+'</span><span class="text-muted"> by '+artist+'</span></a>');
+
+        $("#clearPlaylist").show();
     }
 }
 
@@ -226,7 +219,7 @@ $(document).ready(function () {
             mbid = $(this).attr("data-mbid");
 
         alsoPlay = false;
-        if (typeof yid === undefined) {
+        if (yid === undefined) {
             findSong(track, artist, mbid, self);    
         } else {
             addToPlaylist(track, artist, mbid, yid);
@@ -241,9 +234,9 @@ $(document).ready(function () {
             yid = $(this).attr("data-yid"),
             artist = $(this).attr("data-artist"),
             mbid = $(this).attr("data-mbid");
-
+        
         alsoPlay = true;
-        if (typeof yid === undefined) {
+        if (yid === undefined) {
             findSong(track, artist, mbid, self);    
         } else {
             playThis(track, yid);
@@ -258,6 +251,12 @@ $(document).ready(function () {
         }
         stopTimer();
         clearPlaylist();
+        $(this).hide();
+    });
+
+    $(".removeThisTrack").on("click", function () {
+        var index = $(this).attr("data-index");
+        removeTrack(index);
     });
 
     $("#savePlaylist").on("click", function () {
@@ -373,26 +372,19 @@ function onPlayerStateChange(event) {
 }
 
 function findSong(track, artist, mbid, selector) {
-    yid = alreadyFound(track, artist);
-    if (yid) {
-        if (alsoPlay) {
-            playThis(track, yid);
-        }
-    } else {
-        request.create({
-            action: '/home/findTrack',
-            data: {action: 'findTrack', track: track, artist: artist},
-            callback: function (data) {
-                if (data != "Error") {
-                    addToPlaylist(track, artist, mbid, data);
-                    selector.attr("data-yid", data);
-                    if (alsoPlay) {
-                        playThis(track, data);
-                    }
+    request.create({
+        action: '/home/findTrack',
+        data: {action: 'findTrack', track: track, artist: artist},
+        callback: function (data) {
+            if (data != "Error") {
+                addToPlaylist(track, artist, mbid, data);
+                selector.attr("data-yid", data);
+                if (alsoPlay) {
+                    playThis(track, data);
                 }
             }
-        });    
-    }
+        }
+    });    
 }
 
 function savePlaylist() {

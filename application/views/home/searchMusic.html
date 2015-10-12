@@ -1,5 +1,6 @@
 <section class="hbox stretch">
     {include layouts/navigation/standard.html}
+    {include home/play_video.html}
     <section id="content">
         <section class="vbox">
             <section class="w-f-md" id="bjax-target">
@@ -7,7 +8,9 @@
                     <section>
                         <section class="vbox">
                             <section class="scrollable padder-lg">
+                                <h1 class="font-thin m-b">{echo ucfirst($type)."s"} List:</h1>
                                 <div class="row row-sm">
+                                {if $type == "song"}
                                 {foreach $track in $results}
                                     <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2">
                                         <div class="item">
@@ -23,34 +26,44 @@
                                             </div>
                                             <div class="padder-v">
                                                 <a href="/tracks/view/{echo Framework\StringMethods::url($track->name)}/{echo Framework\StringMethods::url($track->artist)}" data-replace="true" class="text-ellipsis" data-mbid="{echo $track->mbid}" data-artist="{echo $track->artist}">{echo $track->name}</a>
-                                                <a href="/artists/view/{echo Framework\StringMethods::url($track->artist)}" data-bjax data-target="#bjax-target" data-el="#bjax-el" data-replace="true" class="text-ellipsis text-xs text-muted">{echo $track->artist}</a>
+                                                <a href="/artists/view/{echo Framework\StringMethods::url($track->artist)}" data-replace="true" class="text-ellipsis text-xs text-muted">{echo $track->artist}</a>
                                             </div>
                                         </div>
                                     </div>
                                 {/foreach}
+                                {/if}
+                                {elseif $type == "video"}
+                                {foreach $result in $results}
+                                    <div class="col-xs-6 col-sm-4 col-md-3">
+                                        <div class="item">
+                                            <div class="pos-rlt">
+                                                <div class="item-overlay opacity r r-2x bg-black">
+                                                    <div class="center text-center m-t-n">
+                                                        <a data-toggle="modal" data-target="#play_video" data-id="{echo $result->videoId}" href="#" class="play text-ellipsis"><i class="fa fa-play-circle i-2x"></i></a>
+                                                    </div>
+                                                </div>
+                                                <img src="{echo $result->img}" alt="" class="r r-2x img-full">
+                                            </div>
+                                            <div class="padder-v">
+                                                <a data-toggle="modal" data-target="#play_video" data-id="{echo $result->videoId}" href="#" class="play text-ellipsis">{echo $result->title}</a>
+                                                <a href="https://www.youtube.com/watch?v={echo $result->videoId}" target="_blank">Open in <strong>Youtube</strong></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {/foreach}
+                                {/elseif}
+                                {elseif isset($error)}
+                                    {echo $error}
+                                {/elseif}
                                 </div>
                                 <ul class="pagination pagination">
-                                    <li>
-                                        <a href="#"><i class="fa fa-chevron-left"></i></a>
-                                    </li>
-                                    <li class="active">
-                                        <a href="#">1</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">2</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">3</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">4</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">5</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><i class="fa fa-chevron-right"></i></a>
-                                    </li>
+                                    <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
+                                    <li class="active"><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#">4</a></li>
+                                    <li><a href="#">5</a></li>
+                                    <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
                                 </ul>
                             </section>
                         </section>

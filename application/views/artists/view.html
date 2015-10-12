@@ -10,21 +10,22 @@
                                     <div class="panel wrapper-lg">
                                         <div class="row">
                                             <div class="col-sm-5">
-                                                <img src="{echo $artist->image}" class="img-full m-b"> </div>
-                                                <div class="col-sm-7">
-                                                    <h2 class="m-t-none text-black">{echo $artist->name}</h2>
-                                                    <div class="clearfix m-b-lg">
-                                                       <h6 class="page-heading">Play Count: <strong>{echo $artist->playCount}</strong></h6>
-                                                        <h6 class="page-heading">Listeners: <strong>{echo $artist->listeners}</strong></h6>
+                                                <img src="{echo $artist->image}" class="img-full m-b">
+                                            </div>
+                                            <div class="col-sm-7">
+                                                <h2 class="m-t-none text-black">{echo $artist->name}</h2>
+                                                <div class="clearfix m-b-lg">
+                                                   <h6 class="page-heading">Play Count: <strong>{echo $artist->playCount}</strong></h6>
+                                                    <h6 class="page-heading">Listeners: <strong>{echo $artist->listeners}</strong></h6>
 
-                                                        <a href="#" class="btn btn-default addToPlaylistArtist" data-artist="{echo $artist->name}" data-mbid="{echo $artist->mbid}">Add To Playlist</a>
-                                                    </div>
-                                                    <div> Tags:
-                                                    {foreach $tag in $artist->tags}
-                                                        <a href="#" class="badge bg-light">{echo $tag->name}</a>
-                                                    {/foreach}
-                                                    </div>
+                                                    <a href="#" class="btn btn-default addToPlaylistArtist" data-artist="{echo $artist->name}" data-mbid="{echo $artist->mbid}">Add To Playlist</a>
                                                 </div>
+                                                <div> Tags:
+                                                {foreach $tag in $artist->tags}
+                                                    <a href="/genres/{echo Framework\StringMethods::url($tag->name)}" class="badge bg-light">{echo $tag->name}</a>
+                                                {/foreach}
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="m-t">
                                             <p>{echo $artist->bio->summary}</p>
@@ -126,6 +127,11 @@
                     </section>
                 </section>
             </section>
+            <!-- side content -->
+            <aside class="aside-md bg-light dk" id="sidebar">
+                {include layouts/navigation/sidebar.html}
+            </aside>
+            <!-- / side content -->
         </section>
         <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
     </section>

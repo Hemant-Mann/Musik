@@ -5,7 +5,7 @@
  *
  * @author Hemant Mann
  */
-class Strack extends Shared\Model {
+class SavedTrack extends Shared\Model {
 
     /**
      * @column
