@@ -25,11 +25,13 @@
                     </label>
                 </div>
                 <input type="hidden" name="action" value="signup">
+                <input type="hidden" id="accessToken" name="token" value="{echo $token}">
                 <button type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded"><i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">Sign up</span></button>
                 <div class="line line-dashed"></div>
                 <p class="text-muted text-center"><small>Already have an account?</small></p>
                 <a href="/login" class="btn btn-lg btn-info btn-block btn-rounded">Login</a>
             </form>
+            <a href="#" id="fbLogin" class="text-center"><i class="fa fa-facebook"></i> SignUp with Facebook</a>
         </section>
     </div>
 </section>

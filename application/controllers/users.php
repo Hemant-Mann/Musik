@@ -7,6 +7,7 @@
  */
 use Shared\Controller as Controller;
 use Framework\RequestMethods as RequestMethods;
+use Framework\Registry as Registry;
 
 class Users extends Controller {
 
@@ -20,8 +21,9 @@ class Users extends Controller {
         }
         $this->getLayoutView()->set("change", true);
         $view = $this->getActionView();
+        $session = Registry::get("session");
 
-        if (RequestMethods::post("action") == "login") {
+        if (RequestMethods::post("action") == "login" && RequestMethods::post("token") === $session->get('Users\Login:$token')) {
             $password = RequestMethods::post("password");
             $email = RequestMethods::post("email");
 
@@ -39,6 +41,10 @@ class Users extends Controller {
             }
             $view->set("error", $error);
         }
+        // Securing login
+        $token = $this->generateSalt(22);
+        $view->set("token", $token);
+        $session->set('Users\Login:$token', $token);
     }
 
     public function signup() {
@@ -47,8 +53,9 @@ class Users extends Controller {
         }
         $this->getLayoutView()->set("change", true);
         $view = $this->getActionView();
+        $session = Registry::get("session");
 
-        if (RequestMethods::post("action") == "signup") {
+        if (RequestMethods::post("action") == "signup" && RequestMethods::post("token") === $session->get('Users\Login:$token')) {
             $password = RequestMethods::post("password");
 
             $user = new User(array(
@@ -67,6 +74,9 @@ class Users extends Controller {
                 $view->set("message", 'You are registered!! Please <a href="/login">Login</a> to continue');
             }
         }
+        $token = $this->generateSalt(22);
+        $view->set("token", $token);
+        $session->set('Users\Login:$token', $token);
     }
 
     public function logout() {
@@ -78,7 +88,7 @@ class Users extends Controller {
      * @before _secure
      */
     public function savePlaylist() {
-        $view = $this->noview();
+        $this->noview();
 
         if (RequestMethods::post("action") == "savePlaylist") {
             try {
@@ -108,6 +118,33 @@ class Users extends Controller {
             }
         } else {
             self::redirect("/404"); // prevent direct access
+        }
+    }
+
+    public function fbLogin() {
+        $this->noview();
+        $session = Registry::get("session");
+
+        if ((RequestMethods::post("action") == "fbLogin") && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') && (RequestMethods::post("token") == $session->get('Users\Login:$token'))) {
+            // process the registration
+            $email = RequestMethods::post("email");
+
+            $user = User::first(array("email = ?" => $email));
+
+            if (!$user) {
+                $pass = $this->generateSalt(22);
+                $user = new User(array(
+                    "name" => RequestMethods::post("name"),
+                    "email" => $email,
+                    "password" => $this->encrypt($pass),
+                    "admin" => false
+                ));
+                $user->save();
+            }
+            $this->setUser($user);
+            echo "Success";
+        } else {
+            self::redirect("/404");
         }
     }
 

@@ -15,6 +15,7 @@
                 <div class="form-group">
                     <input type="password" name="password" placeholder="Password" class="form-control rounded input-lg text-center no-border" required=""> </div>
                 <input type="hidden" name="action" value="login">
+                <input type="hidden" id="accessToken" name="token" value="{echo $token}">
                 <button type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded"><i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">Login</span></button>
                 <div class="text-center m-t m-b">
                     <a href="#"><small>Forgot password?</small></a>
@@ -23,6 +24,7 @@
                 <p class="text-muted text-center"><small>Do not have an account?</small></p>
                 <a href="/signup" class="btn btn-lg btn-info btn-block rounded">Create an account</a>
             </form>
+            <a href="#" id="fbLogin" class="text-center"><i class="fa fa-facebook"></i> Login with Facebook</a>
         </section>
     </div>
 </section>
