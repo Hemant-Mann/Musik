@@ -33,6 +33,10 @@
                                                             <div class="center text-center m-t-n">
                                                                 <a href="#" class="playThisTrack" data-track="{echo $track->name}" data-mbid="{echo $track->mbid}" data-artist="{echo $track->artist}"><i class="fa fa-play-circle i-2x"></i></a>
                                                             </div>
+                                                            <div class="bottom padder m-b-sm">
+                                                                <a href="/tracks/view/{echo Framework\StringMethods::url($track->name)}/{echo Framework\StringMethods::url($track->artist)}" target="_blank" class="pull-right"> <i class="fa fa-info"></i> </a>
+                                                                <a href="#" data-track="{echo $track->name}" data-mbid="{echo $track->mbid}" data-artist="{echo $track->artist}" class="addToPlaylist"> <i class="fa fa-plus-circle"></i> </a>
+                                                            </div>
                                                         </div>
                                                         <a href="#">
                                                             <img src="{echo $track->image}" alt="Track Image" class="r r-2x img-full">
@@ -40,7 +44,7 @@
                                                     </div>
                                                     <div class="padder-v">
                                                         <a href="/tracks/view/{echo Framework\StringMethods::url($track->name)}/{echo Framework\StringMethods::url($track->artist)}" data-replace="true" class="text-ellipsis" data-mbid="{echo $track->mbid}" data-artist="{echo $track->artist}">{echo $track->name}</a>
-                                                        <a href="/artists/view/{echo Framework\StringMethods::url($track->artist)}" data-bjax data-target="#bjax-target" data-el="#bjax-el" data-replace="true" class="text-ellipsis text-xs text-muted">{echo $track->artist}</a>
+                                                        <a href="/artists/view/{echo Framework\StringMethods::url($track->artist)}" data-replace="true" class="text-ellipsis text-xs text-muted">{echo $track->artist}</a>
                                                     </div>
                                                 </div>
                                             </div>

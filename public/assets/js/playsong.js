@@ -10,7 +10,8 @@ var ytplayer = "",
     duration = '',
     timerOn = false,
     tVar,
-    alsoPlay = false;
+    alsoPlay = false,
+    playlistItems = false;
 
 function emptyPlaylist() {
     if (playlist.length === 0) {
@@ -72,9 +73,6 @@ function initjPlayer(track) {
 }
 
 function stopjPlayer() {
-    playlist = [];
-    index = -1;
-
     $('.jp-title').html("");
     $(".jp-play-bar").width('0%');
 
@@ -138,8 +136,9 @@ function playThis(track, id) {
 /** Add Track to the playlist **/
 function addToPlaylist(track, artist, mbid, yid) {
     var inPlaylist = false,
-        utracks = $("#userTracks"),
         i = playlist.length;
+
+    playlistItems.removeClass('hide');
 
     if (playlist.length == 0) {
         index = 0;
@@ -161,15 +160,21 @@ function addToPlaylist(track, artist, mbid, yid) {
             artist: artist
         });
 
-        utracks.append('<a data-index="'+i+'" data-yid="'+yid+'" data-track="'+track+'" data-artist="'+artist+'" href="#" class="list-group-item"><span class="pull-right"><button class="btn btn-danger btn-xs removeThisTrack"><i class="fa fa-trash-o"></i></button> <button class="btn btn-primary btn-xs playThisTrack"><i class="fa fa-play"></i></button></span><span class="glyphicon glyphicon-music"></span><span class="btn-track-info" data-track="'+track+'" data-artist="'+artist+'"> '+track+'</span><span class="text-muted"> by '+artist+'</span></a>');
+        
+        playlistItems.append(
+            '<div class="list-group-item"><a href="#" data-index="'+i+'" class="pull-right btn-remove item removeThisTrack"><i class="fa fa-times text"></i></a><a href="#" data-track="'+track+'" data-artist="'+artist+'" data-index="'+i+'" data-mbid="'+mbid+'" data-yid="'+yid+'" class="playThisTrack"><i class="icon-control-play text"></i></a><span class="btn-track-info trackInfo"> '+track+'</span><br/><span class="artistInfo text-muted btn-artist-info"> '+artist+'</span></div>'
+        );
 
-        $("#clearPlaylist").show();
+        $('#playlist-empty-banner').addClass('hide');
+        $("#clearPlaylist").removeClass('hide');
     }
 }
 
 /** Play next song **/
 function playNextSong() {
     if (emptyPlaylist()) {
+        stopTimer();
+        stopjPlayer();
         return false;
     }
 
@@ -209,6 +214,7 @@ $(document).ready(function () {
     duration = $(".jp-duration");
     currentTime = $(".jp-current-time");
     $(".jp-play-bar").width("0%");
+    playlistItems = $("#playlist-items");
 
     // Adding a song to playlist
     $(".addToPlaylist").on("click", function () {
@@ -228,13 +234,14 @@ $(document).ready(function () {
     });
 
     // playing a song
-    $(".playThisTrack").on("click", function () {
+    $(".playThisTrack").on("click", function (e) {
+        e.preventDefault();
         var track = $(this).attr("data-track"),
             self = $(this),
             yid = $(this).attr("data-yid"),
             artist = $(this).attr("data-artist"),
             mbid = $(this).attr("data-mbid");
-        
+
         alsoPlay = true;
         if (yid === undefined) {
             findSong(track, artist, mbid, self);    
@@ -249,13 +256,13 @@ $(document).ready(function () {
         if (emptyPlaylist()) {
             return false;
         }
-        stopTimer();
         clearPlaylist();
-        $(this).hide();
     });
 
-    $(".removeThisTrack").on("click", function () {
+    $(".removeThisTrack").on("click", function (e) {
+        e.preventDefault();
         var index = $(this).attr("data-index");
+
         removeTrack(index);
     });
 
@@ -264,6 +271,19 @@ $(document).ready(function () {
             return false;
         }
         savePlaylist();
+    });
+
+    // Find Artist/Track Info
+    $(".artistInfo").on("click", function (e) {
+        e.preventDefault();
+
+        // to be implemented
+    });
+
+    $(".trackInfo").on("click", function (e) {
+        e.preventDefault();
+
+        // to be implemented
     });
 
     /****** Player controls *********/
@@ -401,17 +421,16 @@ function savePlaylist() {
 }
 
 function clearPlaylist() {
-    $('#userTracks').html("");
-    ytplayer.stopVideo();
-    
-    var width = $(".jp-play-bar").width();
-    while (width != '0%') {
-        stopjPlayer();
-        width = $(".jp-play-bar").width();
-    }
+    $('#playlist-empty-banner').removeClass('hide');
+    $('#clearPlaylist').addClass('hide');
+    $('#playlist-items').html("").addClass('hide');
+    playlist = [];
+    index = -1;
 }
 
 function removeTrack(index) {
-    // @todo remove given track from playlist
-    // unset playlist[index];
+    var item = playlistItems.find('a[data-index="'+index+'"][class="removeThisTrack"]');
+        item.parent().remove();
+    playlist.splice(index, 1);
+    return true;
 }

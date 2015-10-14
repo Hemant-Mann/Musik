@@ -81,11 +81,16 @@ class Tracks extends Admin {
 
 				/*** Track - Tags ***/
 				$tags = $track->getTrackTopTags();
-				foreach ($tags as $tag) {
-				    $t["tags"][] = array(
-				        "name" => $tag->getName()
-				    );
+				if (!empty($tags)) {
+					foreach ($tags as $tag) {
+					    $t["tags"][] = array(
+					        "name" => $tag->getName()
+					    );
+					}
+				} else {
+					$t["tags"] = array();
 				}
+
 				$t = ArrayMethods::toObject($t);
 
 				/*** Track - Artist => TopTracks ***/

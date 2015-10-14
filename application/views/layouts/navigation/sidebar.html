@@ -1,14 +1,52 @@
-<section class="animated fadeInRight">
-    <div id="userPlaylist">
+<section class="vbox animated fadeInRight">
+    <section class="w-f-md scrollable">
+        <div class="clearfix"></div>
+        <div class="clearfix"></div>
+        <div class="clearfix"></div>
         {if !isset($user)}
-        <div class="bg-primary wrapper-md r">
-            <a href="/login"> <span class="h4 m-b-xs block"><i class=" icon-user-follow i-lg"></i> Login or Create account</span> <span class="text-muted">Save and share your playlist with your friends when you log in or create an account.</span> </a>
+        <div class="bg-info wrapper-md r btn-login" style="margin:5px">
+            <a href="#">
+                <span class="h4 m-b-xs block">Login or Create account</span>
+                <span class="text-muted">Save and share your playlist with your friends when you log in or create an account.</span>
+            </a>
         </div>
         {/if}
-        {else}
-        <a href="#" class="btn btn-success" id="savePlaylist"><i class="icon-plus"></i> Save Playlist</a>
-        {/else}
-        <a href="#" class="btn btn-warning hide" id="clearPlaylist"><i class="icon-edit"></i> Clear Playlist</a>
-        <div id="userTracks"></div>
+        <div id="playlist-empty-banner" class="bg-primary wrapper-md r notePlayList" style="margin:5px">
+            <span class="h4 m-b-xs block">Playlist</span>
+            <span class="text-muted">Your current playlist is empty.</span>
+        </div>
+        <div id="playlist-tools" data-target="playlist-items" class="playlist-items exclude sidebarToggle" style="margin:5px;">
+            <div class="btn-group btn-group-justified">
+                <div class="btn-group">
+                    <button type="button" id="clearPlaylist" class="hide btn btn-default btn-sm btn-clear-playlist " data-placement="bottom" title="Clear Playlist"><i class="icon-trash text"></i> </button>
+                </div>
+            </div>
+        </div>
+        <div id="playlist-feature" class="playlist-items exclude hide" style="margin:5px;">
+            <ul>
+            </ul>
+        </div>
+        <div id="playlist-items" class="exclude sidebarToggle hide" style="margin:5px;">
+        </div>
+    </section>
+    <div style="position:absolute;bottom:-260px;width:235px;display:none;z-index:9999" id="station">
+        <div style="width:100%;height:20px;background-color:#222222">
+            <i class="fa fa-times pull-left" style="cursor:pointer;margin:2px;margin-left:5px"></i>
+            <small class="text-center">Title</small>
+            <i class="fa fa-search pull-right btn-info-station" style="cursor:pointer;margin:2px;margin-right:5px"></i>
+        </div>
+        <img src="" class="img-responsive">
     </div>
+    <footer class="footer footer-md bg-black">
+        <form class="" role="search">
+            <div class="form-group clearfix m-b-none">
+                <div class="input-group m-t m-b">
+                    <span class="input-group-btn">
+                          <button type="submit" class="btn btn-sm bg-empty text-muted btn-icon"><i class="fa fa-search"></i></button>
+                        </span>
+                    <input type="text" class="form-control input-sm text-white bg-empty b-b b-dark no-border" id="searchPlaylist" placeholder="Search on Playlist">
+                </div>
+            </div>
+        </form>
+    </footer>
 </section>

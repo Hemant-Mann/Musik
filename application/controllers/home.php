@@ -93,7 +93,7 @@ class Home extends Controller {
             $session->set('Home\Genre:$topTracks', $tracks);
         }
 
-        $view->set("genre",  $session->get('Home\Genre:$set'));
+        $view->set("genre",  ucfirst($session->get('Home\Genre:$set')));
         $view->set("tags", $session->get('Home\Genres:$topTags'));
         $view->set("tracks", $session->get('Home\Genre:$topTracks'));
         
