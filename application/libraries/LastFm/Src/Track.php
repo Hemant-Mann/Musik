@@ -536,10 +536,11 @@ class Track extends Media {
 		}
 
 		if($xml->artist){
-			if($xml->artist->name && $xml->artist->mbid && $xml->artist->url){
+			if($xml->artist->name && $xml->artist->url){
+				$mbid = (empty($xml->artist->mbid)) ? " " : $xml->artist->mbid;
 				$artist = new Artist(
 					Util::toString($xml->artist->name),
-					Util::toString($xml->artist->mbid),
+					Util::toString($mbid),
 					Util::toString($xml->artist->url),
 					array(), 0, 0, 0, array(), array(), '', 0.0
 				);
