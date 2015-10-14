@@ -47,6 +47,7 @@ class Artists extends Admin {
 
                 // Tags of artist
                 $tags = Art::getTopTags($art->getName());
+                $artist["tags"] = array();
                 foreach ($tags as $t) {
                     $artist["tags"][] = array(
                         "name" => $t->getName()
