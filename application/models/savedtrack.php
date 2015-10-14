@@ -14,7 +14,7 @@ class SavedTrack extends Shared\Model {
      * @length 255
      * @index
      */
-    protected $_track
+    protected $_track;
 
     /**
      * @column

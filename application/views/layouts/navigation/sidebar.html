@@ -20,6 +20,11 @@
                 <div class="btn-group">
                     <button type="button" id="clearPlaylist" class="hide btn btn-default btn-sm btn-clear-playlist " data-placement="bottom" title="Clear Playlist"><i class="icon-trash text"></i> </button>
                 </div>
+                {if isset($user)}
+                <div class="btn-group">
+                    <button type="button" id="savePlaylist" class="hide btn btn-default btn-sm btn-clear-playlist " data-placement="bottom" title="Save Playlist"><i class="fa fa-floppy-o"></i> </button>
+                </div>
+                {/if}
             </div>
         </div>
         <div id="playlist-feature" class="playlist-items exclude hide" style="margin:5px;">

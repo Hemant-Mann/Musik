@@ -167,6 +167,7 @@ function addToPlaylist(track, artist, mbid, yid) {
 
         $('#playlist-empty-banner').addClass('hide');
         $("#clearPlaylist").removeClass('hide');
+        $("#savePlaylist").removeClass('hide');
     }
 }
 
@@ -412,9 +413,11 @@ function savePlaylist() {
         action: '/users/savePlaylist',
         data: {action: 'savePlaylist', playlist: playlist},
         callback: function (data) {
-            if (data.success) {
-                // alert the user
+            if (data == "Success") {
+                // @todo make a alert modal for better UI
                 alert('Your playlist has been saved');
+            } else {
+                alert('Playlist could not be saved');
             }
         }
     });
@@ -423,6 +426,7 @@ function savePlaylist() {
 function clearPlaylist() {
     $('#playlist-empty-banner').removeClass('hide');
     $('#clearPlaylist').addClass('hide');
+    $("#savePlaylist").addClass('hide');
     $('#playlist-items').html("").addClass('hide');
     playlist = [];
     index = -1;

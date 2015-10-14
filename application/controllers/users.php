@@ -78,34 +78,34 @@ class Users extends Controller {
      * @before _secure
      */
     public function savePlaylist() {
-        $view = $this->getActionView();
+        $view = $this->noview();
 
         if (RequestMethods::post("action") == "savePlaylist") {
-            // @todo - check code and make a new model of playlist
-            
-            // code to process sent playlist
-            $playlist = RequestMethods::post("playlist");
+            try {
+                $playlist = RequestMethods::post("playlist");
+                
+                foreach ($playlist as $p) {
+                    $track = SavedTrack::first(array("yid = ?" => $p["yid"]), array("id"));
 
-            /*
-            foreach ($playlist as $p) {
-                $track = SavedTrack::first(array("yid = ?" => $p["yid"]), array("id"));
-
-                if (!$track) {
-                    $track = new SavedTrack(array(
-                        "track" => $p["track"],
-                        "mbid" => $p["mbid"],
-                        "artist" => $p["artist"],
-                        "yid" => $p["yid"],
+                    if (!$track) {
+                        $track = new SavedTrack(array(
+                            "track" => $p["track"],
+                            "mbid" => $p["mbid"],
+                            "artist" => $p["artist"],
+                            "yid" => $p["yid"],
+                        ));
+                        $track->save();
+                    }
+                    $plist = new Playlist(array(
+                        "user_id" => $this->user->id,
+                        "strack_id" => $track->id
                     ));
-                    $track->save();
+                    $plist->save();
                 }
-                $plist = new Playlist(array(
-                    "user_id" => $this->user->id,
-                    "strack_id" => $track->id
-                ));
-                $plist->save();
-            }*/
-            $view->set("success", true);
+                echo "Success";
+            } catch (\Exception $e) {
+                echo "Error";
+            }
         } else {
             self::redirect("/404"); // prevent direct access
         }
