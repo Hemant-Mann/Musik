@@ -130,7 +130,25 @@ namespace Shared {
                     $this->layoutView->set($key, $this->user);
                 }
             }
+
             parent::render();
+        }
+
+        protected function generateSalt($length = 22) {
+            //Not 100% unique, not 100% random, but good enought for a salt
+            //MD5 returns 32 characters
+            $unique_random_string = md5(uniqid(mt_rand(), true));
+
+            //valid characters for a salt are [a-z A-Z 0-9 ./]
+            $base64_string = base64_encode($unique_random_string);
+
+            //but not '+' which is in base64 encoding
+            $modified_base64_string = str_replace('+', '.', $base64_string);
+
+            //Truncate string to the correct length
+            $salt = substr($modified_base64_string, 0, $length);
+
+            return $salt;
         }
 
     }

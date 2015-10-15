@@ -42,7 +42,7 @@ class Users extends Controller {
             $view->set("error", $error);
         }
         // Securing login
-        $token = $this->generateSalt(22);
+        $token = $this->generateSalt();
         $view->set("token", $token);
         $session->set('Users\Login:$token', $token);
     }
@@ -74,7 +74,7 @@ class Users extends Controller {
                 $view->set("message", 'You are registered!! Please <a href="/login">Login</a> to continue');
             }
         }
-        $token = $this->generateSalt(22);
+        $token = $this->generateSalt();
         $view->set("token", $token);
         $session->set('Users\Login:$token', $token);
     }
@@ -132,7 +132,7 @@ class Users extends Controller {
             $user = User::first(array("email = ?" => $email));
 
             if (!$user) {
-                $pass = $this->generateSalt(22);
+                $pass = $this->generateSalt();
                 $user = new User(array(
                     "name" => RequestMethods::post("name"),
                     "email" => $email,
@@ -146,26 +146,6 @@ class Users extends Controller {
         } else {
             self::redirect("/404");
         }
-    }
-
-    /**
-     * Generates a salt for hashing the password
-     */
-    private function generateSalt($length) {
-        //Not 100% unique, not 100% random, but good enought for a salt
-        //MD5 returns 32 characters
-        $unique_random_string = md5(uniqid(mt_rand(), true));
-
-        //valid characters for a salt are [a-z A-Z 0-9 ./]
-        $base64_string = base64_encode($unique_random_string);
-
-        //but not '+' which is in base64 encoding
-        $modified_base64_string = str_replace('+', '.', $base64_string);
-
-        //Truncate string to the correct length
-        $salt = substr($modified_base64_string, 0, $length);
-
-        return $salt;
     }
 
     /**
