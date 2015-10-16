@@ -142,7 +142,7 @@ function addToPlaylist(track, artist, mbid, yid) {
 
     if (playlist.length == 0) {
         index = 0;
-        playThis(track, yid);
+        alsoPlay = true;
     } else {
         playlist.forEach(function (current, index) {
             if (playlist[index].yid == yid) {
