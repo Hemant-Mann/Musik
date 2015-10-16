@@ -47,19 +47,6 @@ $(document).ready(function() {
 		
 	});
 
-	// $("#searchMusic").on("submit", function (e) {
-	// 	e.preventDefault();
-	// 	data = $(this).serialize();
-
-	// 	request.create({
-	// 		action: '/home/searchMusic',
-	// 		data: data,
-	// 		callback: function (data) {
-	// 			console.log(data);
-	// 		}
-	// 	});
-	// })
-
 	$("#fbLogin").on("click", function (e) {
 		e.preventDefault();
 		var token = $("#accessToken").attr("value");
@@ -101,19 +88,18 @@ function isLoggedIn(token) {
 }
 
 function getFBInfo(token) {
-	FB.api('/me', function (response) {
-		console.log(response);
-		// request.create({
-		// 	action: '/users/fbLogin',
-		// 	data: {action: 'fbLogin', email: response.email, name: response.name, token: token},
-		// 	callback: function (data) {
-		// 		if (data == "Success") {
-		// 			window.location.href = "/profile";
-		// 		} else {
-		// 			// @todo replace with alert modal
-		// 			alert('Something went wrong');
-		// 		}
-		// 	}
-		// });
+	FB.api('/me?fields=name,email', function (response) {
+		request.create({
+			action: '/users/fbLogin',
+			data: {action: 'fbLogin', email: response.email, name: response.name, token: token},
+			callback: function (data) {
+				if (data == "Success") {
+					window.location.href = "/profile";
+				} else {
+					// @todo replace with alert modal
+					alert('Something went wrong');
+				}
+			}
+		});
 	});
 }
