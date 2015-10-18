@@ -131,8 +131,8 @@ class Home extends Controller {
     /**
      * Finds the youtube video id of a given song
      */
-    public function findTrack() {
-        if (RequestMethods::post("action") == "findTrack") {
+    public function findTrack($return = false) {
+        if (RequestMethods::post("action") == "findTrack" || $return) {
             $artist = RequestMethods::post("artist");
             $track = RequestMethods::post("track");
 
@@ -140,6 +140,11 @@ class Home extends Controller {
             $q = $track. " ". $artist;
 
             $videoId = $this->searchYoutube($q, 1, true);
+            if ($videoId != "Error") {
+                if ($return) {
+                    return $videoId;
+                }
+            }
             echo $videoId;
 
         } else {
@@ -152,12 +157,43 @@ class Home extends Controller {
         if (RequestMethods::post("action") == "findLyrics") {
             $artist = RequestMethods::post("artist");
             $track = RequestMethods::post("track");
+            $mbid = RequestMethods::post("mbid");
 
+            if ($mbid) {
+                $where = array("mbid = ?" => $mbid, "live = ?" => true);
+            } else {
+                $where = array("artist = ?" => $artist, "track = ?" => $track, "live = ?" => true);
+            }
+            $strack = SavedTrack::first($where, array("id", "yid"));
+            if (!$strack) {
+                $id = $this->findTrack(true);
+                $strack = new SavedTrack(array(
+                    "track" => $track,
+                    "artist" => $artist,
+                    "mbid" => $mbid,
+                    "yid" => $id
+                ));
+                $strack->save();
+            }
+
+            $lyric = Lyric::first(array("strack_id = ?" => $strack->id, "live = ?" => true));
+            if ($lyric) {
+                echo $lyric->lyrics;
+                return;
+            }
             try {
                 $api = LoloLyrics::findLyrics($track, $artist);
 
-                $lyrics = $api->getLyrics();
-                echo "<pre>". print_r($lyrics, true). "</pre>";
+                $result = $api->getLyrics();
+                $lyrics = "<pre>". print_r($result, true). "</pre>";
+                echo $lyrics;
+                
+                $lyric = new Lyric(array(
+                    "lyrics" => $lyrics,
+                    "strack_id" => $strack->id
+                ));
+                $lyric->save();    
+            
             } catch (Req $e) {
                 echo $e->getCustomMessage();
             } catch (Response $e) {

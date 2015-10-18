@@ -51,7 +51,7 @@ $(document).ready(function() {
 		$.ajax({
 			url: '/home/findLyrics',
 			type: 'POST',
-			data: {action: 'findLyrics', track: $(this).data('track'), artist: $(this).data('artist')}
+			data: {action: 'findLyrics', track: $(this).data('track'), artist: $(this).data('artist'), mbid: $(this).data('mbid')}
 		})
 		.done(function(data) {
 			console.log(data);

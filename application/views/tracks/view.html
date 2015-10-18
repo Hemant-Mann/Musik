@@ -24,7 +24,7 @@
 
                                                     <a href="#" class="btn btn-success playThisVideo" data-artist="{echo $track->artist}" data-track="{echo $track->name}"><i class="icon-social-youtube icon"></i> Video</a>
 
-                                                    <a href="#" class="btn btn-default findLyrics" data-artist="{echo $track->artist}" data-track="{echo $track->name}"><i class="fa fa-music"></i> Lyrics</a>
+                                                    <a href="#" class="btn btn-default findLyrics" data-artist="{echo $track->artist}" data-track="{echo $track->name}" data-mbid="{echo $track->mbid}"><i class="fa fa-music"></i> Lyrics</a>
                                                 </div>
                                                 <div> Tags:
                                                 {foreach $tag in $track->tags}
