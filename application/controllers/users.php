@@ -95,6 +95,7 @@ class Users extends Controller {
         if (RequestMethods::post("action") == "savePlaylist" && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')) {
             try {
                 $playlist = RequestMethods::post("playlist");
+                $id = RequestMethods::post("playlistId");
                 
                 foreach ($playlist as $p) {
                     if ($p["isSaved"] == "false") {
@@ -109,9 +110,10 @@ class Users extends Controller {
                             ));
                             $track->save();
                         }
-                        $plist = new Playlist(array(
-                            "user_id" => $this->user->id,
-                            "strack_id" => $track->id
+                        $plist = new PlaylistTrack(array(
+                            "playlist_id" => $id,
+                            "strack_id" => $track->id,
+                            "play_count" => 0
                         ));
                         $plist->save();    
                     }
@@ -154,16 +156,45 @@ class Users extends Controller {
         }
     }
 
-    protected function setPlaylist() {
-        $playlists = Playlist::all(array("user_id = ?" => $this->user->id, "live = ?" => true), array("strack_id"));
-        if (!$playlists) {
+    public function setPlaylist($id = false) {
+        $session = Registry::get("session");
+
+        // find all the playlists of the user
+        $newPlaylist = false;
+        $playlists = Playlist::all(array("user_id = ?" => $this->user->id, "live = ?" => true), array("name", "id", "user_id"), "created", "desc");
+        if (!$playlists || empty($playlists)) {
+            $playlist = new Playlist(array(
+                "name" => "Playlist 1",
+                "user_id" => $this->user->id
+            ));
+            $playlist->save();
+            $newPlaylist = true;
+
+            $playlists = array($playlist);
+        }
+
+        $plist = array();
+        foreach ($playlists as $p) {
+            $plist[] = array(
+                "id" => $p->id,
+                "name" => $p->name,
+                "user_id" => $p->user_id
+            );
+        }
+        $plist = ArrayMethods::toObject($plist);
+        $session->set('User:$playlists', $plist);
+
+        if ($newPlaylist) {
             return;
         }
 
-        $session = Registry::get("session");
+        // find all the tracks of the given playlist.id
+        $id = ($id) ? $id : $playlists[0]->id;
+
         $tracks = array();
-        foreach ($playlists as $p) {
-            $track = SavedTrack::first(array("id = ?" => $p->strack_id));
+        $playlistTracks = PlaylistTrack::all(array("playlist_id = ?" => $id), array("strack_id"));
+        foreach ($playlistTracks as $t) {
+            $track = SavedTrack::first(array("id = ?" => $t->strack_id));
             $tracks[] = array(
                 "track" => $track->track,
                 "artist" => $track->artist,
@@ -173,7 +204,7 @@ class Users extends Controller {
             );
         }
         $tracks = ArrayMethods::toObject($tracks);
-        $session->set('Users:$playlist', $tracks);
+        $session->set('User:$pListTracks', $tracks);
     }
 
     /**

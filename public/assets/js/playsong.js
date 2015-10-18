@@ -435,7 +435,7 @@ function inPlaylist(track, artist) {
 function savePlaylist() {
     request.create({
         action: '/users/savePlaylist',
-        data: {action: 'savePlaylist', playlist: playlist},
+        data: {action: 'savePlaylist', playlist: playlist, playlistId: $('#currentPlaylist').data('id')},
         callback: function (data) {
             if (data == "Success") {
                 // @todo make a alert modal for better UI
@@ -443,6 +443,7 @@ function savePlaylist() {
             } else {
                 alert('Playlist could not be saved');
             }
+            console.log(data);
         }
     });
 }

@@ -11,30 +11,35 @@
             </a>
         </div>
         {/if}
-        <div id="playlist-empty-banner" class="{if (isset($playlist) && !empty($playlist))} hide {/if}bg-primary wrapper-md r notePlayList" style="margin:5px">
+        <div id="playlist-empty-banner" class="{if (isset($plistTracks) && !empty($plistTracks))} hide {/if}bg-primary wrapper-md r notePlayList" style="margin:5px">
             <span class="h4 m-b-xs block">Playlist</span>
             <span class="text-muted">Your current playlist is empty.</span>
         </div>
         <div id="playlist-tools" data-target="playlist-items" class="playlist-items exclude sidebarToggle" style="margin:5px;">
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">
-                    <button type="button" id="clearPlaylist" class="{if (!isset($playlist) && empty($playlist))} hide {/if} btn btn-default btn-sm btn-clear-playlist " data-placement="bottom" title="Clear Playlist"><i class="icon-trash text"></i> </button>
+                    <button type="button" id="clearPlaylist" class="{if (!isset($plistTracks) && empty($plistTracks))} hide {/if} btn btn-default btn-sm btn-clear-playlist " data-placement="bottom" title="Clear Playlist"><i class="icon-trash text"></i> </button>
                 </div>
                 {if isset($user)}
                 <div class="btn-group">
-                    <button type="button" id="savePlaylist" class="{if (!isset($playlist) && empty($playlist))} hide {/if} btn btn-default btn-sm btn-clear-playlist " data-placement="bottom" title="Save Playlist"><i class="fa fa-floppy-o"></i> </button>
+                    <button type="button" id="savePlaylist" class="{if (!isset($plistTracks) && empty($plistTracks))} hide {/if} btn btn-default btn-sm btn-clear-playlist " data-placement="bottom" title="Save Playlist"><i class="fa fa-floppy-o"></i> </button>
                 </div>
                 {/if}
             </div>
         </div>
-        <div id="playlist-feature" class="playlist-items exclude hide" style="margin:5px;">
-            <ul>
-            </ul>
+        <div id="playlist-feature" class="playlist-items exclude" style="margin:5px;">
+            {if isset($playlists)}
+            {foreach $p in $playlists}
+            <h2 class="page-heading" id="currentPlaylist" data-pname="{echo $p->name}" data-id="{echo $p->id}"><strong>{echo $p->name}</strong></h2>
+            {script break}
+            {/foreach}
+            <a href="#" id="changePlaylist"> Change Playlist</a>
+            {/if}
         </div>
         <div id="playlist-items" class="exclude sidebarToggle" style="margin:5px;">
-        {if isset($playlist)}
+        {if isset($plistTracks)}
             {script $i = 0}
-            {foreach $track in $playlist}
+            {foreach $track in $plistTracks}
             <div class="list-group-item">
                 <a href="#" data-index="{echo $i}" class="pull-right btn-remove item removeThisTrack"><i class="fa fa-times text"></i></a>
                 <a href="#" data-index="{echo $i}" data-track="{echo $track->track}" data-artist="{echo $track->artist}" data-mbid="{echo $track->mbid}" data-yid="{echo $track->yid}" class="playThisTrack"><i class="icon-control-play text"></i></a><span class="btn-track-info trackInfo"> {echo $track->track}</span>

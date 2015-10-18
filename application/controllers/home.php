@@ -131,7 +131,9 @@ class Home extends Controller {
     /**
      * Finds the youtube video id of a given song
      */
-    public function findTrack($return = false) {
+    public function findTrack() {
+        $this->noview();
+        $return = Registry::get("session")->get('Home\findLyrics:$return');
         if (RequestMethods::post("action") == "findTrack" || $return) {
             $artist = RequestMethods::post("artist");
             $track = RequestMethods::post("track");
@@ -166,7 +168,8 @@ class Home extends Controller {
             }
             $strack = SavedTrack::first($where, array("id", "yid"));
             if (!$strack) {
-                $id = $this->findTrack(true);
+                Registry::get("session")->set('Home\findLyrics:$return', true);
+                $id = $this->findTrack();
                 $strack = new SavedTrack(array(
                     "track" => $track,
                     "artist" => $artist,
@@ -177,6 +180,7 @@ class Home extends Controller {
             }
 
             $lyric = Lyric::first(array("strack_id = ?" => $strack->id, "live = ?" => true));
+            Registry::get("session")->get('Home\findLyrics:$return', false);
             if ($lyric) {
                 echo $lyric->lyrics;
                 return;
