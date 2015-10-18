@@ -9,10 +9,16 @@ use Shared\Controller as Controller;
 use Framework\Registry as Registry;
 use Framework\RequestMethods as RequestMethods;
 use Framework\ArrayMethods as ArrayMethods;
+
+// LastFm Library
 use LastFm\Src\Track as Trck;
 use LastFm\Src\Geo as Geo;
 use LastFm\Src\Artist as Artst;
 use LastFm\Src\Tag as Tag;
+
+use Lyrics\LoloLyrics as LoloLyrics;
+use Lyrics\Exceptions\Lolo\Response as Response;
+use Lyrics\Exceptions\Lolo\Request as Req;
 
 class Home extends Controller {
 
@@ -126,8 +132,6 @@ class Home extends Controller {
      * Finds the youtube video id of a given song
      */
     public function findTrack() {
-        $view = $this->noview();
-
         if (RequestMethods::post("action") == "findTrack") {
             $artist = RequestMethods::post("artist");
             $track = RequestMethods::post("track");
@@ -138,6 +142,27 @@ class Home extends Controller {
             $videoId = $this->searchYoutube($q, 1, true);
             echo $videoId;
 
+        } else {
+            self::redirect("/404");
+        }
+    }
+
+    public function findLyrics() {
+        $this->noview();
+        if (RequestMethods::post("action") == "findLyrics") {
+            $artist = RequestMethods::post("artist");
+            $track = RequestMethods::post("track");
+
+            try {
+                $api = LoloLyrics::findLyrics($track, $artist);
+
+                $lyrics = $api->getLyrics();
+                echo "<pre>". print_r($lyrics, true). "</pre>";
+            } catch (Req $e) {
+                echo $e->getCustomMessage();
+            } catch (Response $e) {
+                echo $e->getCustomMessage();
+            }
         } else {
             self::redirect("/404");
         }

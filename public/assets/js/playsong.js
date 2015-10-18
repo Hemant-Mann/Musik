@@ -415,7 +415,10 @@ function initPlaylist(items) {
             isSaved: true
         });
     });
-    playThis(playlist[0].track, 0);
+    if (!emptyPlaylist()) {
+        playThis(playlist[0].track, 0);    
+    }
+    
 }
 
 function inPlaylist(track, artist) {

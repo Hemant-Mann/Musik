@@ -47,6 +47,20 @@ $(document).ready(function() {
 		
 	});
 
+	$(".findLyrics").on("click", function (e) {
+		$.ajax({
+			url: '/home/findLyrics',
+			type: 'POST',
+			data: {action: 'findLyrics', track: $(this).data('track'), artist: $(this).data('artist')}
+		})
+		.done(function(data) {
+			console.log(data);
+		})
+		.fail(function() {
+			console.log("error");
+		});
+	});
+
 	$("#fbLogin").on("click", function (e) {
 		e.preventDefault();
 		var token = $("#accessToken").attr("value");
