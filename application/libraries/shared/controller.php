@@ -114,6 +114,7 @@ namespace Shared {
             /* if the user and view(s) are defined, 
              * assign the user session to the view(s)
              */
+            $playlist = Registry::get("session")->get('Users:$playlist');
             if ($this->user) {
                 if ($this->actionView) {
                     $key = "user";
@@ -121,6 +122,10 @@ namespace Shared {
                         $key = "__user";
                     }
                     $this->actionView->set($key, $this->user);
+
+                    if ($playlist) {
+                        $this->actionView->set('playlist', $playlist);
+                    }
                 }
                 if ($this->layoutView) {
                     $key = "user";
@@ -128,6 +133,10 @@ namespace Shared {
                         $key = "__user";
                     }
                     $this->layoutView->set($key, $this->user);
+
+                    if ($playlist) {
+                        $this->layoutView->set('playlist', $playlist);
+                    }                    
                 }
             }
 

@@ -11,18 +11,18 @@
             </a>
         </div>
         {/if}
-        <div id="playlist-empty-banner" class="bg-primary wrapper-md r notePlayList" style="margin:5px">
+        <div id="playlist-empty-banner" class="{if (isset($playlist) && !empty($playlist))} hide {/if}bg-primary wrapper-md r notePlayList" style="margin:5px">
             <span class="h4 m-b-xs block">Playlist</span>
             <span class="text-muted">Your current playlist is empty.</span>
         </div>
         <div id="playlist-tools" data-target="playlist-items" class="playlist-items exclude sidebarToggle" style="margin:5px;">
             <div class="btn-group btn-group-justified">
                 <div class="btn-group">
-                    <button type="button" id="clearPlaylist" class="hide btn btn-default btn-sm btn-clear-playlist " data-placement="bottom" title="Clear Playlist"><i class="icon-trash text"></i> </button>
+                    <button type="button" id="clearPlaylist" class="{if (!isset($playlist) && empty($playlist))} hide {/if} btn btn-default btn-sm btn-clear-playlist " data-placement="bottom" title="Clear Playlist"><i class="icon-trash text"></i> </button>
                 </div>
                 {if isset($user)}
                 <div class="btn-group">
-                    <button type="button" id="savePlaylist" class="hide btn btn-default btn-sm btn-clear-playlist " data-placement="bottom" title="Save Playlist"><i class="fa fa-floppy-o"></i> </button>
+                    <button type="button" id="savePlaylist" class="{if (!isset($playlist) && empty($playlist))} hide {/if} btn btn-default btn-sm btn-clear-playlist " data-placement="bottom" title="Save Playlist"><i class="fa fa-floppy-o"></i> </button>
                 </div>
                 {/if}
             </div>
@@ -31,7 +31,18 @@
             <ul>
             </ul>
         </div>
-        <div id="playlist-items" class="exclude sidebarToggle hide" style="margin:5px;">
+        <div id="playlist-items" class="exclude sidebarToggle" style="margin:5px;">
+        {if isset($playlist)}
+            {script $i = 0}
+            {foreach $track in $playlist}
+            <div class="list-group-item">
+                <a href="#" data-index="{echo $i}" class="pull-right btn-remove item removeThisTrack"><i class="fa fa-times text"></i></a>
+                <a href="#" data-index="{echo $i}" data-track="{echo $track->track}" data-artist="{echo $track->artist}" data-mbid="{echo $track->mbid}" data-yid="{echo $track->yid}" class="playThisTrack"><i class="icon-control-play text"></i></a><span class="btn-track-info trackInfo"> {echo $track->track}</span>
+                <br/><span class="artistInfo text-muted btn-artist-info"> {echo $track->artist}</span>
+            </div>
+            {script ++$i}
+            {/foreach}
+        {/if}
         </div>
     </section>
     <div style="position:absolute;bottom:-260px;width:235px;display:none;z-index:9999" id="station">

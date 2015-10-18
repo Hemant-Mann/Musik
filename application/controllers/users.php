@@ -8,6 +8,7 @@
 use Shared\Controller as Controller;
 use Framework\RequestMethods as RequestMethods;
 use Framework\Registry as Registry;
+use Framework\ArrayMethods as ArrayMethods;
 
 class Users extends Controller {
 
@@ -32,6 +33,7 @@ class Users extends Controller {
             if ($user) {
                 if ($this->passwordCheck($password, $user->password)) {
                     $this->setUser($user);	// successful login
+                    $this->setPlaylist();
                     self::redirect("/profile");
                 } else {
                     $error = "Invalid username/password";
@@ -90,28 +92,31 @@ class Users extends Controller {
     public function savePlaylist() {
         $this->noview();
 
-        if (RequestMethods::post("action") == "savePlaylist") {
+        if (RequestMethods::post("action") == "savePlaylist" && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')) {
             try {
                 $playlist = RequestMethods::post("playlist");
                 
                 foreach ($playlist as $p) {
-                    $track = SavedTrack::first(array("yid = ?" => $p["yid"]), array("id"));
+                    if ($p["isSaved"] == "false") {
+                        $track = SavedTrack::first(array("yid = ?" => $p["yid"]), array("id"));
 
-                    if (!$track) {
-                        $track = new SavedTrack(array(
-                            "track" => $p["track"],
-                            "mbid" => $p["mbid"],
-                            "artist" => $p["artist"],
-                            "yid" => $p["yid"],
+                        if (!$track) {
+                            $track = new SavedTrack(array(
+                                "track" => $p["track"],
+                                "mbid" => $p["mbid"],
+                                "artist" => $p["artist"],
+                                "yid" => $p["yid"],
+                            ));
+                            $track->save();
+                        }
+                        $plist = new Playlist(array(
+                            "user_id" => $this->user->id,
+                            "strack_id" => $track->id
                         ));
-                        $track->save();
+                        $plist->save();    
                     }
-                    $plist = new Playlist(array(
-                        "user_id" => $this->user->id,
-                        "strack_id" => $track->id
-                    ));
-                    $plist->save();
                 }
+                $this->setPlaylist();
                 echo "Success";
             } catch (\Exception $e) {
                 echo "Error";
@@ -142,10 +147,33 @@ class Users extends Controller {
                 $user->save();
             }
             $this->setUser($user);
+            $this->setPlaylist();
             echo "Success";
         } else {
             self::redirect("/404");
         }
+    }
+
+    protected function setPlaylist() {
+        $playlists = Playlist::all(array("user_id = ?" => $this->user->id, "live = ?" => true), array("strack_id"));
+        if (!$playlists) {
+            return;
+        }
+
+        $session = Registry::get("session");
+        $tracks = array();
+        foreach ($playlists as $p) {
+            $track = SavedTrack::first(array("id = ?" => $p->strack_id));
+            $tracks[] = array(
+                "track" => $track->track,
+                "artist" => $track->artist,
+                "mbid" => $track->mbid,
+                "yid" => $track->yid,
+                "dbid" => $track->id
+            );
+        }
+        $tracks = ArrayMethods::toObject($tracks);
+        $session->set('Users:$playlist', $tracks);
     }
 
     /**
