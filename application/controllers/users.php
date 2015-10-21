@@ -9,11 +9,36 @@ use Shared\Controller as Controller;
 use Framework\RequestMethods as RequestMethods;
 use Framework\Registry as Registry;
 use Framework\ArrayMethods as ArrayMethods;
+use Framework\StringMethods as StringMethods;
 
 class Users extends Controller {
 
+    /**
+     * @before _secure
+     */
     public function profile() {
-        
+        $view = $this->getActionView();
+
+        $content = array();
+
+        // find all the playlists
+        $playlists = Playlist::all(array("user_id = ?" => $this->user->id, "live = ?" => true), array("id", "name", "genre", "view", "created"));
+        foreach ($playlists as $p) {
+            $count = PlaylistTrack::count(array("playlist_id = ?" => $p->id));
+            $content["playlists"][] = array(
+                "id" => $p->id,
+                "name" => $p->name,
+                "genre" => $p->genre,
+                "view" => $p->view,
+                "tracks" => $count,
+                "created" => StringMethods::only_date($p->created)
+            );
+        }
+
+        // find the recent activity
+        // @todo => Display what tracks the user added last time
+        $content = ArrayMethods::toObject($content);
+        $view->set("content", $content);
     }
 
     public function login() {
@@ -128,29 +153,49 @@ class Users extends Controller {
         }
     }
 
-    public function fbLogin() {
-        $this->noview();
-        $session = Registry::get("session");
+    /**
+     * @before _secure
+     */
+    public function updatePlaylist($id) {
+        if (!$id || empty($id)) {
+            self::redirect("/404");
+        }
 
-        if ((RequestMethods::post("action") == "fbLogin") && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') && (RequestMethods::post("token") == $session->get('Users\Login:$token'))) {
-            // process the registration
-            $email = RequestMethods::post("email");
+        if (RequestMethods::post("action") == "updatePlaylist") {
+            $time = RequestMethods::post("modified");
+            $track = RequestMethods::post("track");
 
-            $user = User::first(array("email = ?" => $email));
-
-            if (!$user) {
-                $pass = $this->generateSalt();
-                $user = new User(array(
-                    "name" => RequestMethods::post("name"),
-                    "email" => $email,
-                    "password" => $this->encrypt($pass),
-                    "admin" => false
-                ));
-                $user->save();
+            $plistTrack = PlaylistTrack::first(array("playlist_id = ?" => $id, "track = ?" => $track));
+            if ($plistTrack) {
+                $plistTrack->modified = $time;
+                $plistTrack->play_count++;
+                $plistTrack->save();
+            } else {
+                return;
             }
-            $this->setUser($user);
-            $this->setPlaylist();
-            echo "Success";
+        } else {
+            self::redirect("/404");
+        }
+    }
+
+    /**
+     * @before _secure
+     */
+    public function createPlaylist($name, $genre = "default") {
+        $name = (empty($name)) ? RequestMethods::post("name") : $name;
+        if (empty($name)) {
+            self::redirect("/404");
+        }
+
+        if (RequestMethods::post("action") == "createPlaylist") {
+            $newPlaylist = new Playlist(array(
+                "name" => $name,
+                "user_id" => $this->user->id,
+                "genre" => RequestMethods::post("genre", $genre),
+                "view" => RequestMethods::post("view")
+            ));
+            $newPlaylist->save();
+            self::redirect("/profile");   
         } else {
             self::redirect("/404");
         }
@@ -205,6 +250,34 @@ class Users extends Controller {
         }
         $tracks = ArrayMethods::toObject($tracks);
         $session->set('User:$pListTracks', $tracks);
+    }
+
+    public function fbLogin() {
+        $this->noview();
+        $session = Registry::get("session");
+
+        if ((RequestMethods::post("action") == "fbLogin") && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') && (RequestMethods::post("token") == $session->get('Users\Login:$token'))) {
+            // process the registration
+            $email = RequestMethods::post("email");
+
+            $user = User::first(array("email = ?" => $email));
+
+            if (!$user) {
+                $pass = $this->generateSalt();
+                $user = new User(array(
+                    "name" => RequestMethods::post("name"),
+                    "email" => $email,
+                    "password" => $this->encrypt($pass),
+                    "admin" => false
+                ));
+                $user->save();
+            }
+            $this->setUser($user);
+            $this->setPlaylist();
+            echo "Success";
+        } else {
+            self::redirect("/404");
+        }
     }
 
     /**

@@ -218,7 +218,7 @@ namespace Framework {
                 return 'Not Specified';
             } else {
                 $unixdatetme = strtotime($datetime);
-                return strftime("%B %d %Y", $unixdatetme);
+                return strftime("%B %d, %Y", $unixdatetme);
             }
         }
 

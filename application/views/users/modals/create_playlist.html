@@ -1,0 +1,39 @@
+<!-- Modal -->
+<div class="modal fade" id="createPlaylist" tabindex="-1" role="dialog" aria-labelledby="Create-Playlist">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Create a new Playlist</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/users/createPlaylist" method="post">
+                    <div class="form-group">
+                        <label for="Name">Name</label>
+                        <input type="text" name="name" class="form-control" required="" placeholder="Name of your playlist">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="Genres">Genres</label>
+                        <input type="text" list="genres" name="genre" class="form-control" value="default" placeholder="Specify any genre for your playlist" autocomplete="on">
+                        <datalist id="genres">
+                        {include users/modals/genre_list.html}
+                        </datalist>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="visibility">Visibility</label><br>
+                        <label class="checkbox-inline"><input type="checkbox" checked="" name="view" value="private">Private</label>
+                        <label class="checkbox-inline"><input type="checkbox" name="view" value="public">Public</label>
+                    </div>
+
+                    <input type="hidden" name="action" value="createPlaylist">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -180,7 +180,7 @@ class Home extends Controller {
             }
 
             $lyric = Lyric::first(array("strack_id = ?" => $strack->id, "live = ?" => true));
-            Registry::get("session")->get('Home\findLyrics:$return', false);
+            Registry::get("session")->erase('Home\findLyrics:$return');
             if ($lyric) {
                 echo $lyric->lyrics;
                 return;

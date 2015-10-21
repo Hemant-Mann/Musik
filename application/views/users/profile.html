@@ -1,5 +1,6 @@
 <section class="hbox stretch">
     {include layouts/navigation/standard.html}
+    {include users/modals/create_playlist.html}
     <section id="content">
         <section class="vbox">
             <section class="scrollable">
@@ -40,7 +41,7 @@
                             <header class="header bg-light lt">
                                 <ul class="nav nav-tabs nav-white">
                                     <li class="active"><a href="#activity" data-toggle="tab">Activity</a></li>
-                                    <li class=""><a href="#events" data-toggle="tab">Events</a></li>
+                                    <li class=""><a href="#playlists" data-toggle="tab">Playlists</a></li>
                                     <li class=""><a href="#interaction" data-toggle="tab">Interaction</a></li>
                                 </ul>
                             </header>
@@ -50,12 +51,25 @@
                                         <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
                                             <li class="list-group-item">
                                                 <a href="#" class="thumb-sm pull-left m-r-sm"> <img src="{echo CDN}images/a0.png" class="img-circle"> </a>
-                                                <a href="#" class="clear"> <small class="pull-right">3 minuts ago</small> <strong class="block">Drew Wllon</strong> <small>Wellcome and play this web application template ... </small> </a>
+                                                <a href="#" class="clear"> <small class="pull-right">3 minuts ago</small> <strong class="block">Drew Wllon</strong> <small>Welcome and play this web application template ... </small> </a>
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="tab-pane" id="events">
-                                        <div class="text-center wrapper"> <i class="fa fa-spinner fa fa-spin fa fa-large"></i> </div>
+                                    <div class="tab-pane" id="playlists">
+                                        <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
+                                            {if isset($content->playlists)}
+                                                {script $i = 1}
+                                                {foreach $p in $content->playlists}
+                                                <li class="list-group-item">
+                                                    <h4 class="page-heading">{echo $i}. {echo $p->name}</h4>
+                                                    <a href="#" class="clear"> <span class="block">Genre: <strong>{echo $p->genre}</strong></span> <small class="block">Tracks: {echo $p->tracks}</small><small class="block">Created: {echo $p->created}</small><small class="block">Visibility: {echo $p->view}</small> </a>
+                                                {script ++$i}
+                                                </li>
+                                                {/foreach}
+                                            {/if}
+                                        </ul>
+                                        <br>
+                                        <a data-toggle="modal" data-target="#createPlaylist" href="#" class="btn btn-info"><i class="fa fa-location-arrow"></i> Create a New Playlist</a>
                                     </div>
                                     <div class="tab-pane" id="interaction">
                                         <div class="text-center wrapper"> <i class="fa fa-spinner fa fa-spin fa fa-large"></i> </div>
