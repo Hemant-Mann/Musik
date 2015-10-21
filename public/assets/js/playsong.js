@@ -141,7 +141,9 @@ function addToPlaylist(track, artist, mbid, yid) {
         yid: yid,
         track: track,
         artist: artist,
-        isSaved: false
+        isSaved: false,
+        deleted: false,
+        ptrackid: false
     });
 
     playlistItems.append(
@@ -220,7 +222,8 @@ $(document).ready(function () {
     });
 
     // playing a song
-    $(".playThisTrack").on("click", function () {
+    //$(".playThisTrack").on("click", function () {
+    $(document.body).on("click", ".playThisTrack", function () {
         var track = $(this).attr("data-track"),
             self = $(this),
             yid = $(this).attr("data-yid"),
@@ -245,11 +248,19 @@ $(document).ready(function () {
         clearPlaylist();
     });
 
-    $(".removeThisTrack").on("click", function (e) {
+    $(document.body).on("click",  ".removeThisTrack",function (e) {
         e.preventDefault();
-        var index = $(this).attr("data-index");
+        var index = $(this).data('index');
 
-        removeTrack(index);
+        var x = confirm('Are you sure to remove this track from Playlist?');
+        if (x) {
+            $(this).parent().remove();
+            playlist[index].deleted = true;
+            savePlaylist();
+        } else {
+            return;
+        }
+        
     });
 
     $("#savePlaylist").on("click", function () {
@@ -412,13 +423,21 @@ function initPlaylist(items) {
             artist: el.data('aritst'),
             yid: el.data('yid'),
             mbid: el.data('mbid'),
-            isSaved: true
+            isSaved: true,
+            deleted: false,
+            ptrackid: el.data('ptrackid')
         });
     });
     if (!emptyPlaylist()) {
-        playThis(playlist[0].track, 0);    
+        playThis(playlist[0].track, 0);
+        $('#playlist-empty-banner').addClass('hide');
+        $('#clearPlaylist').removeClass('hide');
+        $("#savePlaylist").removeClass('hide');
+    } else {
+        $('#playlist-empty-banner').removeClass('hide');
+        $('#clearPlaylist').addClass('hide');
+        $("#savePlaylist").addClass('hide');
     }
-    
 }
 
 function inPlaylist(track, artist) {
@@ -455,11 +474,4 @@ function clearPlaylist() {
     $('#playlist-items').html("").addClass('hide');
     playlist = [];
     index = -1;
-}
-
-function removeTrack(index) {
-    var item = playlistItems.find('a[data-index="'+index+'"][class="removeThisTrack"]');
-        item.parent().remove();
-    playlist.splice(index, 1);
-    return true;
 }

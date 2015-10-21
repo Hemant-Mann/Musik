@@ -1,0 +1,29 @@
+<!-- Modal -->
+<div class="modal fade" id="changePlaylist" tabindex="-1" role="dialog" aria-labelledby="Change-Playlist">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Change Playlist</h4>
+            </div>
+            <div class="modal-body">
+                <form action="/users/changePlaylist" method="post">
+                    <div class="form-group">
+                        <label for="playlists">Your playlists</label><br>
+                        {foreach $p in $playlists}
+                        <label class="radio">
+                            <input type="radio" name="id" value="{echo $p->id}" {if ($current->id == $p->id)} checked="" {/if}>{echo $p->name}
+                        </label>
+                        {/foreach}
+                    </div>
+
+                    <input type="hidden" name="action" value="changePlaylist">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Go</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
