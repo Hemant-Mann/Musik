@@ -10,7 +10,6 @@
                             <section class="scrollable">
                                 <div class="wrapper">
                                     <div class="text-center m-b m-t">
-                                        <a href="#" class="thumb-lg"> <img src="" class="img-circle" alt="Your Image"> </a>
                                         <div>
                                             <div class="h3 m-t-xs m-b-xs">{echo $user->name}</div> 
                                         </div>
@@ -40,14 +39,13 @@
                         <section class="vbox">
                             <header class="header bg-light lt">
                                 <ul class="nav nav-tabs nav-white">
-                                    <li class="active"><a href="#activity" data-toggle="tab">Activity</a></li>
-                                    <li class=""><a href="#playlists" data-toggle="tab">Playlists</a></li>
-                                    <li class=""><a href="#interaction" data-toggle="tab">Interaction</a></li>
+                                    <li class="active"><a href="#playlists" data-toggle="tab">Playlists</a></li>
+                                    <li class=""><a href="#activity" data-toggle="tab">Activity</a></li>
                                 </ul>
                             </header>
                             <section class="scrollable">
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="activity">
+                                    <div class="tab-pane" id="activity">
                                         <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
                                             <li class="list-group-item">
                                                 <a href="#" class="thumb-sm pull-left m-r-sm"> <img src="{echo CDN}images/a0.png" class="img-circle"> </a>
@@ -55,7 +53,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="tab-pane" id="playlists">
+                                    <div class="tab-pane active" id="playlists">
                                         <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
                                             {if isset($content->playlists)}
                                                 {script $i = 1}
@@ -70,9 +68,6 @@
                                         </ul>
                                         <br>
                                         <a data-toggle="modal" data-target="#createPlaylist" href="#" class="btn btn-info"><i class="fa fa-location-arrow"></i> Create a New Playlist</a>
-                                    </div>
-                                    <div class="tab-pane" id="interaction">
-                                        <div class="text-center wrapper"> <i class="fa fa-spinner fa fa-spin fa fa-large"></i> </div>
                                     </div>
                                 </div>
                             </section>

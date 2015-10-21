@@ -1,7 +1,7 @@
 <header class="bg-white-only header header-md navbar navbar-fixed-top-xs">
     <div class="navbar-header aside bg-info nav-xs">
         <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html"> <i class="icon-list"></i> </a>
-        <a href="/" class="navbar-brand text-lt"> <i class="icon-earphones"></i> <img src="{echo CDN}images/logo.png" alt="." class="hide"> <span class="hidden-nav-xs m-l-sm">Musik</span> </a>
+        <a href="/" class="navbar-brand text-lt"> <i class="icon-earphones"></i> <span class="hidden-nav-xs m-l-sm">Musik</span> </a>
         <a class="btn btn-link visible-xs" data-toggle="dropdown" data-target=".user"> <i class="icon-settings"></i> </a>
     </div>
     <ul class="nav navbar-nav hidden-xs">
@@ -9,7 +9,7 @@
             <a href="#nav,.navbar-header" data-toggle="class:nav-xs,nav-xs" class="text-muted"> <i class="fa fa-indent text"></i> <i class="fa fa-dedent text-active"></i> </a>
         </li>
     </ul>
-    <form class="form-inline navbar-form navbar-left hidden-xs" action="/home/searchMusic" method="post" role="search" id="searchMusic">
+    <form class="form-inline navbar-form navbar-left" action="/home/searchMusic" method="post" role="search" id="searchMusic">
         <input type="text" class="form-control input-sm no-border rounded" name="q" placeholder="I want to listen.......">
         <input type="hidden" name="action" value="searchMusic">
         <label for="type" class="radio-inline">
@@ -30,7 +30,7 @@
                 {/if}
             </li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle bg clear" data-toggle="dropdown"> <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm"> <img src="" alt="Pic"> </span> {echo $user->name}<b class="caret"></b> </a>
+                <a href="#" class="dropdown-toggle bg clear" data-toggle="dropdown"> <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm"> </span> {echo $user->name}<b class="caret"></b> </a>
                 <ul class="dropdown-menu animated fadeInRight">
                     <li> <span class="arrow top"></span>
                         <a href="#">Settings</a>
@@ -41,7 +41,6 @@
                     <li>
                         <a href="#">Help</a>
                     </li>
-                    <li class="divider"></li>
                     <li>
                         <a href="/logout">Logout</a>
                     </li>

@@ -28,23 +28,6 @@
                 <!-- / nav -->
             </div>
         </section>
-        {if isset($user)}
-        <footer class="footer hidden-xs no-padder text-center-nav-xs">
-            <div class="bg hidden-xs ">
-                <div class="dropdown dropup wrapper-sm clearfix">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="thumb-sm avatar pull-left m-l-xs"> <img src="" class="dker" alt="Pic"> <i class="on b-black"></i> </span> <span class="hidden-nav-xs clear"> <span class="block m-l"> <strong class="font-bold text-lt">{echo $user->name}</strong> <b class="caret"></b> </span> <span class="text-muted text-xs block m-l">Art Director</span> </span>
-                    </a>
-                    <ul class="dropdown-menu animated fadeInRight aside text-left">
-                        <li> <span class="arrow bottom hidden-nav-xs"></span> <a href="#">Settings</a> </li>
-                        <li> <a href="/profile">Profile</a> </li>
-                        <li> <a href="#">Help</a> </li>
-                        <li class="divider"></li>
-                        <li> <a href="/logout">Logout</a> </li>
-                    </ul>
-                </div>
-            </div>
-        </footer>
-        {/if}
     </section>
 </aside>
 <!-- /.aside -->
