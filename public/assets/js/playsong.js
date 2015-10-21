@@ -348,23 +348,18 @@ $(document).ready(function () {
     });
 
     // Seek bar
-    $('.jp-progress').on("click", function (e) {
-        console.log(e);
-        // var parentOffset = $(this).parent().offset();
-        // var relX = e.pageX - parentOffset.left;
-        // var pos  = (100 * relX)/($(this).width());
-        
-        // if(pos <0) pos = 0;
-        // if(pos >100) pos = 100;
-        
-        // $(".jp-play-bar" ).width(pos+"%");
+    $('.jp-seek-bar').on("click", function (e) {
+        var parentOffset = $(this).parent().offset();
+        var relX = e.pageX - parentOffset.left;
+        var pos  = (100 * relX)/($(this).width());
+        if(pos <0) pos = 0;
+        if(pos >100) pos = 100;
 
-        // var size = $(".jp-play-bar").width();
-        // var pos = (size/100)*(ytplayer.getDuration());
-        // // console.log(size);
-        // // console.log(pos);
-        // // console.log("Seeking ytplayer");
-        // seekTo(pos);
+        $(".jp-play-bar" ).width(pos+"%");
+
+        var seek = (pos/100)*(ytplayer.getDuration());
+        
+        seekTo(seek);
     });
 
 });
