@@ -3,8 +3,9 @@
 	window.opts = {};
 }(window, window.Model));
 
-var fbinit = false;
-var thisVideoId = null;
+var fbinit = false,
+	thisVideoId = null,
+	lyrics = false;
 
 $(document).ready(function() {
 	// facebook login
@@ -48,13 +49,30 @@ $(document).ready(function() {
 	});
 
 	$(".findLyrics").on("click", function (e) {
+		if (lyrics) {
+			var el = $("#lyrics");
+			if (!el.length) {
+				$('.trackWiki').after('<div id="lyrics"></div>');
+				el = $("#lyrics");
+			}
+			el.addClass('alert alert-default alert-dismissible fade in');
+			el.attr('role', 'close');
+			el.html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>' + lyrics);
+
+			return;
+		}
+
 		$.ajax({
 			url: '/home/findLyrics',
 			type: 'POST',
 			data: {action: 'findLyrics', track: $(this).data('track'), artist: $(this).data('artist'), mbid: $(this).data('mbid')}
 		})
 		.done(function(data) {
-			console.log(data);
+			lyrics = data;
+			var el = $("#lyrics");
+			el.addClass('alert alert-default alert-dismissible fade in');
+			el.attr('role', 'close');
+			el.html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>' + data);
 		})
 		.fail(function() {
 			console.log("error");

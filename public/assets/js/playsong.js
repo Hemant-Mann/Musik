@@ -362,6 +362,18 @@ $(document).ready(function () {
         seekTo(seek);
     });
 
+    // Volume bar
+    $('.jp-volume-bar').on('click', function (e) {
+        var parentOffset = $(this).parent().offset();
+        var relX = e.pageX - parentOffset.left;
+        var pos  = (100 * relX)/($(this).width());
+        if(pos <0) pos = 0;
+        if(pos >100) pos = 100;
+
+        $('.jp-volume-bar-value').width(pos+"%");
+        ytplayer.setVolume(pos);
+    });
+
 });
 
 function onPlayerStateChange(event) {

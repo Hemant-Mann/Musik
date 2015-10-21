@@ -69,7 +69,7 @@ class LoloLyrics {
 		$bot->execute();
 		$document = array_shift($bot->getDocuments());
 		if (!$document) {
-			throw new Req("Failed to get the document");
+			throw new Req("Failed to get the lyrics document");
 		}
 		return $document->getHttpResponse()->getBody();
 	}
