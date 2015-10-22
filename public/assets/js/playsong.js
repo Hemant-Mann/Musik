@@ -222,7 +222,6 @@ $(document).ready(function () {
     });
 
     // playing a song
-    //$(".playThisTrack").on("click", function () {
     $(document.body).on("click", ".playThisTrack", function () {
         var track = $(this).attr("data-track"),
             self = $(this),
@@ -248,6 +247,7 @@ $(document).ready(function () {
         clearPlaylist();
     });
 
+    // removing a track from playlist
     $(document.body).on("click",  ".removeThisTrack",function (e) {
         e.preventDefault();
         var index = $(this).data('index');

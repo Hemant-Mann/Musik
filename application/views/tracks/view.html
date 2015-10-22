@@ -18,7 +18,7 @@
                                                 <h4 class="m-t-none text-grey">{echo $track->album}</h4>
                                                 <div class="clearfix m-b-lg">
                                                     <h6 class="page-heading">Play Count: <strong>{echo $track->playCount}</strong></h6>
-                                                    <h6 class="page-heading">Duration: <strong>{echo $track->duration}</strong></h6>
+                                                    <h6 class="page-heading">Duration: <strong id="trackDuration">{echo $track->duration}</strong></h6>
 
                                                     <a href="#" class="btn btn-info playThisTrack" data-artist="{echo $track->artist}" data-track="{echo $track->name}" data-mbid="{echo $track->mbid}"><i class="icon-control-play"></i> Play</a>
 

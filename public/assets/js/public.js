@@ -86,7 +86,12 @@ $(document).ready(function() {
 			getFBScript();
 		}
 		isLoggedIn(token);
-	})
+	});
+
+	var time = $("#trackDuration").html();
+	if (time) {
+		$("#trackDuration").html(mmss(time/1000));	
+	}
 });
 
 function embedId(id) {
