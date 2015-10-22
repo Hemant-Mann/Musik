@@ -249,9 +249,15 @@ class Users extends Controller {
         }
     }
 
-    protected function setCurrentPlaylist($id) {
+    protected function setCurrentPlaylist($id, $object = false) {
         $session = Registry::get("session");
-        $p = Playlist::first(array("id = ?" => $id, "live = ?" => true), array("user_id","name", "genre", "view"));
+
+        if (!$object) {
+            $p = Playlist::first(array("id = ?" => $id, "live = ?" => true), array("user_id","name", "genre", "view"));    
+        } else {
+            $p = $object;
+        }
+        
 
         $playlist = array();
         $playlist["id"] = $id;
@@ -296,6 +302,34 @@ class Users extends Controller {
 
             $this->setCurrentPlaylist($id);
             self::redirect("/");
+        } else {
+            self::redirect("/404");
+        }
+    }
+
+    /**
+     * @before _secure
+     */
+    public function editPlaylist() {
+        $this->noview();
+        if (RequestMethods::post("action") == "editPlaylist") {
+            $id = RequestMethods::post("id");
+
+            if ($id) {
+                $playlist = Playlist::first(array("id = ?" => $id));
+                if (!$playlist) {
+                    return;
+                }
+
+                $playlist->name = RequestMethods::post("name");
+                $playlist->genre = RequestMethods::post("genre", "default");
+                $playlist->view = RequestMethods::post("view", "private");
+                $playlist->save();
+
+                $this->setCurrentPlaylist($id, $playlist);
+                echo "Success";
+                self::redirect("/");
+            }
         } else {
             self::redirect("/404");
         }

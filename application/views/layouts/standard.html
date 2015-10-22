@@ -17,6 +17,7 @@
     <section class="vbox">
     {if isset($user) && isset($playlists)}
         {include users/modals/change_playlist.html}
+        {include users/modals/edit_playlist.html}
     {/if}
     {if !isset($change)}
         {include layouts/navigation/headers.html}
