@@ -17,14 +17,11 @@
                 <input type="hidden" name="action" value="login">
                 <input type="hidden" id="accessToken" name="token" value="{echo $token}">
                 <button type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded"><i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">Login</span></button>
-                <div class="text-center m-t m-b">
-                    <a href="#"><small>Forgot password?</small></a>
-                </div>
                 <div class="line line-dashed"></div>
-                <p class="text-muted text-center"><small>Do not have an account?</small></p>
-                <a href="/signup" class="btn btn-lg btn-info btn-block rounded">Create an account</a>
             </form>
-            <a href="#" id="fbLogin" class="text-center"><i class="fa fa-facebook"></i> Login with Facebook</a>
+            <button href="#" id="fbLogin" class="btn btn-primary btn-lg btn-block b-2x btn-rounded text-center"><i class="fa fa-facebook"></i> <span class="m-r-n-lg">Login with Facebook</span></button>
+            <div class="line line-dashed"></div>
+            <a href="/signup" class="btn btn-lg btn-info btn-block rounded"><span class="m-r-n-lg">Or? <strong>Create an account</strong></span></a>
         </section>
     </div>
 </section>

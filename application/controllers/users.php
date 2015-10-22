@@ -61,10 +61,10 @@ class Users extends Controller {
                     $this->setPlaylists(true);
                     self::redirect("/profile");
                 } else {
-                    $error = "Invalid username/password";
+                    $error = "Invalid email/password";
                 }
             } else {
-                $error = "Invalid username/password";
+                $error = "Invalid email/password";
             }
             $view->set("error", $error);
         }
@@ -85,18 +85,17 @@ class Users extends Controller {
         if (RequestMethods::post("action") == "signup" && RequestMethods::post("token") === $session->get('Users\Login:$token')) {
             $password = RequestMethods::post("password");
 
-            $user = new User(array(
-                "name" => RequestMethods::post("name"),
-                "email" => RequestMethods::post("email"),
-                "password" => $this->encrypt($password),
-                "admin" => false,
-                "live" => true,
-                "deleted" => false
-            ));
-
             if (RequestMethods::post("confirm") != $password) {
                 $view->set("message", "Passwords do not match!");
             } else {
+                $user = new User(array(
+                    "name" => RequestMethods::post("name"),
+                    "email" => RequestMethods::post("email"),
+                    "password" => $this->encrypt($password),
+                    "admin" => false,
+                    "live" => true,
+                    "deleted" => false
+                ));
                 $user->save();
                 $view->set("message", 'You are registered!! Please <a href="/login">Login</a> to continue');
             }

@@ -81,11 +81,10 @@ $(document).ready(function() {
 
 	$("#fbLogin").on("click", function (e) {
 		e.preventDefault();
-		var token = $("#accessToken").attr("value");
 		if (!fbinit) {
 			getFBScript();
 		}
-		isLoggedIn(token);
+		isLoggedIn();
 	});
 
 	var time = $("#trackDuration").html();
@@ -107,14 +106,14 @@ function getFBScript() {
 	fbinit = true;
 }
 
-function isLoggedIn(token) {
+function isLoggedIn() {
 	FB.getLoginStatus(function (response) {
 		if (response.status === 'connected') {
-			getFBInfo(token);	// User logged into fb and app
+			getFBInfo();	// User logged into fb and app
 		} else {
 			FB.login(function (response) {
 				if (response.status === 'connected') {
-					getFBInfo(token);
+					getFBInfo();
 				} else {
 					// alert the user
 					alert("You need to give access to playmusic.net");
@@ -124,11 +123,11 @@ function isLoggedIn(token) {
 	});
 }
 
-function getFBInfo(token) {
+function getFBInfo() {
 	FB.api('/me?fields=name,email', function (response) {
 		request.create({
 			action: '/users/fbLogin',
-			data: {action: 'fbLogin', email: response.email, name: response.name, token: token},
+			data: {action: 'fbLogin', email: response.email, name: response.name, token: $("#accessToken").attr("value")},
 			callback: function (data) {
 				if (data == "Success") {
 					window.location.href = "/profile";
