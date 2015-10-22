@@ -19,14 +19,14 @@ class Tracks extends Admin {
 		$view = $this->getActionView();
 		$session = Registry::get("session");
 
-		// if (!$session->get("country")) {
-  //           $ip = $_SERVER['REMOTE_ADDR'];
-  //           $country = $this->getCountry($ip);
-  //           $session->set("country", $country);
-  //       }
+		if (!$session->get("country")) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $country = $this->getCountry($ip);
+            $session->set("country", $country);
+        }
 		if (!$session->get('Tracks\Top:$tracks')) {
 			try {
-				$topTracks = Geo::getTopTracks("india");
+				$topTracks = Geo::getTopTracks($session->get("country"));
 
 				$tracks = array();
 				foreach ($topTracks as $track) {

@@ -20,6 +20,8 @@ use Lyrics\LoloLyrics as LoloLyrics;
 use Lyrics\Exceptions\Lolo\Response as Response;
 use Lyrics\Exceptions\Lolo\Request as Req;
 
+use WebBot\lib\WebBot\Bot as Bot;
+
 class Home extends Controller {
 
     public function index() {
@@ -241,21 +243,11 @@ class Home extends Controller {
     protected function getCountry($ip) {
         $ip = ($ip == '127.0.0.1') ? '203.122.5.25' : $ip;
 
-        // $ip = '203.122.5.25';
-        $this->noview();
-
         $url = 'http://www.geoplugin.net/json.gp?ip='.$ip;
-        $ch = curl_init(); 
-
-        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36');
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-        curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,15);
-        curl_setopt($ch,CURLOPT_FOLLOWLOCATION,1);                
-        curl_setopt($ch, CURLOPT_URL, $url); 
-        
-        $data = curl_exec($ch);
-        $data = json_decode($data);
-        curl_close($ch);
+        $bot = new Bot(array('country' => $url));
+        $bot->execute();
+        $document = array_shift($bot->getDocuments());
+        $data = json_decode($document->getHttpResponse()->getBody());
 
         return $data->geoplugin_countryName;
     }
