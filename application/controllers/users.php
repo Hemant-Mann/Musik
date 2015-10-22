@@ -245,7 +245,7 @@ class Users extends Controller {
         $session->set('User:$playlists', $plist);
         
         if ($alsoSetCurrent) {
-            $this->setCurrentPlaylist($current);
+            $this->setCurrentPlaylist($current, $playlists[0]);
         }
     }
 
@@ -301,7 +301,8 @@ class Users extends Controller {
             $id = RequestMethods::post("id");
 
             $this->setCurrentPlaylist($id);
-            self::redirect("/");
+            $to = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : "/";
+            self::redirect($to);
         } else {
             self::redirect("/404");
         }
@@ -327,8 +328,9 @@ class Users extends Controller {
                 $playlist->save();
 
                 $this->setCurrentPlaylist($id, $playlist);
-                echo "Success";
-                self::redirect("/");
+
+                $to = (isset($_SERVER['HTTP_REFERER'])) ? $_SERVER['HTTP_REFERER'] : "/";
+                self::redirect($to);
             }
         } else {
             self::redirect("/404");
