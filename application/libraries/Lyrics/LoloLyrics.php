@@ -1,9 +1,9 @@
 <?php
 namespace Lyrics;
 use WebBot\lib\WebBot\Bot as Bot;
-use Lyrics\Exceptions\Lolo\Response as Response;
-use Lyrics\Exceptions\Lolo\Request as Req;
-use Lyrics\Exceptions\Lolo\Argument as Argument;
+use Lyrics\Exceptions\LoloLyrics\Response as Response;
+use Lyrics\Exceptions\LoloLyrics\Request as Req;
+use Lyrics\Exceptions\LoloLyrics\Argument as Argument;
 
 /**
  * Free Lyrics API with easy usage
@@ -34,7 +34,7 @@ class LoloLyrics {
 	protected static $apiUri = 'http://api.lololyrics.com/0.5/';
 
 	public function __construct($response, $album = "", $year = "") {
-		$this->_response = $response;
+		$this->_response = "<pre>" . print_r($response, true) . "</pre>";
 		$this->_album = $album;
 		$this->_year = $year;
 	}

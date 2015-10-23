@@ -12,6 +12,9 @@
     <!--[if lt IE 9]> <script src="<?php echo CDN; ?>js/ie/html5shiv.js"></script> <script src="<?php echo CDN; ?>js/ie/respond.min.js"></script> <script src="<?php echo CDN; ?>js/ie/excanvas.js"></script> <![endif]-->
 </head>
 <body class="bg-light dk">
+<?php if (DEBUG): ?>
+            <pre><?php print_r($e); ?></pre>
+        <?php endif; ?>
     <section id="content">
         <div class="row m-n">
             <div class="col-sm-4 col-sm-offset-4">

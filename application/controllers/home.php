@@ -16,10 +16,6 @@ use LastFm\Src\Geo as Geo;
 use LastFm\Src\Artist as Artst;
 use LastFm\Src\Tag as Tag;
 
-use Lyrics\LoloLyrics as LoloLyrics;
-use Lyrics\Exceptions\Lolo\Response as Response;
-use Lyrics\Exceptions\Lolo\Request as Req;
-
 use WebBot\lib\WebBot\Bot as Bot;
 
 class Home extends Controller {
@@ -187,23 +183,20 @@ class Home extends Controller {
                 echo $lyric->lyrics;
                 return;
             }
-            try {
-                $api = LoloLyrics::findLyrics($track, $artist);
-
-                $result = $api->getLyrics();
-                $lyrics = "<pre>". print_r($result, true). "</pre>";
-                echo $lyrics;
-                
+            
+            $shared = new Shared\Lyrics(array('library' => 'LyricsnMusic', 'track' => $track, 'artist' => $artist));
+            $api = $shared->findLyrics();
+            
+            if (is_object($api)) {
                 $lyric = new Lyric(array(
-                    "lyrics" => $lyrics,
+                    "lyrics" => $api->getLyrics(),
                     "strack_id" => $strack->id
                 ));
-                $lyric->save();    
-            
-            } catch (Req $e) {
-                echo $e->getCustomMessage();
-            } catch (Response $e) {
-                echo $e->getCustomMessage();
+                $lyric->save();
+
+                echo $api->getLyrics();
+            } else {
+                echo "Could not find the lyrics";
             }
         } else {
             self::redirect("/404");
