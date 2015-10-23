@@ -53,7 +53,7 @@ class Users extends Controller {
             $password = RequestMethods::post("password");
             $email = RequestMethods::post("email");
 
-            $user = User::first(array("email = ?" => $email));
+            $user = User::first(array("email = ?" => $email, "live = ?" => true));
 
             if ($user) {
                 if ($this->passwordCheck($password, $user->password)) {
@@ -89,7 +89,7 @@ class Users extends Controller {
             if (RequestMethods::post("confirm") != $password) {
                 $view->set("message", "Passwords do not match!");
             } else {
-                $user = User::first(array("email = ?" => $email, "live = ?" => true));
+                $user = User::first(array("email = ?" => $email));
 
                 if ($user) {
                     $view->set("message", "Email already registered");
