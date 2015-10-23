@@ -53,7 +53,7 @@ class Users extends Controller {
             $password = RequestMethods::post("password");
             $email = RequestMethods::post("email");
 
-            $user = User::first(array("email = ?" => $email, "live = ?" => true));
+            $user = User::first(array("email = ?" => $email));
 
             if ($user) {
                 if ($this->passwordCheck($password, $user->password)) {
@@ -84,20 +84,27 @@ class Users extends Controller {
 
         if (RequestMethods::post("action") == "signup" && RequestMethods::post("token") === $session->get('Users\Login:$token')) {
             $password = RequestMethods::post("password");
+            $email = RequestMethods::post("email");
 
             if (RequestMethods::post("confirm") != $password) {
                 $view->set("message", "Passwords do not match!");
             } else {
-                $user = new User(array(
-                    "name" => RequestMethods::post("name"),
-                    "email" => RequestMethods::post("email"),
-                    "password" => $this->encrypt($password),
-                    "admin" => false,
-                    "live" => true,
-                    "deleted" => false
-                ));
-                $user->save();
-                $view->set("message", 'You are registered!! Please <a href="/login">Login</a> to continue');
+                $user = User::first(array("email = ?" => $email, "live = ?" => true));
+
+                if ($user) {
+                    $view->set("message", "Email already registered");
+                } else {
+                    $user = new User(array(
+                        "name" => RequestMethods::post("name"),
+                        "email" => $email,
+                        "password" => $this->encrypt($password),
+                        "admin" => false,
+                        "live" => true,
+                        "deleted" => false
+                    ));
+                    $user->save();
+                    $view->set("message", 'You are registered!! Please <a href="/login">Login</a> to continue');    
+                }
             }
         }
         $token = $this->generateSalt();
