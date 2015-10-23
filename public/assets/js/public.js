@@ -28,12 +28,14 @@ $(document).ready(function() {
 			artist = $(this).attr("data-artist"),
 			model = $("#play_video");
 
+		self.addClass('disabled');
 		if (id === undefined) {
 			request.create({
 				action: '/home/findTrack',
 				data: {action: 'findTrack', track: track, artist: artist},
 				callback: function (data) {
 					if (data != "Error") {
+						self.removeClass('disabled');
 						thisVideoId = data;
 						self.attr("data-id", thisVideoId);
 						embedId(data);
@@ -42,6 +44,7 @@ $(document).ready(function() {
 				}
 			});	
 		} else {
+			self.removeClass('disabled');
 			embedId(thisVideoId);
 			model.modal('show');
 		}
@@ -49,6 +52,9 @@ $(document).ready(function() {
 	});
 
 	$(".findLyrics").on("click", function (e) {
+		e.preventDefault();
+		var self = $(this);
+		self.addClass('disabled');
 		if (lyrics) {
 			var el = $("#lyrics");
 			if (!el.length) {
@@ -59,15 +65,22 @@ $(document).ready(function() {
 			el.attr('role', 'close');
 			el.html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>' + lyrics);
 
+			self.removeClass('disabled');
 			return;
 		}
 
+		if (thisVideoId) {
+			var yid = thisVideoId;
+		} else {
+			var yid = "";
+		}
 		$.ajax({
 			url: '/home/findLyrics',
 			type: 'POST',
-			data: {action: 'findLyrics', track: $(this).data('track'), artist: $(this).data('artist'), mbid: $(this).data('mbid')}
+			data: {action: 'findLyrics', track: $(this).data('track'), artist: $(this).data('artist'), mbid: $(this).data('mbid'), yid: yid}
 		})
 		.done(function(data) {
+			self.removeClass('disabled');
 			lyrics = data;
 			var el = $("#lyrics");
 			el.addClass('alert alert-default alert-dismissible fade in');
@@ -75,16 +88,20 @@ $(document).ready(function() {
 			el.html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>' + data);
 		})
 		.fail(function() {
+			self.removeClass('disabled');
 			console.log("error");
 		});
 	});
 
 	$("#fbLogin").on("click", function (e) {
 		e.preventDefault();
+		var self = $(this);
+		self.addClass('disabled');
 		if (!fbinit) {
 			getFBScript();
 		}
 		isLoggedIn();
+		self.removeClass('disabled');
 	});
 
 	var time = $("#trackDuration").html();

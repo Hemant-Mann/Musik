@@ -43,7 +43,7 @@ class Lyrics extends Base {
 		try {
 			return $api::findLyrics($this->track, $this->artist);	
 		} catch (\Lyrics\Exceptions\Core $e) {
-			echo $e->getCustomMessage();
+			return $e->getCustomMessage();
 		}
 		
 	}

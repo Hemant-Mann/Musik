@@ -167,7 +167,12 @@ class Home extends Controller {
             $strack = SavedTrack::first($where, array("id", "yid"));
             if (!$strack) {
                 Registry::get("session")->set('Home\findLyrics:$return', true);
-                $id = $this->findTrack();
+
+                if (RequestMethods::post("yid")) {
+                    $id = RequestMethods::post("yid");    
+                } else {
+                    $id = $this->findTrack();    
+                }
                 $strack = new SavedTrack(array(
                     "track" => $track,
                     "artist" => $artist,
