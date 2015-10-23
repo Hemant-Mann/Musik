@@ -104,10 +104,6 @@ $(document).ready(function() {
 		self.removeClass('disabled');
 	});
 
-	var time = $("#trackDuration").html();
-	if (time) {
-		$("#trackDuration").html(mmss(time/1000));	
-	}
 });
 
 function embedId(id) {

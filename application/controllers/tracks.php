@@ -49,20 +49,18 @@ class Tracks extends Admin {
 		$view->set("count", array(1,2,3,4,5));
 	}
 
-	public function view($track, $artist) {
+	public function view($song, $artist) {
 		$view = $this->getActionView();
 		$session = Registry::get("session");
 
-		if (empty($artist) || empty($track)) {
+		if (empty($artist) || empty($song)) {
 		    self::redirect("/404");
 		}
 
-		if ($session->get('Tracks\View:track') != $track || $session->get('Tracks\View:artist') != $artist) {
+		if ($session->get('Tracks\View:track') != $song || $session->get('Tracks\View:artist') != $artist) {
 			try {
-				$session->set('Tracks\View:track', $track);
-				$session->set('Tracks\View:artist', $artist);
 
-				$track = Trck::getInfo($artist, $track);
+				$track = Trck::getInfo($artist, $song);
 				/*** Track Info ***/
 				$t = array();
 				$t["name"] = $track->getName();
@@ -115,6 +113,8 @@ class Tracks extends Admin {
 				}
 				$similar = ArrayMethods::toObject($similar);
 
+				$session->set('Tracks\View:track', $song);
+				$session->set('Tracks\View:artist', $artist);
 				$session->set('Tracks\View:$trackInfo', $t);
 				$session->set('Tracks\View:$topTracks', $tracks);
 				$session->set('Tracks\View:$similarTracks', $similar);
@@ -124,7 +124,9 @@ class Tracks extends Admin {
 				$session->erase('Tracks\View:$trackInfo');
 				$session->erase('Tracks\View:$topTracks');
 				$session->erase('Tracks\View:$similarTracks');
-				self::redirect("/404");
+
+				$session->set('Tracks\View:$notFound', true);
+				self::redirect("/artists/view/{$artist}");
 			}
 		}
 		

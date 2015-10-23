@@ -67,18 +67,26 @@ class Artists extends Admin {
                 }
                 $tracks = ArrayMethods::toObject($tracks);
 
+                $session->set('Artists\View:name', $name);
                 $session->set('Artists\View:$artist', $artist);
                 $session->set('Artists\View:$similar', $similar);
                 $session->set('Artists\View:$tracks', $tracks);
 
             } catch (\Exception $e) {
-                $session->erase('Artists\View:name');
-                $session->erase('Artists\View:$artist');
-                $session->erase('Artists\View:$similar');
-                $session->erase('Artists\View:$tracks');
-                self::redirect("/404");
+                $session->set('Artists\View:$notFound', true);
+                self::redirect('/artists/view/'. $session->get('Artists\View:name'));
             }
                 
+        }
+
+        if ($session->get('Tracks\View:$notFound')) {
+            $view->set("error", "Could not find the track details");
+            $session->erase('Tracks\View:$notFound');
+        }
+
+        if ($session->get('Artists\View:$notFound')) {
+            $view->set("error", "Could not find the artist details");
+            $session->erase('Artists\View:$notFound');
         }
     	
         $view->set("similar", $session->get('Artists\View:$similar'));
