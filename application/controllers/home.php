@@ -20,21 +20,19 @@ use WebBot\lib\WebBot\Bot as Bot;
 
 class Home extends Controller {
 
-    public function index() {
+    public function index($page = 1) {
         $view = $this->getActionView();
+        $page = (int) $page;
         $session = Registry::get("session");
 
-        // @TODO find a better way to do this because this is preventing site
-        // from loading on first time
         if (!$session->get("country")) {
             $ip = $_SERVER['REMOTE_ADDR'];
             $country = $this->getCountry($ip);
             $session->set("country", $country);
         }
 
-        if (!$session->get('Home\Index:$topArtists')) {
-            // Show top Artist by country
-            $topArtists = Geo::getTopArtists($session->get("country"));
+        if (!$session->get('Home\Index:$topArtists') || $session->get('Home\Index:page') != $page) {
+            $topArtists = Geo::getTopArtists($session->get("country"), $page);
             $artists = array();
             $i = 1;
             foreach ($topArtists as $art) {
@@ -48,15 +46,19 @@ class Home extends Controller {
                 if ($i > 30) break;
             }
             $artists = ArrayMethods::toObject($artists);    
+
+            $session->set('Home\Index:page', $page);
             $session->set('Home\Index:$topArtists', $artists);
         }
 
         $view->set("count", array(1,2,3,4,5));
+        $view->set("pagination", $this->setPagination("/home/", $page));
         $view->set("artists", $session->get('Home\Index:$topArtists'));
     }
 
-    public function genres($name = null) {
+    public function genres($name = null, $page = 1) {
         $view = $this->getActionView();
+        $page = (int) $page;
         $session = Registry::get("session");
 
         if (!$name) {
@@ -80,8 +82,8 @@ class Home extends Controller {
         
         // Display songs for 'Genre' if given
         $tracks = array();
-        if (!$session->get('Home\Genre:$set') || $session->get('Home\Genre:$set') != $name) {
-            $topTracks = Tag::getTopTracks($name);
+        if ($session->get('Home\Genre:$set') != $name || $session->get('Home\Genre:page') != $page) {
+            $topTracks = Tag::getTopTracks($name, $page);
 
             foreach ($topTracks as $t) {
                 $tracks[] = array(
@@ -93,18 +95,16 @@ class Home extends Controller {
                 );
             }
             $tracks = ArrayMethods::toObject($tracks);
+            $session->set('Home\Genre:page', $page);
             $session->set('Home\Genre:$set', $name);
             $session->set('Home\Genre:$topTracks', $tracks);
         }
 
+        $view->set("pagination", $this->setPagination("/genres/{$name}/", $page));
         $view->set("genre",  ucfirst($session->get('Home\Genre:$set')));
         $view->set("tags", $session->get('Home\Genres:$topTags'));
         $view->set("tracks", $session->get('Home\Genre:$topTracks'));
         
-    }
-
-    public function events() {
-        // code to list all the events
     }
 
     public function listen($artistName) {
@@ -211,27 +211,67 @@ class Home extends Controller {
     /**
      * Searches for music from the supplied query on last.fm | Youtube
      */
-    public function searchMusic() {
+    public function searchMusic($page = 1) {
         $view = $this->getActionView();
+
+        $page = (int) $page;
+        $session = Registry::get("session");
+        $stored = $session->get('Home\searchMusic:$vars');
 
         if (RequestMethods::post("action") == "searchMusic") {
             $type = RequestMethods::post("type");
             $q = RequestMethods::post("q");
 
-            if ($type == 'song') {
-                $results = $this->searchLastFm($q);
-            } elseif ($type == 'video') {
-                $results = $this->searchYoutube($q);
+            if ($stored["q"] != $q) {
+                $this->setResults($type, $q);
             }
+        } elseif ($stored['results']) {
 
-            if (!is_object($results) && $results == "Error") {
-            	$view->set("error", "Error");
-            } else {
-            	$view->set("type", $type);
-            	$view->set("results", $results);
+        } else {
+            self::redirect("/");
+        }
+
+        if ($page > 1 && $page <= 5) {
+            if ($stored['type'] == 'song') {
+                $this->setResults($stored['type'], $stored['q'], $page);
+            } elseif ($stored['type'] == 'video') {
+                // $results = $this->sear
             }
         } else {
-            self::redirect("/404");
+            $page = 1;
+        }
+
+        $stored = $session->get('Home\searchMusic:$vars');
+        if ($stored['error']) {
+            $view->set('error', $stored['error']);
+        } else {
+            $view->set('type', $stored['type']);
+            $view->set('results', $stored['results']);
+        }
+
+        $view->set('pagination', $this->setPagination('/home/searchMusic/', $page));
+    }
+
+    protected function setResults($type, $q, $page = 1, $limit = 50) {
+        $session = Registry::get("session");
+        $get = $session->get('Home\searchMusic:$vars');
+        if ($page == $get['page']) {
+            return;
+        }
+        switch ($type) {
+            case 'song':
+                $results = $this->searchLastFm($q, $page);
+                break;
+            
+            case 'video':
+                $results = $this->searchYoutube($q, $limit);
+                break;
+        }
+
+        if (!is_object($results) || $results == "Error") {
+            $session->set('Home\searchMusic:$vars', array('error' => 'Error'));
+        } else {
+            $session->set('Home\searchMusic:$vars', array('q' => $q, 'type' => $type, 'results' => $results, 'page' => $page));
         }
     }
 
@@ -253,9 +293,9 @@ class Home extends Controller {
     /**
      * Searches last.fm for the given song
      */
-    protected function searchLastFm($q) {
+    protected function searchLastFm($q, $page = 1, $limit = 30) {
     	try {
-    		$tracks = @Trck::search($q, null, 30)->getResults();    // Will return an array of objects
+    		$tracks = @Trck::search($q, null, $limit, $page)->getResults();    // Will return an array of objects
     		// echo "<pre>". print_r($tracks, true). "</pre>";
     		
     		$results = array();

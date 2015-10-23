@@ -15,8 +15,9 @@ use LastFm\Src\Util as Util;
 
 class Tracks extends Admin {
 	
-	public function top() {
+	public function top($page = 1) {
 		$view = $this->getActionView();
+		$page = (int) $page;
 		$session = Registry::get("session");
 
 		if (!$session->get("country")) {
@@ -24,9 +25,9 @@ class Tracks extends Admin {
             $country = $this->getCountry($ip);
             $session->set("country", $country);
         }
-		if (!$session->get('Tracks\Top:$tracks')) {
+		if (!$session->get('Tracks\Top:$tracks') || $session->get('Tracks\Top:page') != $page) {
 			try {
-				$topTracks = Geo::getTopTracks($session->get("country"));
+				$topTracks = Geo::getTopTracks($session->get("country"), $page);
 
 				$tracks = array();
 				foreach ($topTracks as $track) {
@@ -38,6 +39,8 @@ class Tracks extends Admin {
 					);
 				}
 				$tracks = ArrayMethods::toObject($tracks);
+
+				$session->set('Tracks\Top:page', $page);
 				$session->set('Tracks\Top:$tracks', $tracks);
 
 			} catch (\Exception $e) {
@@ -45,6 +48,7 @@ class Tracks extends Admin {
 			}	
 		}
 
+		$view->set("pagination", $this->setPagination("/tracks/top/", $page));
 		$view->set("tracks", $session->get('Tracks\Top:$tracks'));
 		$view->set("count", array(1,2,3,4,5));
 	}

@@ -5,6 +5,11 @@
 $routes = array(
     // Main Navigation routes
     array(
+        "pattern" => "home/:page",
+        "controller" => "home",
+        "action" => "index"
+    ),
+    array(
         "pattern" => "home",
         "controller" => "home",
         "action" => "index"
@@ -13,6 +18,11 @@ $routes = array(
         "pattern" => "index",
         "controller" => "home",
         "action" => "index"
+    ),
+    array(
+        "pattern" => "genres/:name/:page",
+        "controller" => "home",
+        "action" => "genres"
     ),
     array(
         "pattern" => "genres/:name",

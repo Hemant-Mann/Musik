@@ -24,7 +24,7 @@
                                                <h6 class="page-heading">Play Count: <strong>{echo $artist->playCount}</strong></h6>
                                                 <h6 class="page-heading">Listeners: <strong>{echo $artist->listeners}</strong></h6>
 
-                                                <a href="#" class="btn btn-default addToPlaylistArtist" data-artist="{echo $artist->name}" data-mbid="{echo $artist->mbid}">Add To Playlist</a>
+                                                <a href="#" class="hide btn btn-default addToPlaylistArtist" data-artist="{echo $artist->name}" data-mbid="{echo $artist->mbid}">Add To Playlist</a>
                                             </div>
                                             <div> Tags:
                                             {foreach $tag in $artist->tags}

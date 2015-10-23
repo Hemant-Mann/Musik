@@ -11,6 +11,7 @@ namespace Shared {
     use Framework\Events as Events;
     use Framework\Router as Router;
     use Framework\Registry as Registry;
+    use Framework\ArrayMethods as ArrayMethods;
 
     class Controller extends \Framework\Controller {
 
@@ -166,6 +167,22 @@ namespace Shared {
             $salt = substr($modified_base64_string, 0, $length);
 
             return $salt;
+        }
+
+        protected function setPagination($pageRoot, $current, $start = 1, $end = 5) {
+            $count = array();
+            for ($i = $start; $i <= $end; ++$i) {
+                $count[] = $i;
+            }
+            $pagination = array(
+                'pageRoot' => $pageRoot,
+                'count' => $count,
+                'firstPage' => $start,
+                'currentPage' => $current,
+                'lastPage' => $end
+            );
+            $pagination = ArrayMethods::toObject($pagination);
+            return $pagination;
         }
 
     }

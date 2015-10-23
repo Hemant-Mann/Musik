@@ -95,8 +95,9 @@ class Artists extends Admin {
 
     }
 
-	public function top() {
+	public function top($page = 1) {
 		$view = $this->getActionView();
+        $page = (int) $page;
 		$session = Registry::get("session");
 
         $title = "Top Artists";
@@ -107,9 +108,8 @@ class Artists extends Admin {
             $session->set("country", $country);
         }
 
-        if (!$session->get('Artists\Top:$geo')) {
-        	// Show top Artist by country
-        	$topArtists = Geo::getTopArtists($session->get("country"));
+        if (!$session->get('Artists\Top:$geo') || $session->get('Artists\Top:page') != $page) {
+        	$topArtists = Geo::getTopArtists($session->get("country"), $page);
 
         	$artists = array();
         	$i = 1;
@@ -124,10 +124,12 @@ class Artists extends Admin {
         	    if ($i > 30) break;
         	}
         	$artists = ArrayMethods::toObject($artists);
+            $session->set('Artists\Top:page', $page);
         	$session->set('Artists\Top:$geo', $artists);
         }
 
         $view->set("count", array(1,2,3,4,5));
+        $view->set("pagination", $this->setPagination("/artists/top/", $page));
         $view->set("artists", $session->get('Artists\Top:$geo'));
         $view->set("title", $title);
 	}

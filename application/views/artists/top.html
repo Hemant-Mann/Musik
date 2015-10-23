@@ -22,11 +22,7 @@
                                                 {/foreach}
                                             </div>
                                             <div class="center text-center m-t-n">
-                                                <a href="/artists/view/{echo Framework\StringMethods::url($art->name)}" data-mid="{echo $art->mbid}"><i class="icon-control-play i-2x"></i></a>
-                                            </div>
-                                            <div class="bottom padder m-b-sm">
-                                                <a href="#" class="pull-right"> <i class="fa fa-heart-o"></i> </a>
-                                                <a href="#"> <i class="fa fa-plus-circle"></i> </a>
+                                                <a href="/artists/view/{echo Framework\StringMethods::url($art->name)}" data-mid="{echo $art->mbid}"><i class="icon-info i-2x"></i></a>
                                             </div>
                                         </div>
                                         <a href="#">
@@ -34,7 +30,7 @@
                                         </a>
                                     </div>
                                     <div class="padder-v">
-                                        <a href="/artists/{echo Framework\StringMethods::url($art->name)}" data-mbid="{echo $art->mbid}" class="text-ellipsis">{echo $art->name}</a>
+                                        <a href="/artists/view/{echo Framework\StringMethods::url($art->name)}" data-mbid="{echo $art->mbid}" class="text-ellipsis">{echo $art->name}</a>
                                     </div>
                                 </div>
                             </div>
@@ -44,6 +40,17 @@
                         {else}
                             <h3 class="page-heading">Something went wrong</h3>
                         {/else}
+                        <ul class="pagination pagination">
+                            {if $pagination->currentPage > $pagination->firstPage}
+                                <li><a href="{echo $pagination->pageRoot . ($pagination->currentPage - 1)}"><i class="fa fa-chevron-left"></i></a></li>
+                            {/if}
+                            {foreach $c in $pagination->count}
+                            <li class="{if $c == $pagination->currentPage}active{/if}"><a href="{echo $pagination->pageRoot . $c}">{echo $c}</a></li>
+                            {/foreach}
+                            {if $pagination->currentPage < $pagination->lastPage}
+                                <li><a href="{echo $pagination->pageRoot . ($pagination->currentPage + 1)}"><i class="fa fa-chevron-right"></i></a></li>
+                            {/if}
+                        </ul>
                     </section>
                     <footer class="footer bg-dark">
                         {include layouts/navigation/footers.html}

@@ -65,9 +65,11 @@ class Geo {
 	 * @access	public
 	 * @throws	Error
 	 */
-	public static function getTopArtists($country){
+	public static function getTopArtists($country, $page = 1, $limit = 36){
 		$xml = CallerFactory::getDefaultCaller()->call('geo.getTopArtists', array(
-			'country' => $country
+			'country' => $country,
+			'page' => $page,
+			'limit' => $limit
 		));
 
 		$artists = array();
@@ -89,10 +91,12 @@ class Geo {
 	 * @access	public
 	 * @throws	Error
 	 */
-	public static function getTopTracks($country, $location = null){
+	public static function getTopTracks($country, $page = 1, $limit = 36, $location = null){
 		$xml = CallerFactory::getDefaultCaller()->call('geo.getTopTracks', array(
 			'country'  => $country,
-			'location' => $location
+			'location' => $location,
+			'page' => $page,
+			'limit' => $limit
 		));
 
 		$tracks = array();

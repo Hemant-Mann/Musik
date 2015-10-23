@@ -122,6 +122,7 @@ class Users extends Controller {
      */
     public function savePlaylist() {
         $this->noview();
+        $changed = false;
 
         if (RequestMethods::post("action") == "savePlaylist" && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')) {
             try {
@@ -147,13 +148,19 @@ class Users extends Controller {
                             "play_count" => 0
                         ));
                         $plist->save();    
+
+                        $changed = true;
                     } else if ($p["deleted"] == "true" && $p["ptrackid"] != "false") {
                         $ptrack = PlaylistTrack::first(array("id = ?" => $p["ptrackid"]));
                         $ptrack->live = false;
                         $ptrack->save();
+                        $changed = true;
                     }
                 }
-                $this->setTracks($id);
+
+                if ($changed) {
+                    $this->setTracks($id);    
+                }
                 echo "Success";
             } catch (\Exception $e) {
                 echo "Error";
