@@ -96,17 +96,22 @@ class Artists extends Admin {
     }
 
 	public function top($page = 1) {
-		$view = $this->getActionView();
-        $page = (int) $page;
+        $view = $this->getActionView();
+        if (is_numeric($page) === FALSE) { self::redirect("/404"); }
+        
+        $page = (int) $page; $pageMax = 50;
+        if ($page > $pageMax) {
+            $page = $pageMax;
+        }
 		$session = Registry::get("session");
-
-        $title = "Top Artists";
         
         if (!$session->get("country")) {
             $ip = $_SERVER['REMOTE_ADDR'];
             $country = $this->getCountry($ip);
             $session->set("country", $country);
         }
+
+        $title = "Top Artists - " . $session->get("country");
 
         if (!$session->get('Artists\Top:$geo') || $session->get('Artists\Top:page') != $page) {
         	$topArtists = Geo::getTopArtists($session->get("country"), $page);
@@ -129,7 +134,7 @@ class Artists extends Admin {
         }
 
         $view->set("count", array(1,2,3,4,5));
-        $view->set("pagination", $this->setPagination("/artists/top/", $page));
+        $view->set("pagination", $this->setPagination("/artists/top/", $page, 1, $pageMax));
         $view->set("artists", $session->get('Artists\Top:$geo'));
         $view->set("title", $title);
 	}

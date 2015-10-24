@@ -17,7 +17,12 @@ class Tracks extends Admin {
 	
 	public function top($page = 1) {
 		$view = $this->getActionView();
-		$page = (int) $page;
+		if (is_numeric($page) === FALSE) { self::redirect("/404"); }
+		
+		$page = (int) $page; $pageMax = 50;
+		if ($page > $pageMax) {
+            $page = $pageMax;
+        }
 		$session = Registry::get("session");
 
 		if (!$session->get("country")) {
@@ -48,7 +53,8 @@ class Tracks extends Admin {
 			}	
 		}
 
-		$view->set("pagination", $this->setPagination("/tracks/top/", $page));
+		$view->set("title", "Top Tracks - ". $session->get("country"));
+		$view->set("pagination", $this->setPagination("/tracks/top/", $page, 1, $pageMax));
 		$view->set("tracks", $session->get('Tracks\Top:$tracks'));
 		$view->set("count", array(1,2,3,4,5));
 	}

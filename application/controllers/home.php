@@ -22,7 +22,12 @@ class Home extends Controller {
 
     public function index($page = 1) {
         $view = $this->getActionView();
-        $page = (int) $page;
+        if (is_numeric($page) === FALSE) { self::redirect("/404"); }
+        
+        $page = (int) $page; $pageMax = 50;
+        if ($page > $pageMax) {
+            $page = $pageMax;
+        }
         $session = Registry::get("session");
 
         if (!$session->get("country")) {
@@ -52,13 +57,18 @@ class Home extends Controller {
         }
 
         $view->set("count", array(1,2,3,4,5));
-        $view->set("pagination", $this->setPagination("/home/", $page));
+        $view->set("pagination", $this->setPagination("/index/", $page, 1, $pageMax));
         $view->set("artists", $session->get('Home\Index:$topArtists'));
     }
 
     public function genres($name = null, $page = 1) {
         $view = $this->getActionView();
-        $page = (int) $page;
+        if (is_numeric($page) === FALSE) { self::redirect("/404"); }
+        
+        $page = (int) $page; $pageMax = 5;
+        if ($page > $pageMax) {
+            $page = $pageMax;
+        }
         $session = Registry::get("session");
 
         if (!$name) {
@@ -213,8 +223,12 @@ class Home extends Controller {
      */
     public function searchMusic($page = 1) {
         $view = $this->getActionView();
+        if (is_numeric($page) === FALSE) { self::redirect("/404"); }
 
-        $page = (int) $page;
+        $page = (int) $page; $pageMax = 7;
+        if ($page > $pageMax) {
+            $page = $pageMax;
+        }
         $session = Registry::get("session");
         $stored = $session->get('Home\searchMusic:$vars');
 
@@ -222,24 +236,19 @@ class Home extends Controller {
             $type = RequestMethods::post("type");
             $q = RequestMethods::post("q");
 
-            if ($stored["q"] != $q) {
+            if ($stored && ($stored['q'] !== $q || $stored['type'] !== $type)) {
                 $this->setResults($type, $q);
+                unset($stored);
             }
-        } elseif ($stored['results']) {
-
-        } else {
+        } elseif (!$stored || !$stored['results']) {
             self::redirect("/");
         }
 
-        if ($page > 1 && $page <= 5) {
-            if ($stored['type'] == 'song') {
-                $this->setResults($stored['type'], $stored['q'], $page);
-            } elseif ($stored['type'] == 'video') {
-                // $results = $this->sear
-            }
-        } else {
-            $page = 1;
-        }
+        // if ($stored && $stored['type'] === 'song') {
+        //     $this->setResults($stored['type'], $stored['q'], $page);
+        // } elseif ($stored['type'] === 'video') {
+        //     // $results = $this->sear
+        // }
 
         $stored = $session->get('Home\searchMusic:$vars');
         if ($stored['error']) {
@@ -249,15 +258,17 @@ class Home extends Controller {
             $view->set('results', $stored['results']);
         }
 
-        $view->set('pagination', $this->setPagination('/home/searchMusic/', $page));
+        $view->set('pagination', $this->setPagination('/home/searchMusic/', $page, 1, $pageMax));
     }
 
     protected function setResults($type, $q, $page = 1, $limit = 50) {
         $session = Registry::get("session");
         $get = $session->get('Home\searchMusic:$vars');
-        if ($page == $get['page']) {
+
+        if ($get && $page == $get['page'] && $type === $get['type'] && $q === $type['q']) {
             return;
         }
+
         switch ($type) {
             case 'song':
                 $results = $this->searchLastFm($q, $page);
