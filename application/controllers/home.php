@@ -22,11 +22,13 @@ class Home extends Controller {
 
     public function index($page = 1) {
         $view = $this->getActionView();
-        if (is_numeric($page) === FALSE) { self::redirect("/404"); }
+        if (is_numeric($page) === FALSE) { self::redirect("/"); }
         
         $page = (int) $page; $pageMax = 50;
         if ($page > $pageMax) {
             $page = $pageMax;
+        }  elseif ($page === 0) {
+            $page = 1;
         }
         $session = Registry::get("session");
 
@@ -63,11 +65,13 @@ class Home extends Controller {
 
     public function genres($name = null, $page = 1) {
         $view = $this->getActionView();
-        if (is_numeric($page) === FALSE) { self::redirect("/404"); }
+        if (is_numeric($page) === FALSE) { self::redirect("/genres/all"); }
         
         $page = (int) $page; $pageMax = 5;
         if ($page > $pageMax) {
             $page = $pageMax;
+        }  elseif ($page === 0) {
+            $page = 1;
         }
         $session = Registry::get("session");
 
@@ -121,19 +125,49 @@ class Home extends Controller {
         self::redirect("/404");
     }
 
-    public function videos() {
+    public function videos($page = 1) {
     	$view = $this->getActionView();
-    	$results = null; $text = '';
-
-        $q = 'latest songs';
-        $results = $this->searchYoutube($q);
-
-        // @todo add error checking in videos page
-        if (!is_object($results) && $results == "Error") {
-            $view->set("error", $results);
-        } else {
-            $view->set("results", $results);    
+        if (is_numeric($page) === FALSE) { self::redirect("/videos/"); }
+        
+        $page = (int) $page; $pageMax = 6;
+        if ($page > $pageMax) {
+            $page = $pageMax;
+        } elseif ($page === 0) {
+            $page = 1;
         }
+
+        $session = Registry::get("session");
+        $key = 'Home\videos:$results:'.$page;
+        $q = 'latest songs';
+        
+        if (!$session->get('Home\videos:$once')) {
+            $session->set('Home\videos:$once', 1);
+
+            $options = array('method' => 'Home\videos', 'current' => 1, 'token' => '');
+            $results = $this->searchYoutube($q, 15, false, $options);
+            $session->set('Home\videos:$results:1', $results);
+            self::redirect("/videos/1");
+        } elseif ($page != 1) {
+            $currentPage = $session->get('Home\videos:$currentPage');
+
+            if ($page == $currentPage + 1) { // next page
+                $pageToken = $session->get('Home\videos:$nextPageToken');
+            } elseif ($page === $currentPage - 1) { // prev page
+                $pageToken = $session->get('Home\videos:$prevPageToken');
+            } else {
+                self::redirect("/videos/{$currentPage}");
+            }
+
+            $options = array('method' => 'Home\videos', 'current' => $page, 'pageToken' => $pageToken);
+        }
+
+        if (!$session->get($key)) {
+            $results = $this->searchYoutube($q, 15, false, $options);
+            $session->set($key, $results);
+        }
+
+        $view->set("results", $session->get($key));
+        $view->set("pagination", $this->setPagination("/videos/", $page, 1, $pageMax));
     }
 
     /**
@@ -223,11 +257,13 @@ class Home extends Controller {
      */
     public function searchMusic($page = 1) {
         $view = $this->getActionView();
-        if (is_numeric($page) === FALSE) { self::redirect("/404"); }
+        if (is_numeric($page) === FALSE) { self::redirect("/"); }
 
         $page = (int) $page; $pageMax = 7;
         if ($page > $pageMax) {
             $page = $pageMax;
+        } elseif ($page === 0) {
+            $page = 1;
         }
         $session = Registry::get("session");
         $stored = $session->get('Home\searchMusic:$vars');
@@ -236,19 +272,16 @@ class Home extends Controller {
             $type = RequestMethods::post("type");
             $q = RequestMethods::post("q");
 
-            if ($stored && ($stored['q'] !== $q || $stored['type'] !== $type)) {
-                $this->setResults($type, $q);
-                unset($stored);
+            if ($stored['q'] !== $q || $stored['type'] !== $type) {
+                $this->setResults($type, $q, $page);
             }
         } elseif (!$stored || !$stored['results']) {
             self::redirect("/");
         }
 
-        // if ($stored && $stored['type'] === 'song') {
-        //     $this->setResults($stored['type'], $stored['q'], $page);
-        // } elseif ($stored['type'] === 'video') {
-        //     // $results = $this->sear
-        // }
+        if ($stored['page'] != $page && $stored['type'] == 'song') {
+            $this->setResults($stored['type'], $stored['q'], $page);
+        }
 
         $stored = $session->get('Home\searchMusic:$vars');
         if ($stored['error']) {
@@ -263,12 +296,7 @@ class Home extends Controller {
 
     protected function setResults($type, $q, $page = 1, $limit = 50) {
         $session = Registry::get("session");
-        $get = $session->get('Home\searchMusic:$vars');
-
-        if ($get && $page == $get['page'] && $type === $get['type'] && $q === $type['q']) {
-            return;
-        }
-
+ 
         switch ($type) {
             case 'song':
                 $results = $this->searchLastFm($q, $page);
@@ -279,7 +307,7 @@ class Home extends Controller {
                 break;
         }
 
-        if (!is_object($results) || $results == "Error") {
+        if ($results == "Error") {
             $session->set('Home\searchMusic:$vars', array('error' => 'Error'));
         } else {
             $session->set('Home\searchMusic:$vars', array('q' => $q, 'type' => $type, 'results' => $results, 'page' => $page));
@@ -333,18 +361,31 @@ class Home extends Controller {
      * Searches youtube for a given query
      * @return object|string
      */
-    protected function searchYoutube($q, $max = 15, $returnId = false) {
+    protected function searchYoutube($q, $max = 15, $returnId = false, $options = array()) {
         $youtube = Registry::get("youtube");
-        
+        $session = Registry::get("session");
+
+        if (!empty($options)) {
+            $token = $options["pageToken"];
+            $method = $options["method"];
+            $session->set($method. ':$currentPage', $options["current"]);
+        } else {
+            $token = ''; $method = '';
+        }
+
         try {
             $searchResponse = $youtube->search->listSearch('id,snippet', array(
                 'q' => $q,
                 'maxResults' => $max,
-                "type" => "video"
+                "type" => "video",
+                "pageToken" => $token
             ));
 
-            // Add each result to the appropriate list, and then display the lists of
-            // matching videos, channels, and playlists.
+            if ($method) {
+                $session->set($method.':$nextPageToken', $searchResponse['nextPageToken']);
+                $session->set($method.':$prevPageToken', (isset($searchResponse['prevPageToken']) ? $searchResponse['prevPageToken'] : false));    
+            }
+            
             $results = array();
             foreach ($searchResponse['items'] as $searchResult) {
                 $thumbnail = $searchResult['snippet']['thumbnails']['medium']['url'];

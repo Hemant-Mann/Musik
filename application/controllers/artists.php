@@ -97,11 +97,13 @@ class Artists extends Admin {
 
 	public function top($page = 1) {
         $view = $this->getActionView();
-        if (is_numeric($page) === FALSE) { self::redirect("/404"); }
+        if (is_numeric($page) === FALSE) { self::redirect("/artists/top/"); }
         
         $page = (int) $page; $pageMax = 50;
         if ($page > $pageMax) {
             $page = $pageMax;
+        } elseif ($page === 0) {
+            $page = 1;
         }
 		$session = Registry::get("session");
         

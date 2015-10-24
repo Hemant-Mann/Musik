@@ -39,6 +39,11 @@ $routes = array(
         "controller" => "home",
         "action" => "videos"
     ),
+    array(
+        "pattern" => "videos/:page",
+        "controller" => "home",
+        "action" => "videos"
+    ),
 
     // user routes
     array(
