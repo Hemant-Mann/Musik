@@ -121,6 +121,17 @@ function playThis(track, playingIndex) {
     }
 
     index = playingIndex;
+    var x = $('#activeTrack');
+    if (x) {
+        x.removeClass('active');
+        x.attr('id', '');
+    }
+    
+    x = playlistItems.find('[data-index="' + index + '"]');
+    x = x.parent();
+    x.addClass('active');
+    x.attr('id', 'activeTrack');
+
     startPlayback(playlist[index].yid);
     startTimer();
     initjPlayer(track);
@@ -236,7 +247,6 @@ $(document).ready(function () {
         } else {
             playThis(track, playingIndex);
         }
-        
     });
 
     // clearing the playlist
@@ -260,7 +270,6 @@ $(document).ready(function () {
         } else {
             return;
         }
-        
     });
 
     $("#savePlaylist").on("click", function () {
