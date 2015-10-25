@@ -19,7 +19,7 @@
                                                 <div class="clearfix m-b-lg">
                                                     <h6 class="page-heading">Play Count: <strong>{echo $track->playCount}</strong></h6>
 
-                                                    <a href="#" class="btn btn-info playThisTrack" data-artist="{echo $track->artist}" data-track="{echo $track->name}" data-mbid="{echo $track->mbid}"><i class="icon-control-play"></i> Play</a>
+                                                    <a href="#jp_container_N" class="btn btn-info playThisTrack" data-artist="{echo $track->artist}" data-track="{echo $track->name}" data-mbid="{echo $track->mbid}"><i class="icon-control-play"></i> Play</a>
 
                                                     <a href="#" class="btn btn-success playThisVideo" data-artist="{echo $track->artist}" data-track="{echo $track->name}"><i class="icon-social-youtube icon"></i> Video</a>
 
@@ -44,7 +44,7 @@
                                                 <a href="/tracks/view/{echo Framework\StringMethods::url($t->name)}/{echo Framework\StringMethods::url($track->artist)}" target="_blank" data-artist="{echo $track->artist}" data-track="{echo $t->name}" data-mbid="{echo $t->mbid}"><i class="m-r-sm icon-info"></i></a>
                                                 <a href="#" class="m-r-sm addToPlaylist" data-artist="{echo $track->artist}" data-track="{echo $t->name}" data-mbid="{echo $t->mbid}"><i class="icon-plus"></i></a>
                                             </div>
-                                            <a href="#" class="jp-play-me m-r-sm pull-left playThisTrack" data-artist="{echo $track->artist}" data-track="{echo $t->name}" data-mbid="{echo $t->mbid}"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
+                                            <a href="#jp_container_N" class="jp-play-me m-r-sm pull-left playThisTrack" data-artist="{echo $track->artist}" data-track="{echo $t->name}" data-mbid="{echo $t->mbid}"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
                                             <div class="clear text-ellipsis"> <span>{echo $t->name}</span> </div>
                                         </li>
                                     {/foreach}
@@ -62,7 +62,7 @@
                                             <div class="media-body">
                                                 <a href="/tracks/view/{echo Framework\StringMethods::url($s->name)}/{echo Framework\StringMethods::url($s->artist)}" data-mbid="{echo $s->mbid}" class="font-semibold">{echo $s->name}</a>
                                                 <div class="text-xs block m-t-xs">
-                                                    <a href="#" class="playThisTrack" data-artist="{echo $s->artist}" data-track="{echo $s->name}" data-mbid="{echo $s->mbid}" class="jp-play-me m-r-sm pull-left playThisTrack"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
+                                                    <a href="#jp_container_N" class="playThisTrack" data-artist="{echo $s->artist}" data-track="{echo $s->name}" data-mbid="{echo $s->mbid}" class="jp-play-me m-r-sm pull-left playThisTrack"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
                                                     <a href="/artists/view/{echo Framework\StringMethods::url($s->artist)}">{echo $s->artist}</a>
                                                 </div>
                                             </div>

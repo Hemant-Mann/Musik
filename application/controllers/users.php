@@ -117,14 +117,15 @@ class Users extends Controller {
         self::redirect("/login");
     }
 
-    /**
-     * @before _secure
-     */
     public function savePlaylist() {
         $this->noview();
         $changed = false;
 
         if (RequestMethods::post("action") == "savePlaylist" && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')) {
+            if (!$this->user) {
+                echo "Login";
+                return;
+            }
             try {
                 $playlist = RequestMethods::post("playlist");
                 $id = RequestMethods::post("playlistId");

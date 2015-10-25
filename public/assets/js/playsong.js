@@ -475,6 +475,8 @@ function savePlaylist() {
             if (data == "Success") {
                 // @todo make a alert modal for better UI
                 alert('Your playlist has been saved');
+            } else if (data == "Login") {
+                // alert('Login to save Playlist!');
             } else {
                 alert('Playlist could not be saved');
             }

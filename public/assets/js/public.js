@@ -12,7 +12,6 @@ $(document).ready(function() {
 	$.ajaxSetup({ cache: true });
 	$.getScript('//connect.facebook.net/en_US/sdk.js', getFBScript);
 
-
 	$("a.play.text-ellipsis").on("click", function (e) {
 		e.preventDefault();
 
