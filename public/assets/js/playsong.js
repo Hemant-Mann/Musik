@@ -473,12 +473,13 @@ function savePlaylist() {
         data: {action: 'savePlaylist', playlist: playlist, playlistId: $('#currentPlaylist').data('id')},
         callback: function (data) {
             if (data == "Success") {
-                // @todo make a alert modal for better UI
-                alert('Your playlist has been saved');
+                $('#alertMessage').html("Your playlist has been saved");
+                $('#alertModal').modal('show');
             } else if (data == "Login") {
                 // alert('Login to save Playlist!');
             } else {
-                alert('Playlist could not be saved');
+                $('#alertMessage').html("Your Playlist could not be saved");
+                $('#alertModal').modal('show');
             }
             console.log(data);
         }

@@ -57,7 +57,7 @@ $(document).ready(function() {
 		if (lyrics) {
 			var el = $("#lyrics");
 			if (!el.length) {
-				$('.trackWiki').after('<div id="lyrics"></div>');
+				$('.trackWiki').before('<div id="lyrics"></div>');
 				el = $("#lyrics");
 			}
 			el.addClass('alert alert-default alert-dismissible fade in');
@@ -127,8 +127,8 @@ function isLoggedIn() {
 				if (response.status === 'connected') {
 					getFBInfo();
 				} else {
-					// alert the user
-					alert("You need to give access to playmusic.net");
+					$('#alertMessage').html("You need to give access to playmusic.net");
+					$('#alertModal').modal('show');
 				}
 			}, {scope: 'public_profile,email'});
 		}
@@ -144,8 +144,8 @@ function getFBInfo() {
 				if (data == "Success") {
 					window.location.href = "/profile";
 				} else {
-					// @todo replace with alert modal
-					alert('Something went wrong');
+					$('#alertMessage').html("Something went wrong");
+					$('#alertModal').modal('show');
 				}
 			}
 		});

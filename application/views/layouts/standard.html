@@ -22,6 +22,7 @@
     {if !isset($change)}
         {include layouts/navigation/headers.html}
     {/if}
+    {include home/modals/alert.html}
         <section>
             {ayield action}
         </section>
@@ -29,10 +30,10 @@
     
     <script src="{echo CDN}js/app.v1.js"></script>
     <script src="{echo CDN}js/app.plugin.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{echo CDN}js/jPlayer/jquery.jplayer.min.js"></script>
     <script type="text/javascript" src="{echo CDN}js/jPlayer/add-on/jplayer.playlist.min.js"></script>
     <script type="text/javascript" src="{echo CDN}js/iframe_api.js"></script>
-    <!--<script type="text/javascript" src="{echo CDN}js/jPlayer/demo.js"></script>-->
     <script type="text/javascript" src="{echo CDN}js/model.js"></script>
     <script type="text/javascript" src="{echo CDN}js/public.js"></script>
     <script type="text/javascript" src="{echo CDN}js/playsong.js"></script>
