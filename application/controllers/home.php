@@ -176,7 +176,7 @@ class Home extends Controller {
     public function findTrack() {
         $this->noview();
         $return = Registry::get("session")->get('Home\findLyrics:$return');
-        if (RequestMethods::post("action") == "findTrack" || $return) {
+        if ((RequestMethods::post("action") == "findTrack" && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')) || $return) {
             $artist = RequestMethods::post("artist");
             $track = RequestMethods::post("track");
 
@@ -198,7 +198,7 @@ class Home extends Controller {
 
     public function findLyrics() {
         $this->noview();
-        if (RequestMethods::post("action") == "findLyrics") {
+        if (RequestMethods::post("action") == "findLyrics" && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')) {
             $artist = RequestMethods::post("artist");
             $track = RequestMethods::post("track");
             $mbid = RequestMethods::post("mbid");
