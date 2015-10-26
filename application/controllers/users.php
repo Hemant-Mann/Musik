@@ -143,13 +143,23 @@ class Users extends Controller {
                             ));
                             $track->save();
                         }
-                        $plist = new PlaylistTrack(array(
-                            "playlist_id" => $id,
-                            "strack_id" => $track->id,
-                            "play_count" => 0
-                        ));
-                        $plist->save();    
+                        $plist = PlaylistTrack::first(array("playlist_id = ?" => $id, "strack_id = ?" => $track->id));
+                        $live = null;
+                        if (!$plist) {
+                            $plist = new PlaylistTrack(array(
+                                "playlist_id" => $id,
+                                "strack_id" => $track->id,
+                                "play_count" => 0
+                            ));
+                            $plist->save();
+                        } elseif ($plist) {
+                            $live = $plist->live;
+                        }
 
+                        if ($live) {
+                            $plist->live = true;
+                            $plist->save();
+                        }
                         $changed = true;
                     } else if ($p["deleted"] == "true" && $p["ptrackid"] != "false") {
                         $ptrack = PlaylistTrack::first(array("id = ?" => $p["ptrackid"]));

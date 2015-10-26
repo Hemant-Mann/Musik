@@ -44,8 +44,8 @@
             {script $i = 0}
             {foreach $track in $plistTracks}
             <div class="list-group-item">
-                <a href="#" data-index="{echo $i}" class="pull-right btn-remove item removeThisTrack"><i class="fa fa-times text"></i></a>
-                <a href="#" data-index="{echo $i}" data-ptrackid="{echo $track->ptrackid}" data-track="{echo $track->track}" data-artist="{echo $track->artist}" data-mbid="{echo $track->mbid}" data-yid="{echo $track->yid}" class="playThisTrack"><i class="icon-control-play text"></i></a><span class="btn-track-info trackInfo"> {echo $track->track}</span>
+                <a href="#jp_container_N" data-index="{echo $i}" class="pull-right btn-remove item removeThisTrack"><i class="fa fa-times text"></i></a>
+                <a href="#jp_container_N" data-index="{echo $i}" data-ptrackid="{echo $track->ptrackid}" data-track="{echo $track->track}" data-artist="{echo $track->artist}" data-mbid="{echo $track->mbid}" data-yid="{echo $track->yid}" class="playThisTrack"><i class="icon-control-play text"></i></a><span class="btn-track-info trackInfo"> {echo $track->track}</span>
                 <br/><span class="artistInfo text-muted btn-artist-info"> {echo $track->artist}</span>
             </div>
             {script ++$i}

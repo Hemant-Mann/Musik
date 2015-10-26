@@ -158,7 +158,7 @@ function addToPlaylist(track, artist, mbid, yid) {
     });
 
     playlistItems.append(
-        '<div class="list-group-item"><a href="#" data-index="'+i+'" class="pull-right btn-remove item removeThisTrack"><i class="fa fa-times text"></i></a><a href="#" data-track="'+track+'" data-artist="'+artist+'" data-index="'+i+'" data-mbid="'+mbid+'" data-yid="'+yid+'" class="playThisTrack"><i class="icon-control-play text"></i></a><span class="btn-track-info trackInfo"> '+track+'</span><br/><span class="artistInfo text-muted btn-artist-info"> '+artist+'</span></div>'
+        '<div class="list-group-item"><a href="#jp_container_N" data-index="'+i+'" class="pull-right btn-remove item removeThisTrack"><i class="fa fa-times text"></i></a><a href="#jp_container_N" data-track="'+track+'" data-artist="'+artist+'" data-index="'+i+'" data-mbid="'+mbid+'" data-yid="'+yid+'" class="playThisTrack"><i class="icon-control-play text"></i></a><span class="btn-track-info trackInfo"> '+track+'</span><br/><span class="artistInfo text-muted btn-artist-info"> '+artist+'</span></div>'
     );
     $('#playlist-empty-banner').addClass('hide');
     $("#clearPlaylist").removeClass('hide');
@@ -481,7 +481,6 @@ function savePlaylist() {
                 $('#alertMessage').html("Your Playlist could not be saved");
                 $('#alertModal').modal('show');
             }
-            console.log(data);
         }
     });
 }
