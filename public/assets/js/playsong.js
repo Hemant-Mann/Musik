@@ -112,11 +112,7 @@ function startPlayback(id) {
 
 /** Play the Given track **/
 function playThis(track, playingIndex) {
-    if (!isYTPlayer()) {
-        return false;
-    }
-
-    if (emptyPlaylist()) {
+    if (!isYTPlayer() || emptyPlaylist()) {
         return false;
     }
 
@@ -169,9 +165,7 @@ function addToPlaylist(track, artist, mbid, yid) {
 
 /** Play next song **/
 function playNextSong() {
-    if (emptyPlaylist()) {
-        stopTimer();
-        stopjPlayer();
+    if (emptyPlaylist() || allDeleted()) {
         return false;
     }
 
@@ -181,12 +175,17 @@ function playNextSong() {
     if (playlist.length == index) { // end of playlist
         index = 0; // play from start
     }
+
+    if (playlist[index].deleted) {
+        playNextSong();
+    }
+
     playThis(playlist[index].track, index);
 }
 
 /** Play previous song **/
 function playPrevSong() {
-    if (emptyPlaylist()) {
+    if (emptyPlaylist() || allDeleted()) {
         return false;
     }
 
@@ -194,7 +193,11 @@ function playPrevSong() {
     --index;
 
     if (index <= -1) {
-        index = 0;  // checking of out of bounds
+        index = playlist.length - 1;  // checking of out of bounds
+    }
+
+    if (playlist[index].deleted) {
+        playPrevSong();
     }
     playThis(playlist[index].track, index);
 }
@@ -260,13 +263,16 @@ $(document).ready(function () {
     // removing a track from playlist
     $(document.body).on("click",  ".removeThisTrack",function (e) {
         e.preventDefault();
-        var index = $(this).data('index');
+        var i = $(this).data('index');
 
         var x = confirm('Are you sure to remove this track from Playlist?');
         if (x) {
             $(this).parent().remove();
-            playlist[index].deleted = true;
+            playlist[i].deleted = true;
             savePlaylist();
+            if (i == index) {
+                playNextSong();
+            }
         } else {
             return;
         }
@@ -492,4 +498,25 @@ function clearPlaylist() {
     $('#playlist-items').html("").addClass('hide');
     playlist = [];
     index = -1;
+
+    stopTimer();
+    ytplayer.stopVideo();
+    stopjPlayer();
+}
+
+function allDeleted() {
+    var assume = false;
+    playlist.forEach(function (c, i) {
+        if (!playlist[i].deleted) {
+            assume = false;
+            return false;
+        } else {
+            assume = true;
+        }
+    });
+
+    if (assume) {
+        clearPlaylist();
+    }
+    return assume;
 }
