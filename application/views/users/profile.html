@@ -48,8 +48,7 @@
                                     <div class="tab-pane" id="activity">
                                         <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
                                             <li class="list-group-item">
-                                                <a href="#" class="thumb-sm pull-left m-r-sm"> <img src="{echo CDN}images/a0.png" class="img-circle"> </a>
-                                                <a href="#" class="clear"> <small class="pull-right">3 minuts ago</small> <strong class="block">Drew Wllon</strong> <small>Welcome and play this web application template ... </small> </a>
+                                                Your Activities will be shown here
                                             </li>
                                         </ul>
                                     </div>
@@ -60,7 +59,7 @@
                                                 {foreach $p in $content->playlists}
                                                 <li class="list-group-item">
                                                     <h4 class="page-heading">{echo $i}. {echo $p->name}</h4>
-                                                    <a href="#" class="clear"> <span class="block">Genre: <strong>{echo $p->genre}</strong></span> <small class="block">Tracks: {echo $p->tracks}</small><small class="block">Created: {echo $p->created}</small><small class="block">Visibility: {echo $p->view}</small> </a>
+                                                    <a href="/" class="clear"> <span class="block">Genre: <strong>{echo $p->genre}</strong></span> <small class="block">Tracks: {echo $p->tracks}</small><small class="block">Created: {echo $p->created}</small><small class="block">Visibility: {echo $p->view}</small> </a>
                                                 {script ++$i}
                                                 </li>
                                                 {/foreach}

@@ -13,14 +13,14 @@
                                 <div class="pos-rlt">
                                     <div class="item-overlay opacity r r-2x bg-black">
                                         <div class="center text-center m-t-n">
-                                            <a data-toggle="modal" data-target="#play_video" data-id="{echo $result->videoId}" href="#" class="play text-ellipsis"><i class="fa fa-play-circle i-2x"></i></a>
+                                            <a data-id="{echo $result->videoId}" href="#" class="playThisVideo"><i class="fa fa-play-circle i-2x"></i></a>
                                         </div>
                                     </div>
                                     <img src="{echo $result->img}" alt="" class="r r-2x img-full">
                                 </div>
                                 <div class="padder-v">
-                                    <a data-toggle="modal" data-target="#play_video" data-id="{echo $result->videoId}" href="#" class="play text-ellipsis">{echo $result->title}</a>
-                                    <a href="https://www.youtube.com/watch?v={echo $result->videoId}" target="_blank">Open in <strong>Youtube</strong></a>
+                                    <a data-replace="true" data-id="{echo $result->videoId}" href="#" class="playThisVideo text-ellipsis">{echo $result->title}</a>
+                                    <a class="text-muted text-ellipsis" href="https://www.youtube.com/watch?v={echo $result->videoId}" target="_blank">Open in <strong>Youtube</strong></a>
                                 </div>
                             </div>
                         </div>

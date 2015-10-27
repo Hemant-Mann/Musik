@@ -552,15 +552,15 @@ function clearPlaylist() {
 function allDeleted() {
     var assume = false;
     playlist.forEach(function (c, i) {
-        if (c.deleted === false) {
+        if (c.deleted == false) {
             assume = false;
             return false;
-        } else if (c.deleted === true) {
+        } else if (c.deleted == true) {
             assume = true;
         }
     });
 
-    if (assume === true) {
+    if (assume == true) {
         clearPlaylist();
     }
     return assume;

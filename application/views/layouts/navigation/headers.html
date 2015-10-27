@@ -1,4 +1,4 @@
-<header class="bg-white-only header header-md navbar navbar-fixed-top-xs">
+<header class="bg-white-only header header-md navbar">
     <div class="navbar-header aside bg-info nav-xs">
         <a class="btn btn-link visible-xs" data-toggle="class:nav-off-screen,open" data-target="#nav,html"> <i class="icon-list"></i> </a>
         <a href="/" class="navbar-brand text-lt"> <i class="icon-earphones"></i> <span class="hidden-nav-xs m-l-sm">Musik</span> </a>
@@ -10,14 +10,14 @@
         </li>
     </ul>
     <form class="form-inline navbar-form navbar-left" action="/home/searchMusic/" method="post" role="search" id="searchMusic">
-        <input type="text" class="form-control input-sm no-border rounded" name="q" placeholder="I want to listen.......">
-        <input type="hidden" name="action" value="searchMusic">
         <label for="type" class="radio-inline">
             <input type="radio" name="type" required="" value="song" checked> Song    
         </label>
         <label for="type" class="radio-inline">
             <input type="radio" name="type" required="" value="video"> Video
         </label>
+        <input size="100" type="text" class="form-control input-sm no-border rounded" name="q" placeholder="I want to listen.......">
+        <input type="hidden" name="action" value="searchMusic">
         <button type="submit" class="btn btn-sm bg-white btn-icon rounded"><i class="fa fa-search"></i></button>
     </form>
     <div class="navbar-right ">

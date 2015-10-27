@@ -12,12 +12,6 @@ $(document).ready(function() {
 	$.ajaxSetup({ cache: true });
 	$.getScript('//connect.facebook.net/en_US/sdk.js', getFBScript);
 
-	$("a.play.text-ellipsis").on("click", function (e) {
-		e.preventDefault();
-
-		embedId($(this).attr("data-id"));
-	});
-
 	$("a.playThisVideo").on("click", function (e) {
 		e.preventDefault();
 
@@ -44,7 +38,7 @@ $(document).ready(function() {
 			});	
 		} else {
 			self.removeClass('disabled');
-			embedId(thisVideoId);
+			embedId(id);
 			model.modal('show');
 		}
 		
