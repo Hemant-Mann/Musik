@@ -25,7 +25,7 @@ $(document).ready(function() {
 		if (id === undefined) {
 			request.create({
 				action: '/home/findTrack',
-				data: {action: 'findTrack', track: track, artist: artist},
+				data: {action: 'findTrack', track: track, artist: artist, videoType: "Official Video"},
 				callback: function (data) {
 					if (data != "Error") {
 						self.removeClass('disabled');

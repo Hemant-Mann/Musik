@@ -179,9 +179,10 @@ class Home extends Controller {
         if ((RequestMethods::post("action") == "findTrack" && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')) || $return) {
             $artist = RequestMethods::post("artist");
             $track = RequestMethods::post("track");
+            $videoType = RequestMethods::post("videoType", "Lyrics");
 
             $videoId = null; $error = null;
-            $q = $track. " ". $artist;
+            $q = $artist . " - " . $track . $videoType;
 
             $videoId = $this->searchYoutube($q, 1, true);
             if ($videoId != "Error") {
