@@ -125,9 +125,9 @@ class Home extends Controller {
         self::redirect("/404");
     }
 
-    public function videos($page = 1) {
+    public function videos($page) {
     	$view = $this->getActionView();
-        if (is_numeric($page) === FALSE) { self::redirect("/videos/"); }
+        if (is_numeric($page) === FALSE) { self::redirect("/videos/1"); }
         
         $page = (int) $page; $pageMax = 6;
         if ($page > $pageMax) {
@@ -147,7 +147,9 @@ class Home extends Controller {
             $results = $this->searchYoutube($q, 15, false, $options);
             $session->set('Home\videos:$results:1', $results);
             self::redirect("/videos/1");
-        } elseif ($page != 1) {
+        }
+
+        if ($page != 1 && !$session->get($key)) {
             $currentPage = $session->get('Home\videos:$currentPage');
 
             if ($page == $currentPage + 1) { // next page
