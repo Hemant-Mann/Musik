@@ -21,9 +21,9 @@
                         <a class="jp-stop"><i class="fa fa-stop"></i></a>
                     </div>
                     <div>
-                        <a class="" data-toggle="dropdown" data-target="#playlist"><i class="icon-list"></i></a>
+                        <a href="#jp_container_N" class="download-mp3"><i class="fa fa-cloud-download"></i></a>
                     </div>
-                    <div class="jp-progress hidden-xs">
+                    <div class="jp-progress">
                         <div class="jp-seek-bar dk">
                             <div class="jp-play-bar bg-info"> </div>
                             <div class="jp-title text-lt">
@@ -33,8 +33,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="hidden-xs hidden-sm jp-current-time text-xs text-muted"></div>
-                    <div class="hidden-xs hidden-sm jp-duration text-xs text-muted"></div>
+                    <div class="hidden-xs hidden-sm jp-current-time text-xs text-muted">00:00</div>
+                    <div class="hidden-xs hidden-sm jp-duration text-xs text-muted">00:00</div>
                     <div class="hidden-xs hidden-sm">
                         <a class="jp-mute" title="mute"><i class="icon-volume-2"></i></a>
                         <a class="jp-unmute hid" title="unmute"><i class="icon-volume-off"></i></a>
@@ -44,11 +44,11 @@
                             <div class="jp-volume-bar-value lter"></div>
                         </div>
                     </div>
-                    <div>
+                    <div class="hide">
                         <a class="jp-shuffle" title="shuffle"><i class="icon-shuffle text-muted"></i></a>
                         <a class="jp-shuffle-off hid" title="shuffle off"><i class="icon-shuffle text-lt"></i></a>
                     </div>
-                    <div>
+                    <div class="hide">
                         <a class="jp-repeat" title="repeat"><i class="icon-loop text-muted"></i></a>
                         <a class="jp-repeat-off hid" title="repeat off"><i class="icon-loop text-lt"></i></a>
                     </div>
@@ -58,12 +58,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="jp-playlist dropup" id="playlist">
-            <ul class="dropdown-menu aside-xl dker">
-                <!-- The method Playlist.displayPlaylist() uses this unordered list -->
-                <li class="list-group-item"></li>
-            </ul>
         </div>
         <div class="jp-no-solution hide"> <span>Update Required</span> To play the media you will need to either update your browser to a recent version or update your
             <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>. </div>

@@ -333,6 +333,11 @@ $(document).ready(function () {
         savePlaylist();
     });
 
+    $(".download-mp3").on("click", function (e) {
+        e.preventDefault();
+        // Send data to back end for processing download
+    });
+
     // Find Artist/Track Info
     $(".artistInfo").on("click", function (e) {
         e.preventDefault();
