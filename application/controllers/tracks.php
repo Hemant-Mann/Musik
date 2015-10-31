@@ -13,7 +13,7 @@ use LastFm\Src\Track as Trck;
 use Framework\ArrayMethods as ArrayMethods;
 use LastFm\Src\Util as Util;
 
-class Tracks extends Admin {
+class Tracks extends Home {
 	
 	public function top($page = 1) {
 		$view = $this->getActionView();
@@ -32,6 +32,15 @@ class Tracks extends Admin {
             $country = $this->getCountry($ip);
             $session->set("country", $country);
         }
+
+        $seo = $this->seoOptimize();
+        $this->seo(array(
+            "title" => "Musik | Top Tracks - " . $session->get("country"),
+            "keywords" => $seo["keywords"] . "Top tracks of ". $session->get("country"),
+            "description" => $seo["description"],
+            "view" => $this->getLayoutView()
+        ));
+
 		if (!$session->get('Tracks\Top:$tracks') || $session->get('Tracks\Top:page') != $page) {
 			try {
 				$topTracks = Geo::getTopTracks($session->get("country"), $page);
@@ -68,6 +77,14 @@ class Tracks extends Admin {
 		if (empty($artist) || empty($song)) {
 		    self::redirect("/404");
 		}
+
+		$seo = $this->seoOptimize();
+        $this->seo(array(
+            "title" => "Musik | View Track - " . $song,
+            "keywords" => $seo["keywords"] . "Listen to $song",
+            "description" => $seo["description"],
+            "view" => $this->getLayoutView()
+        ));
 
 		if ($session->get('Tracks\View:track') != $song || $session->get('Tracks\View:artist') != $artist) {
 			try {

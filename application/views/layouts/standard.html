@@ -3,8 +3,9 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Musik | Web Application</title>
-    <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
+    <title>{echo $seo->getTitle()}</title>
+    <meta name="description" content="{echo strip_tags($seo->getDescription())}, app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav, " />
+    <meta name="keywords" content="{echo strip_tags($seo->getKeywords())}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <link rel="stylesheet" href="{echo CDN}js/jPlayer/jplayer.flat.css" type="text/css" />
     <link rel="stylesheet" href="{echo CDN}css/app.v1.css" type="text/css" />

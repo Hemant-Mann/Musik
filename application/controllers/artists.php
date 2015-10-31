@@ -11,7 +11,7 @@ use LastFm\Src\Geo as Geo;
 use LastFm\Src\Artist as Art;
 use Framework\ArrayMethods as ArrayMethods;
 
-class Artists extends Admin {
+class Artists extends Home {
 
 	public function view($name, $id = NULL) {
     	$view = $this->getActionView();
@@ -19,6 +19,14 @@ class Artists extends Admin {
         if (empty($name)) {
             self::redirect("/404");
         }
+
+        $seo = $this->seoOptimize();
+        $this->seo(array(
+            "title" => "Musik | View Artist - ". $name,
+            "keywords" => $seo["keywords"] . "Listen to $name",
+            "description" => $seo["description"],
+            "view" => $this->getLayoutView()
+        ));
 
         if ($session->get('Artists\View:name') != $name) {
             try {
@@ -112,6 +120,14 @@ class Artists extends Admin {
             $country = $this->getCountry($ip);
             $session->set("country", $country);
         }
+
+        $seo = $this->seoOptimize();
+        $this->seo(array(
+            "title" => "Musik | Top Artists - ". $session->get("country"),
+            "keywords" => $seo["keywords"] . "Top Artists of " . $session->get("country"),
+            "description" => $seo["description"],
+            "view" => $this->getLayoutView()
+        ));
 
         $title = "Top Artists - " . $session->get("country");
 

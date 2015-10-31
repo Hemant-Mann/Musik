@@ -42,6 +42,13 @@ class Users extends Controller {
     }
 
     public function login() {
+        $seo = $this->seoOptimize();
+        $this->seo(array(
+            "title" => "Musik | Web Application - Login",
+            "keywords" => $seo["keywords"] . "Login with facebook",
+            "description" => $seo["description"],
+            "view" => $this->getLayoutView()
+        ));
         if ($this->user){
             self::redirect("/profile");
         }
@@ -75,6 +82,13 @@ class Users extends Controller {
     }
 
     public function signup() {
+        $seo = $this->seoOptimize();
+        $this->seo(array(
+            "title" => "Musik | Web Application - SignUp",
+            "keywords" => $seo["keywords"] . "Login with facebook",
+            "description" => $seo["description"],
+            "view" => $this->getLayoutView()
+        ));
         if ($this->user) {
             self::redirect("/profile");
         }

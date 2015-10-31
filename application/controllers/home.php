@@ -21,6 +21,13 @@ use WebBot\lib\WebBot\Bot as Bot;
 class Home extends Controller {
 
     public function index($page = 1) {
+        $seo = $this->seoOptimize();
+        $this->seo(array(
+            "title" => "Musik | Web Application - Discover",
+            "keywords" => $seo["keywords"],
+            "description" => $seo["description"],
+            "view" => $this->getLayoutView()
+        ));
         $view = $this->getActionView();
         if (is_numeric($page) === FALSE) { self::redirect("/"); }
         
@@ -64,6 +71,8 @@ class Home extends Controller {
     }
 
     public function genres($name = null, $page = 1) {
+        $seo = $this->seoOptimize();
+        $view = $this->getActionView();
         $view = $this->getActionView();
         if (is_numeric($page) === FALSE) { self::redirect("/genres/all"); }
         
@@ -78,6 +87,12 @@ class Home extends Controller {
         if (!$name) {
             $name = "acoustic";
         }
+        $this->seo(array(
+            "title" => "Musik | Genres - ". $name,
+            "keywords" => $seo["keywords"] . "{$name} music",
+            "description" => $seo["description"],
+            "view" => $this->getLayoutView()
+        ));
 
         // Get top Tags for displaying - currently not working (Last Fm Fault)        
         if (!$session->get('Home\Genres:$topTags')) {
@@ -126,7 +141,14 @@ class Home extends Controller {
     }
 
     public function videos($page) {
-    	$view = $this->getActionView();
+        $seo = $this->seoOptimize();
+    	$this->seo(array(
+            "title" => "Musik | Videos - Latest Songs",
+            "keywords" => $seo["keywords"],
+            "description" => $seo["description"],
+            "view" => $this->getLayoutView()
+        ));
+        $view = $this->getActionView();
         if (is_numeric($page) === FALSE) { self::redirect("/videos/1"); }
         
         $page = (int) $page; $pageMax = 6;
@@ -259,6 +281,13 @@ class Home extends Controller {
      * Searches for music from the supplied query on last.fm | Youtube
      */
     public function searchMusic($page = 1) {
+        $seo = $this->seoOptimize();
+        $this->seo(array(
+            "title" => "Musik | Videos - Search Music",
+            "keywords" => $seo["keywords"],
+            "description" => $seo["description"],
+            "view" => $this->getLayoutView()
+        ));
         $view = $this->getActionView();
         if (is_numeric($page) === FALSE) { self::redirect("/"); }
 
