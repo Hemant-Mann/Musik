@@ -225,7 +225,7 @@ $(document).ready(function () {
             yid = $(this).attr("data-yid"),
             artist = $(this).attr("data-artist"),
             mbid = $(this).attr("data-mbid");
-
+        self.addClass('disabled');
         alsoPlay = false;
         var i = false;
         if (yid === undefined) {
@@ -255,7 +255,7 @@ $(document).ready(function () {
                 }
             }
         }
-        
+        self.removeClass('disabled');
     });
 
     // playing a song
@@ -267,6 +267,7 @@ $(document).ready(function () {
             mbid = $(this).attr("data-mbid"),
             playingIndex = $(this).attr("data-index");
 
+        self.addClass('disabled');
         alsoPlay = true;
         var i = false;
         if (yid === undefined) {
@@ -287,6 +288,8 @@ $(document).ready(function () {
         } else {
             if (emptyPlaylist()) {
                 i = addToPlaylist(track, artist, mbid, yid);
+            } else if (playingIndex) {
+                i = playingIndex;
             } else {
                 i = inPlaylist(track, artist, yid);
 
@@ -298,6 +301,7 @@ $(document).ready(function () {
             }
             playThis(track, i);
         }
+        self.removeClass('disabled');
     });
 
     // clearing the playlist
@@ -472,7 +476,6 @@ function findSong(track, artist, mbid, selector) {
             if (yid != "Error") {
                 playingIndex = addToPlaylist(track, artist, mbid, yid);
                 selector.attr("data-yid", yid);
-                selector.attr("data-index", playingIndex);
 
                 if (alsoPlay) {
                     playThis(track, playingIndex);
