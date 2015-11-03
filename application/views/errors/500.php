@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Musik | Web Application : Error 500</title>
+    <title>Musik | Web App : Error 500</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <meta name="description" content="app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <link rel="stylesheet" href="<?php echo CDN; ?>js/jPlayer/jplayer.flat.css" type="text/css" />
@@ -35,7 +37,7 @@
     <!-- footer -->
     <footer id="footer">
         <div class="text-center padder clearfix">
-            <p> <small>Music Website<br>&copy; <?php echo date('Y'); ?></small> </p>
+            <p> <small>Music | Web Application<br>&copy; <?php echo date('Y'); ?></small> </p>
         </div>
     </footer>
     <!-- / footer -->

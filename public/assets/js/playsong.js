@@ -219,7 +219,8 @@ $(document).ready(function () {
     initPlaylist(playlistItems);
 
     // Adding a song to playlist
-    $(".addToPlaylist").on("click", function () {
+    $(".addToPlaylist").on("click", function (e) {
+        e.preventDefault();
         var track = $(this).attr("data-track"),
             self = $(this),
             yid = $(this).attr("data-yid"),
@@ -240,6 +241,7 @@ $(document).ready(function () {
                     var x = playlistItems.find('[data-index="' + i + '"]');
                     x.parent().removeClass('hide');
                 }
+                self.removeClass('disabled');
             }
         } else {
             if (emptyPlaylist()) {
@@ -254,12 +256,13 @@ $(document).ready(function () {
                     x.parent().removeClass('hide');
                 }
             }
+            self.removeClass('disabled');
         }
-        self.removeClass('disabled');
     });
 
     // playing a song
-    $(document.body).on("click", ".playThisTrack", function () {
+    $(document.body).on("click", ".playThisTrack", function (e) {
+        e.preventDefault();
         var track = $(this).attr("data-track"),
             self = $(this),
             yid = $(this).attr("data-yid"),
@@ -284,6 +287,7 @@ $(document).ready(function () {
                     x.parent().removeClass('hide');
                 }
                 playThis(track, i);
+                self.removeClass('disabled');
             }
         } else {
             if (emptyPlaylist()) {
@@ -300,8 +304,8 @@ $(document).ready(function () {
                 }
             }
             playThis(track, i);
+            self.removeClass('disabled');
         }
-        self.removeClass('disabled');
     });
 
     // clearing the playlist
@@ -337,9 +341,13 @@ $(document).ready(function () {
         savePlaylist();
     });
 
-    $(".download-mp3").on("click", function (e) {
+    $("#download-mp3").on("click", function (e) {
         e.preventDefault();
-        // Send data to back end for processing download
+        if (!emptyPlaylist()) {
+            var location = 'http://youtubeinmp3.com/fetch/?video=https://www.youtube.com/watch?v=' + playlist[index].yid;
+
+            window.location.href = location;
+        }
     });
 
     // Find Artist/Track Info
@@ -476,6 +484,7 @@ function findSong(track, artist, mbid, selector) {
             if (yid != "Error") {
                 playingIndex = addToPlaylist(track, artist, mbid, yid);
                 selector.attr("data-yid", yid);
+                selector.removeClass('disabled');
 
                 if (alsoPlay) {
                     playThis(track, playingIndex);
