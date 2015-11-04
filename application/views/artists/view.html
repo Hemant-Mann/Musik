@@ -28,7 +28,7 @@
                                             </div>
                                             <div> Tags:
                                             {foreach $tag in $artist->tags}
-                                                <a href="/genres/{echo Framework\StringMethods::url($tag->name)}" class="badge bg-light">{echo $tag->name}</a>
+                                                <a target="_blank" href="/genres/{echo Framework\StringMethods::url($tag->name)}" class="badge bg-light">{echo $tag->name}</a>
                                             {/foreach}
                                             </div>
                                         </div>
@@ -36,77 +36,30 @@
                                     <div class="m-t">
                                         <p>{echo $artist->bio->summary}</p>
                                     </div>
-                                    <h4 class="m-t-lg m-b">Play List</h4>
+                                    <h3 class="m-t-lg m-b">Top Tracks:</h3>
                                     <ul class="list-group list-group-lg">
                                     {foreach $track in $tracks}
                                         <li class="list-group-item">
                                             <div class="pull-right m-l">
-                                                <a target="_blank" href="/tracks/view/{echo Framework\StringMethods::url($track->name)}/{echo Framework\StringMethods::url($artist->name)}" data-mbid="{echo $track->mbid}" data-artist="{echo $artist->name}" data-track="{echo $track->name}"><i class="m-r-sm icon-info"></i></a>
-                                                <a href="#jp_container_N" class="m-r-sm addToPlaylist" data-mbid="{echo $track->mbid}" data-artist="{echo $artist->name}" data-track="{echo $track->name}"><i class="icon-plus"></i></a>
-                                                
+                                                <a target="_blank" href="/tracks/view/{echo Framework\StringMethods::url($track->name)}/{echo Framework\StringMethods::url($artist->name)}" data-mbid="{echo $track->mbid}" data-artist="{echo $artist->name}" data-track="{echo $track->name}">
+                                                    <i class="m-r-sm icon-info fa-lg"></i>
+                                                </a>
+                                                <a href="#jp_container_N" class="m-r-sm addToPlaylist" data-mbid="{echo $track->mbid}" data-artist="{echo $artist->name}" data-track="{echo $track->name}">
+                                                    <i class="icon-plus fa-lg"></i>
+                                                </a>
                                             </div>
-                                            <a href="#jp_container_N" class="jp-play-me m-r-sm pull-left playThisTrack" data-mbid="{echo $track->mbid}" data-artist="{echo $artist->name}" data-track="{echo $track->name}"> <i class="icon-control-play text"></i> <i class="icon-control-pause text-active"></i> </a>
-                                            <div class="clear text-ellipsis"> <span>{echo $track->name}</span> <span class="text-muted"></span> </div>
+                                            <a href="#jp_container_N" class="jp-play-me m-r-sm pull-left playThisTrack" data-mbid="{echo $track->mbid}" data-artist="{echo $artist->name}" data-track="{echo $track->name}">
+                                                <i class="icon-control-play fa-lg text"></i>
+                                            </a>
+                                            <div class="clear text-ellipsis"> 
+                                                <a target="_blank" href="/tracks/view/{echo Framework\StringMethods::url($track->name)}/{echo Framework\StringMethods::url($artist->name)}" data-mbid="{echo $track->mbid}" data-artist="{echo $artist->name}" data-track="{echo $track->name}">
+                                                    <span class="trackName">{echo $track->name}</span>
+                                                </a>
+                                            </div>
+                                            
                                         </li>
                                     {/foreach}
                                     </ul>
-                                    {if isset($comment)}
-                                    <h4 class="m-t-lg m-b">3 Comments</h4>
-                                    <section class="comment-list block">
-                                        <article id="comment-id-1" class="comment-item">
-                                            <a class="pull-left thumb-sm">
-                                                <img src="{echo CDN}images/a0.png" class="img-circle"> </a>
-                                            <section class="comment-body m-b">
-                                                <header>
-                                                    <a href="#"><strong>John smith</strong></a>
-                                                    <label class="label bg-info m-l-xs">Editor</label> <span class="text-muted text-xs block m-t-xs"> 24 minutes ago </span> </header>
-                                                <div class="m-t-sm">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum.</div>
-                                            </section>
-                                        </article>
-                                        <!-- .comment-reply -->
-                                        <article id="comment-id-2" class="comment-item comment-reply">
-                                            <a class="pull-left thumb-sm">
-                                                <img src="{echo CDN}images/a1.png" class="img-circle"> </a>
-                                            <section class="comment-body m-b">
-                                                <header>
-                                                    <a href="#"><strong>John smith</strong></a>
-                                                    <label class="label bg-dark m-l-xs">Admin</label> <span class="text-muted text-xs block m-t-xs"> 26 minutes ago </span> </header>
-                                                <div class="m-t-sm">Lorem ipsum dolor sit amet, consecteter adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet.</div>
-                                            </section>
-                                        </article>
-                                        <!-- / .comment-reply -->
-                                        <article id="comment-id-2" class="comment-item">
-                                            <a class="pull-left thumb-sm">
-                                                <img src="{echo CDN}images/a2.png" class="img-circle"> </a>
-                                            <section class="comment-body m-b">
-                                                <header>
-                                                    <a href="#"><strong>John smith</strong></a>
-                                                    <label class="label bg-dark m-l-xs">Admin</label> <span class="text-muted text-xs block m-t-xs"> 26 minutes ago </span> </header>
-                                                <blockquote class="m-t">
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p> <small>Someone famous in <cite title="Source Title">Source Title</cite></small> </blockquote>
-                                                <div class="m-t-sm">Lorem ipsum dolor sit amet, consecteter adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet.</div>
-                                            </section>
-                                        </article>
-                                    </section>
-                                    <h4 class="m-t-lg m-b">Leave a comment</h4>
-                                    <form>
-                                        <div class="form-group pull-in clearfix">
-                                            <div class="col-sm-6">
-                                                <label>Your name</label>
-                                                <input type="text" class="form-control" placeholder="Name"> </div>
-                                            <div class="col-sm-6">
-                                                <label>Email</label>
-                                                <input type="email" class="form-control" placeholder="Enter email"> </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Comment</label>
-                                            <textarea class="form-control" rows="5" placeholder="Type your comment"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-success">Submit comment</button>
-                                        </div>
-                                    </form>
-                                    {/if}
                                 </div>
                             </div>
                             <div class="col-sm-4">
@@ -115,10 +68,10 @@
                                     <div class="panel-body">
                                     {foreach $s in $similar}
                                         <article class="media">
-                                            <a href="#" class="pull-left thumb-md m-t-xs">
+                                            <a target="_blank" href="/artists/view/{echo Framework\StringMethods::url($s->name)}" class="pull-left thumb-md m-t-xs">
                                                 <img src="{echo $s->thumbnail}"> </a>
                                             <div class="media-body">
-                                                <a href="/artists/view/{echo Framework\StringMethods::url($s->name)}" class="font-semibold">{echo $s->name}</a>
+                                                <a target="_blank" href="/artists/view/{echo Framework\StringMethods::url($s->name)}" class="font-semibold">{echo $s->name}</a>
                                             </div>
                                         </article>
                                     {/foreach}
