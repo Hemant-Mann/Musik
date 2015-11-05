@@ -203,7 +203,7 @@ class Home extends Controller {
         if ((RequestMethods::post("action") == "findTrack" && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest')) || $return) {
             $artist = RequestMethods::post("artist");
             $track = RequestMethods::post("track");
-            $videoType = RequestMethods::post("videoType", "Lyrics");
+            $videoType = RequestMethods::post("videoType", "Song");
 
             $videoId = null; $error = null;
             $q = $artist . " - " . $track . $videoType;
