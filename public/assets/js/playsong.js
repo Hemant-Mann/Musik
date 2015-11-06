@@ -242,6 +242,7 @@ $(document).ready(function () {
                     x.parent().removeClass('hide');
                 }
                 self.removeClass('disabled');
+                window.location.href = self.attr('href');
             }
         } else {
             if (emptyPlaylist()) {
@@ -257,6 +258,7 @@ $(document).ready(function () {
                 }
             }
             self.removeClass('disabled');
+            window.location.href = self.attr('href');
         }
     });
 
@@ -288,6 +290,7 @@ $(document).ready(function () {
                 }
                 playThis(track, i);
                 self.removeClass('disabled');
+                window.location.href = self.attr('href');
             }
         } else {
             if (emptyPlaylist()) {
@@ -305,6 +308,7 @@ $(document).ready(function () {
             }
             playThis(track, i);
             self.removeClass('disabled');
+            window.location.href = self.attr('href');
         }
     });
 
@@ -485,6 +489,7 @@ function findSong(track, artist, mbid, selector) {
                 playingIndex = addToPlaylist(track, artist, mbid, yid);
                 selector.attr("data-yid", yid);
                 selector.removeClass('disabled');
+                window.location.href = selector.attr('href');
 
                 if (alsoPlay) {
                     playThis(track, playingIndex);
