@@ -17,7 +17,10 @@ use LastFm\Src\Artist as Artst;
 use LastFm\Src\Tag as Tag;
 
 use WebBot\lib\WebBot\Bot as Bot;
+
 use YTDownloader\Download as Download;
+use YTDownloader\Exceptions\YoutubeDL as YoutubeDL;
+use YTDownloader\Exceptions\FFmpeg as FFmpeg;
 
 class Home extends Controller {
 
@@ -351,13 +354,30 @@ class Home extends Controller {
         if (!$videoId) {
             self::redirect("/");
         }
+        $this->noview();
         $url = 'https://www.youtube.com/watch?v=' . $videoId;
-
         $download = new Download($url);
-        $download->convert();
+        $sendFile = false;
 
-        $file = $download->getFile();
-        if (file_exists($file)) {
+        if (RequestMethods::post("action") == "downloadMusic") {
+            try {
+                $download->convert();
+                $file = $download->getFile();
+                echo "Success";
+            } catch (YoutubeDL $e) {
+                echo $e->getCustomMsg();
+            } catch (FFmpeg $e) {
+                echo $e->getCustomMsg();
+            } catch (\Exception $e) {
+                echo "Failure";
+            }
+            return;
+        } else {
+            $file = $download->getDownloadPath() . $videoId . ".mp3";
+            $sendFile = true;
+        }
+
+        if (file_exists($file) && $sendFile) {
             header('Content-type: audio/mpeg');
             header('Content-length: ' . filesize($file));
             header('Content-Disposition: attachment; filename="'.$name.'.mp3"');

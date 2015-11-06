@@ -347,11 +347,40 @@ $(document).ready(function () {
 
     $("#download-mp3").on("click", function (e) {
         e.preventDefault();
-        if (!emptyPlaylist()) {
-            var location = 'http://youtubeinmp3.com/fetch/?video=https://www.youtube.com/watch?v=' + playlist[index].yid;
-
-            window.location.href = location;
+        
+        if (emptyPlaylist() || index === -1) {
+            return false;
         }
+        var download = $("#downloadModal"),
+            btn = $("#startDownloading");
+        
+        download.find('.modal-title').html(playlist[index].artist + ' - ' + playlist[index].track);
+        btn.data('yid', playlist[index].yid);
+        btn.data('track', playlist[index].track);
+        download.modal('show');
+    });
+
+    $("#startDownloading").on('click', function(e) {
+        e.preventDefault();
+        var self = $(this),
+            yid = self.data('yid'),
+            track = self.data('track');
+
+        self.html('<i class="fa fa-spinner fa-pulse"></i> Please Wait...');
+        request.create({
+            action: '/home/download/' + yid + '/'  + track,
+            data: {action: 'downloadMusic'},
+            callback: function (data) {
+                self.html('<i class="fa fa-download"></i> Download');
+                $("#downloadModal").modal('hide');
+                if (data == "Success") {
+                    window.location.href = '/home/download/' + yid + '/' + track;
+                } else {
+                    $('#alertMessage').html(data);
+                    $('#alertModal').modal('show');
+                }
+            }
+        })
     });
 
     // Find Artist/Track Info
@@ -504,7 +533,7 @@ function initPlaylist(items) {
         var el = $(this).find('.playThisTrack');
         playlist.push({
             track: el.data('track'),
-            artist: el.data('aritst'),
+            artist: el.data('artist'),
             yid: el.data('yid'),
             mbid: el.data('mbid'),
             isSaved: true,

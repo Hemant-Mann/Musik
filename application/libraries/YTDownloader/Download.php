@@ -1,6 +1,7 @@
 <?php
 
 namespace YTDownloader;
+use YTDownloader\Exceptions\YoutubeDL as YoutubeDL;
 
 class Download {
 	/**
@@ -43,7 +44,11 @@ class Download {
 	protected function haveVideo() {
 		if (!file_exists($this->_file)) {
 			$cmd = "youtube-dl -f 17 -o ". $this->_file . " " . $this->_url;
-			exec($cmd);	
+			exec($cmd, $output, $return);
+
+			if ($return != 0) {
+				throw new YoutubeDL("Unable to download the track file");	
+			}	
 		}
 	}
 
