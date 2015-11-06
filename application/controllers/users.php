@@ -17,6 +17,12 @@ class Users extends Controller {
      * @before _secure
      */
     public function profile() {
+        $this->seo(array(
+            "title" => "Musik | Web Application - Dashboard",
+            "keywords" => $seo["keywords"],
+            "description" => $seo["description"],
+            "view" => $this->getLayoutView()
+        ));
         $view = $this->getActionView();
 
         $content = array();
