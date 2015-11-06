@@ -17,6 +17,7 @@ use LastFm\Src\Artist as Artst;
 use LastFm\Src\Tag as Tag;
 
 use WebBot\lib\WebBot\Bot as Bot;
+use YTDownloader\Download as Download;
 
 class Home extends Controller {
 
@@ -343,6 +344,27 @@ class Home extends Controller {
             $session->set('Home\searchMusic:$vars', array('error' => 'Error'));
         } else {
             $session->set('Home\searchMusic:$vars', array('q' => $q, 'type' => $type, 'results' => $results, 'page' => $page));
+        }
+    }
+
+    public function download($videoId, $name = 'track') {
+        if (!$videoId) {
+            self::redirect("/");
+        }
+        $url = 'https://www.youtube.com/watch?v=' . $videoId;
+
+        $download = new Download($url);
+        $download->convert();
+
+        $file = $download->getFile();
+        if (file_exists($file)) {
+            header('Content-type: audio/mpeg');
+            header('Content-length: ' . filesize($file));
+            header('Content-Disposition: attachment; filename="'.$name.'.mp3"');
+            header("Content-Transfer-Encoding: binary"); 
+            header("Content-Type: audio/mpeg, audio/x-mpeg, audio/x-mpeg-3, audio/mpeg3");
+
+            readfile($file);
         }
     }
 
