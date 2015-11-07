@@ -142,6 +142,24 @@ class Admin extends Users {
         $view->set("id", $id);
     }
 
+    /**
+     * Deletes any model with given id
+     * 
+     * @before _secure, changeLayout
+     * @param type $model the model object to be deleted
+     * @param type $id the id of object to be deleted
+     */
+    public function delete($model = NULL, $id = NULL) {
+        $view = $this->getActionView();
+        $this->JSONview();
+        
+        $object = $model::first(array("id = ?" => $id));
+        $object->delete();
+        $view->set("deleted", true);
+        
+        self::redirect($_SERVER['HTTP_REFERER']);
+    }
+
     public function sync($model) {
         $this->noview();
         $db = Framework\Registry::get("database");
