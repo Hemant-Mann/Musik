@@ -370,7 +370,7 @@ $(document).ready(function () {
             artist = self.data('artist'),
             mbid = self.data('mbid');
 
-        self.html('<i class="fa fa-spinner fa-pulse"></i> Please Wait...');
+        self.html('<i class="fa fa-spinner fa-spin"></i> Please Wait...');
         request.create({
             action: '/home/download/' + yid + '/'  + track,
             data: {action: 'downloadMusic', track: track, artist: artist, mbid: mbid},

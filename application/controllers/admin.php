@@ -23,7 +23,7 @@ class Admin extends Users {
         $database = Registry::get("database");
         $downloads = $database->query()->from("downloads", array("SUM(count)" => "count"))->all();
         $ptracks = \PlaylistTrack::count();
-        // var_dump($downloads[0]["count"]);
+
         $data = array(
             "users" => $users,
             "lyrics" => $lyrics,
