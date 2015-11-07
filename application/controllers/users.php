@@ -5,13 +5,12 @@
  *
  * @author Hemant Mann
  */
-use Shared\Controller as Controller;
 use Framework\RequestMethods as RequestMethods;
 use Framework\Registry as Registry;
 use Framework\ArrayMethods as ArrayMethods;
 use Framework\StringMethods as StringMethods;
 
-class Users extends Controller {
+class Users extends Home {
 
     /**
      * @before _secure
