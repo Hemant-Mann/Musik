@@ -18,7 +18,7 @@ use LastFm\Src\Tag as Tag;
 
 use WebBot\lib\WebBot\Bot as Bot;
 
-use YTDownloader\Download as Download;
+use YTDownloader\Download as YTDownload;
 use YTDownloader\Exceptions\YoutubeDL as YoutubeDL;
 use YTDownloader\Exceptions\FFmpeg as FFmpeg;
 
@@ -356,13 +356,34 @@ class Home extends Controller {
         }
         $this->noview();
         $url = 'https://www.youtube.com/watch?v=' . $videoId;
-        $download = new Download($url);
+        $download = new YTDownload($url);
+        
+        $track = SavedTrack::first(array("yid = ?" => $videoId), array("id"));
+        $d = \Download::first(array("strack_id = ?" => $track->id));
         $sendFile = false;
 
         if (RequestMethods::post("action") == "downloadMusic") {
             try {
                 $download->convert();
                 $file = $download->getFile();
+
+                if (!$track) {
+                    $track = new SavedTrack(array(
+                        "track" => RequestMethods::post("track"),
+                        "artist" => RequestMethods::post("artist"),
+                        "mbid" => RequestMethods::post("mbid"),
+                        "yid" => RequestMethods::post("yid")
+                    ));
+                    $track->save();
+                }
+                if (!$d) {
+                   $d = new \Download(array(
+                        "strack_id" => $track->id,
+                        "count" => 0,
+                        "modified" => date('Y-m-d H:i:s')
+                    ));
+                   $d->save();
+                }
                 echo "Success";
             } catch (YoutubeDL $e) {
                 echo $e->getCustomMsg();
@@ -377,7 +398,9 @@ class Home extends Controller {
             $sendFile = true;
         }
 
-        if (file_exists($file) && $sendFile) {
+        if ($track && $d && $sendFile) {
+            $d->count++;
+            $d->save();
             header('Content-type: audio/mpeg');
             header('Content-length: ' . filesize($file));
             header('Content-Disposition: attachment; filename="'.$name.'.mp3"');

@@ -357,6 +357,8 @@ $(document).ready(function () {
         download.find('.modal-title').html(playlist[index].artist + ' - ' + playlist[index].track);
         btn.data('yid', playlist[index].yid);
         btn.data('track', playlist[index].track);
+        btn.data('artist', playlist[index].artist);
+        btn.data('mbid', playlist[index].mbid);
         download.modal('show');
     });
 
@@ -364,12 +366,14 @@ $(document).ready(function () {
         e.preventDefault();
         var self = $(this),
             yid = self.data('yid'),
-            track = self.data('track');
+            track = self.data('track'),
+            artist = self.data('artist'),
+            mbid = self.data('mbid');
 
         self.html('<i class="fa fa-spinner fa-pulse"></i> Please Wait...');
         request.create({
             action: '/home/download/' + yid + '/'  + track,
-            data: {action: 'downloadMusic'},
+            data: {action: 'downloadMusic', track: track, artist: artist, mbid: mbid},
             callback: function (data) {
                 self.html('<i class="fa fa-download"></i> Download');
                 $("#downloadModal").modal('hide');
