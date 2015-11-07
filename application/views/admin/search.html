@@ -5,7 +5,7 @@
             <div class="form-group">
                 <div class="input-group">
                     <label class="sr-only">Table</label>
-                    <select name="model" class="form-control" value="{$model}">
+                    <select name="model" class="form-control" value="{$model}" id="searchModel">
                         <option value="Album">Album</option>
                         <option value="Artist">Artist</option>
                         <option value="ArtistAlbum">ArtistAlbum</option>
@@ -24,8 +24,10 @@
             </div>
             <div class="form-group">
                 <div class="input-group">
-                    <label class="sr-only">Field</label>
-                    <input type="text" style="width: 100px" name="key" class="form-control" placeholder="Field" value="{$property}" />
+                 <label class="sr-only">Field</label>
+                    <select name="key" class="form-control" value="{$property}" id="searchField">
+                        <option value="{$property}">{$property}</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group">
