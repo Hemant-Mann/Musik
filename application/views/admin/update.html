@@ -13,7 +13,7 @@
                 <div class="form-group">
                     <label class="col-sm-4 control-label">{echo $var}</label>
                     <div class="col-sm-8">
-                        <input type="text" name="{echo $var}" class="form-control" value="{echo $vars[$var]}" {if($var=="id")}disabled{/if}>
+                        <input type="text" name="{echo $var}" class="form-control" value="{echo $vars[$var]}" {if($var=="id" || $var == "password")}disabled{/if}>
                     </div>
                 </div>
                 {/foreach}

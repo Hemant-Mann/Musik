@@ -409,6 +409,32 @@ class Users extends Home {
     }
 
     /**
+     * @before _secure
+     */
+    public function stats() {
+        if ($this->user->admin != 1) {
+            self::redirect("/profile");
+        }
+        $this->defaultLayout = "layouts/admin";
+        $this->setLayout();
+
+        $this->seo(array("title" => "View Users Stats", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+
+        $page = RequestMethods::get("pageNo", 1);
+        $limit = RequestMethods::get("perPage", 10);
+        $orderBy = RequestMethods::get("orderBy", "created");
+
+        $users = \User::all(array(), array("*"), $orderBy, "desc", $limit, $page);
+        $total = count($users);
+
+        $view->set('total', $total);
+        $view->set("results", $users);
+        $view->set("limit", $limit);
+        $view->set("currentPage", (int) $page);
+    }
+
+    /**
      * Encrypts the password using blowfish algorithm
      */
     protected function encrypt($password) {

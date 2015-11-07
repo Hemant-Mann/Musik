@@ -20,7 +20,7 @@
                 </div>
                 <div class="form-group">
                     <label for="pageNo">Page No:</label>
-                    <input size="3" type="text" name="pageNo" value="1" class="form-control">
+                    <input size="3" type="text" name="pageNo" value="{echo $currentPage}" class="form-control">
                 </div>
                 <!-- <div class="form-group">
                     <label for="pageNo">Order By:</label>
@@ -71,6 +71,10 @@
                         </table>
                     </div>
                     <!-- /.table-responsive -->
+                    <p class="pull-right">
+                        <a href="/tracks/downloads?perPage={echo $limit}&amp;pageNo={echo $currentPage - 1}" class="btn {if (($currentPage - 1) <= 0)}btn-default disabled{/if}{else}btn-primary{/else}"><i class="fa fa-arrow-left"></i> Previous</a>
+                        <a href="/tracks/downloads?perPage={echo $limit}&amp;pageNo={echo $currentPage + 1}" class="btn btn-primary">Next <i class="fa fa-arrow-right"></i></a>
+                    </p>
                 </div>
                 <!-- /.panel-body -->
             </div>

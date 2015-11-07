@@ -192,6 +192,8 @@ class Tracks extends Admin {
         $results = ArrayMethods::toObject($results);
 
         $view->set("results", $results);
-		$view->set("total", $count[0]["songs"]);      
+		$view->set("total", $count[0]["songs"]);
+		$view->set("limit", $limit);
+        $view->set("currentPage", (int) $page);  
 	}
 }
