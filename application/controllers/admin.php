@@ -6,6 +6,7 @@
  * @author Faizan Ayubi
  */
 use Framework\RequestMethods as RequestMethods;
+use Framework\ArrayMethods as ArrayMethods;
 use Framework\Registry as Registry;
 
 class Admin extends Users {
@@ -16,6 +17,21 @@ class Admin extends Users {
     public function index() {
         $this->seo(array("title" => "Dashboard", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
+
+        $users = \User::count();
+        $lyrics = \Lyric::count();
+        $database = Registry::get("database");
+        $downloads = $database->query()->from("downloads", array("SUM(count)" => "count"))->all();
+        $ptracks = \PlaylistTrack::count();
+        // var_dump($downloads[0]["count"]);
+        $data = array(
+            "users" => $users,
+            "lyrics" => $lyrics,
+            "ptracks" => $ptracks,
+            "downloads" => $downloads[0]["count"]
+        );
+        $data = ArrayMethods::toObject($data);
+        $view->set("data", $data);
     }
     
     /**
