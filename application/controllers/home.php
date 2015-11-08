@@ -358,7 +358,7 @@ class Home extends Controller {
         $url = 'https://www.youtube.com/watch?v=' . $videoId;
         $download = new YTDownload($url);
         
-        $track = SavedTrack::first(array("yid = ?" => $videoId), array("id"));
+        $track = \SavedTrack::first(array("yid = ?" => $videoId), array("id"));
         $d = \Download::first(array("strack_id = ?" => $track->id));
         $sendFile = false;
 
@@ -368,11 +368,11 @@ class Home extends Controller {
                 $file = $download->getFile();
 
                 if (!$track) {
-                    $track = new SavedTrack(array(
+                    $track = new S\avedTrack(array(
                         "track" => RequestMethods::post("track"),
                         "artist" => RequestMethods::post("artist"),
                         "mbid" => RequestMethods::post("mbid"),
-                        "yid" => RequestMethods::post("yid")
+                        "yid" => $videoId
                     ));
                     $track->save();
                 }
