@@ -193,7 +193,7 @@ class Admin extends Users {
                 $count = $model::count(array("created LIKE ?" => "%{$date}%"));
                 $obj[] = array('y' => $date, 'a' => $count);
             }
-            $view->set("data", \Framework\ArrayMethods::toObject($obj));
+            $view->set("data", ArrayMethods::toObject($obj));
         }
     }
 
