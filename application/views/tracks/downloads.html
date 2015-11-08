@@ -10,29 +10,23 @@
             <form class="pull-right form-inline" action="" method="get">
                 <div class="form-group">
                     <label for="perPage">Per Page:</label>
-                    <select class="form-control" name="perPage">
-                        <option value="10" selected="">10</option>
-                        <option value="20">20</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                        <option value="300">300</option>
-                    </select> 
+                    <input size="3" type="text" maxlength="3" pattern="[1-9]{1}[0-9}{1,2}" name="limit" value="{echo $limit}" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="pageNo">Page No:</label>
-                    <input size="3" type="text" name="pageNo" value="{echo $currentPage}" class="form-control">
+                    <input size="3" type="text" name="page" value="{echo $page}" class="form-control">
                 </div>
                 <!-- <div class="form-group">
-                    <label for="pageNo">Order By:</label>
-                    <select class="form-control" name="orderBy">
-                        <option value="id">Id</option>
-                        <option value="created" selected="">Created</option>
-                        <option value="modified">Modified</option>
-                    </select> 
-                </div> -->
+                <label for="pageNo">Order By:</label>
+                <select class="form-control" name="orderBy">
+                    <option value="id">Id</option>
+                    <option value="created" selected="">Created</option>
+                    <option value="modified">Modified</option>
+                </select> 
+            </div> -->
                 <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Go</button>
             </form>
-            <p class="page-heading pull-left">Total: {echo $total}</p>
+            <h4 class="pull-left">Total: {echo $total}</h4>
         </div>
     </div>
     <br>
@@ -43,38 +37,37 @@
                     <p class="text-center">Top Downloads</p>
                 </div>
                 <!-- /.panel-heading -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Track</th>
+                            <th>Artist</th>
+                            <th>Count</th>
+                            <th>Last Downloaded</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {script $i = 1} {foreach $r in $results}
+                        <tr>
+                            <td>{echo $i}</td>
+                            <td>{echo $r->track}</td>
+                            <td>{echo $r->artist}</td>
+                            <td>{echo $r->count}</td>
+                            <td>{echo Framework\StringMethods::datetime_to_text($r->last)}</td>
+                        </tr>
+                        {script ++$i} {/foreach}
+                    </tbody>
+                </table>
                 <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Track</th>
-                                    <th>Artist</th>
-                                    <th>Count</th>
-                                    <th>Last Downloaded</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {script $i = 1}
-                                {foreach $r in $results}
-                                <tr>
-                                    <td>{echo $i}</td>
-                                    <td>{echo $r->track}</td>
-                                    <td>{echo $r->artist}</td>
-                                    <td>{echo $r->count}</td>
-                                    <td>{echo Framework\StringMethods::datetime_to_text($r->last)}</td>
-                                </tr>
-                                {script ++$i}
-                                {/foreach}
-                            </tbody>
-                        </table>
+                    <div class="text-center">
+                        {if($page != 1)}
+                        <a href="{echo Shared\Markup::pagination($page - 1)}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Previous</a>
+                        {/if} 
+                        {if($page < $count/$limit)}
+                        <a href="{echo Shared\Markup::pagination($page + 1)}" class="btn btn-primary">Next <i class="fa fa-arrow-right"></i></a>
+                        {/if}
                     </div>
-                    <!-- /.table-responsive -->
-                    <p class="pull-right">
-                        <a href="/tracks/downloads?perPage={echo $limit}&amp;pageNo={echo $currentPage - 1}" class="btn {if (($currentPage - 1) <= 0)}btn-default disabled{/if}{else}btn-primary{/else}"><i class="fa fa-arrow-left"></i> Previous</a>
-                        <a href="/tracks/downloads?perPage={echo $limit}&amp;pageNo={echo $currentPage + 1}" class="btn btn-primary">Next <i class="fa fa-arrow-right"></i></a>
-                    </p>
                 </div>
                 <!-- /.panel-body -->
             </div>

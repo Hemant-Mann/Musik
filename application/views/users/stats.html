@@ -11,17 +11,11 @@
                 <form class="pull-right form-inline" action="" method="get">
                     <div class="form-group">
                         <label for="perPage">Per Page:</label>
-                        <select class="form-control" name="perPage">
-                            <option value="10" selected="">10</option>
-                            <option value="20">20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                            <option value="300">300</option>
-                        </select> 
+                        <input size="3" type="text" maxlength="3" pattern="[1-9]{1}[0-9}{1,2}" name="limit" value="{echo $limit}" class="form-control">
                     </div>
                     <div class="form-group">
                         <label for="pageNo">Page No:</label>
-                        <input size="3" type="text" name="pageNo" class="form-control" value="{echo $currentPage}">
+                        <input size="3" type="text" name="page" class="form-control" value="{echo $page}">
                     </div>
                     <!-- <div class="form-group">
                         <label for="pageNo">Order By:</label>
@@ -33,9 +27,8 @@
                     </div> -->
                     <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Go</button>
                 </form>
-                <p class="page-heading pull-left">Total: {echo $total}</p>
+                <p class="page-heading pull-left">Total: {echo $count}</p>
             </div>
-            
         </div>
     </div>
     <br>
@@ -46,48 +39,50 @@
                     <p class="text-center">Registered Users</p>
                 </div>
                 <!-- /.panel-heading -->
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Joined</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {script $i = 1} {foreach $usr in $results}
+                        <tr>
+                            <td>{echo $i}</td>
+                            <td>{echo $usr->name}</td>
+                            <td>{echo $usr->email}</td>
+                            {if $usr->admin}
+                            <td>
+                                <div class="label label-success">Admin</div>
+                            </td>
+                            {/if} {else}
+                            <td>
+                                <div class="label label-warning">User</div>
+                            </td>
+                            {/else}
+                            <td>{echo Framework\StringMethods::only_date($usr->created)}</td>
+                            <td>
+                                <a href="/admin/update/User/{echo $usr->id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                                <a href="/admin/delete/User/{echo $usr->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete</a>
+                            </td>
+                        </tr>
+                        {script ++$i} {/foreach}
+                    </tbody>
+                </table>
                 <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Joined</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {script $i = 1}
-                                {foreach $usr in $results}
-                                <tr>
-                                    <td>{echo $i}</td>
-                                    <td>{echo $usr->name}</td>
-                                    <td>{echo $usr->email}</td>
-                                    {if $usr->admin}
-                                    <td><div class="label label-success">Admin</div></td>
-                                    {/if}
-                                    {else}
-                                    <td><div class="label label-warning">User</div></td>
-                                    {/else}
-                                    <td>{echo Framework\StringMethods::only_date($usr->created)}</td>
-                                    <td>
-                                        <a href="/admin/update/User/{echo $usr->id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
-                                        <a href="/admin/delete/User/{echo $usr->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete</a>
-                                    </td>
-                                </tr>
-                                {script ++$i}
-                                {/foreach}
-                            </tbody>
-                        </table>
+                    <div class="text-center">
+                    {if($page != 1)}
+                        <a href="{echo Shared\Markup::pagination($page - 1)}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Previous</a>
+                    {/if}
+                    {if($page < $count/$limit)}
+                        <a href="{echo Shared\Markup::pagination($page + 1)}" class="btn btn-primary">Next <i class="fa fa-arrow-right"></i></a>
+                    {/if}
                     </div>
-                    <!-- /.table-responsive -->
-                    <p class="pull-right">
-                        <a href="/users/stats?perPage={echo $limit}&amp;pageNo={echo $currentPage - 1}" class="btn {if (($currentPage - 1) <= 0)}btn-default disabled{/if}{else}btn-primary{/else}"><i class="fa fa-arrow-left"></i> Previous</a>
-                        <a href="/users/stats?perPage={echo $limit}&amp;pageNo={echo $currentPage + 1}" class="btn btn-primary">Next <i class="fa fa-arrow-right"></i></a>
-                    </p>
                 </div>
                 <!-- /.panel-body -->
             </div>

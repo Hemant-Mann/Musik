@@ -18,8 +18,8 @@ class Lyrics extends Admin {
 		$this->seo(array("title" => "Lyrics | All", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
 		$view = $this->getActionView();
 
-		$limit = RequestMethods::get("perPage", 10);
-		$page = RequestMethods::get("pageNo", 1);
+		$limit = RequestMethods::get("limit", 10);
+		$page = RequestMethods::get("page", 1);
 		$orderBy = RequestMethods::get("orderBy", "created");
 
 		$lyrics = \Lyric::all(array(), array("lyrics", "strack_id", "id"), $orderBy, "desc", $limit, $page);
@@ -33,7 +33,6 @@ class Lyrics extends Admin {
 				"track" => $track->track,
 				"artist" => $track->artist,
 				"lyrics" => substr($l->lyrics, 0, 100). "</pre>",
-				// "lyrics" => $l->lyrics,
 				"yid" => $track->yid,
 				"lyric_id" => $l->id
 			);
@@ -41,9 +40,9 @@ class Lyrics extends Admin {
 		$all = ArrayMethods::toObject($all);
 
 		$view->set("lyrics", $all);
-		$view->set("total", $total);
+		$view->set("count", $total);
 		$view->set("limit", $limit);
-		$view->set("currentPage", (int) $page);
+		$view->set("page", (int) $page);
 	}
 
 	/**

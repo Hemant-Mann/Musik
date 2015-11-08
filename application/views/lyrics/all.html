@@ -7,74 +7,70 @@
     </div>
     <!-- /.row -->
     <div class="row">
+        <form class="pull-right form-inline" action="" method="get">
+            <div class="form-group">
+                <label for="perPage">Per Page:</label>
+                <input size="3" type="text" maxlength="3" pattern="[1-9]{1}[0-9}{1,2}" name="limit" value="{echo $limit}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="pageNo">Page No:</label>
+                <input size="3" type="text" name="page" value="{echo $page}" class="form-control">
+            </div>
+            <!-- <div class="form-group">
+                <label for="pageNo">Order By:</label>
+                <select class="form-control" name="orderBy">
+                    <option value="id">Id</option>
+                    <option value="created" selected="">Created</option>
+                    <option value="modified">Modified</option>
+                </select> 
+            </div> -->
+            <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Go</button>
+        </form>
+        <h4 class="pull-left">Total: {echo $count}</h4>
+    </div>
+    <div class="row">
         <div class="col-lg-12">
-            <div class="panel">
+            <div class="panel panel-default">
                 <div class="panel-heading">
-                    <form class="pull-right form-inline" action="" method="get">
-                        <div class="form-group">
-                            <label for="perPage">Per Page:</label>
-                            <select class="form-control" name="perPage">
-                                <option value="10" selected="">10</option>
-                                <option value="20">20</option>
-                                <option value="50">50</option>
-                                <option value="100">100</option>
-                                <option value="300">300</option>
-                            </select> 
-                        </div>
-                        <div class="form-group">
-                            <label for="pageNo">Page No:</label>
-                            <input size="3" type="text" name="pageNo" value="1" class="form-control">
-                        </div>
-                        <!-- <div class="form-group">
-                            <label for="pageNo">Order By:</label>
-                            <select class="form-control" name="orderBy">
-                                <option value="id">Id</option>
-                                <option value="created" selected="">Created</option>
-                                <option value="modified">Modified</option>
-                            </select> 
-                        </div> -->
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Go</button>
-                    </form>
-                    <h4 class="pull-left">Total: {echo $total}</h4>
+                    <h5 class="text-center">Stats</h5>
                 </div>
-                
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>S.No.</th>
+                            <th>Track</th>
+                            <th>Artist</th>
+                            <th>Snippet</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {script $i = 1} {foreach $l in $lyrics}
+                        <tr>
+                            <td>{echo $i}</td>
+                            <td class="center">{echo $l->track}</td>
+                            <td class="center">{echo $l->artist}</td>
+                            <td>{echo $l->lyrics}</td>
+                            <td>
+                                <a href="/lyrics/edit/{echo $l->lyric_id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                                <a href="/admin/delete/Lyric/{echo $l->lyric_id}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete</a>
+                            </td>
+                        </tr>
+                        {script ++$i} {/foreach}
+                    </tbody>
+                </table>
                 <div class="panel-body">
-                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                        <thead>
-                            <tr>
-                                <th>S.No.</th>
-                                <th>Track</th>
-                                <th>Artist</th>
-                                <th>Snippet</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {script $i = 1}
-                            {foreach $l in $lyrics}
-                            <tr>
-                                <td>{echo $i}</td>
-                                <td class="center">{echo $l->track}</td>
-                                <td class="center">{echo $l->artist}</td>
-                                <td>{echo $l->lyrics}</td>
-                                <td>
-                                    <a href="/lyrics/edit/{echo $l->lyric_id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
-                                    <a href="/admin/delete/Lyric/{echo $l->lyric_id}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete</a>
-                                </td>
-                            </tr>
-                            {script ++$i}
-                            {/foreach}
-                        </tbody>
-                    </table>
-
-                    <p class="pull-right">
-                        <a href="/lyrics/all?perPage={echo $limit}&amp;pageNo={echo $currentPage - 1}" class="btn {if (($currentPage - 1) <= 0)}btn-default disabled{/if}{else}btn-primary{/else}"><i class="fa fa-arrow-left"></i> Previous</a>
-                        <a href="/lyrics/all?perPage={echo $limit}&amp;pageNo={echo $currentPage + 1}" class="btn btn-primary">Next <i class="fa fa-arrow-right"></i></a>
-                    </p>    
+                    <div class="text-center">
+                    {if($page != 1)}
+                        <a href="{echo Shared\Markup::pagination($page - 1)}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Previous</a>
+                    {/if}
+                    {if($page < $count/$limit)}
+                        <a href="{echo Shared\Markup::pagination($page + 1)}" class="btn btn-primary">Next <i class="fa fa-arrow-right"></i></a>
+                    {/if}
+                    </div>
                 </div>
             </div>
             <!-- /.panel -->
-
         </div>
         <!-- /.col-lg-12 -->
     </div>

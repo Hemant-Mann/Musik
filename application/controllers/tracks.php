@@ -171,14 +171,15 @@ class Tracks extends Admin {
 		$this->seo(array("title" => "View Downloads", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
-        $page = RequestMethods::get("pageNo", 1);
-        $limit = RequestMethods::get("perPage", 10);
+        $page = RequestMethods::get("page", 1);
+        $limit = RequestMethods::get("limit", 10);
         $orderBy = RequestMethods::get("orderBy", "created");
         $downloads = \Download::all(array(), array("strack_id", "count", "id", "modified"), $orderBy, "desc", $limit, $page);
         $database = Registry::get("database");
-        $count = $database->query()->from("downloads", array("SUM(count)" => "songs"))->all();
+        $total = $database->query()->from("downloads", array("SUM(count)" => "songs"))->all();
 
         $results = array();
+        $count = 0;
         foreach ($downloads as $d) {
         	$track = \SavedTrack::first(array("id = ?" => $d->strack_id), array("track", "artist"));
         	$results[] = array(
@@ -188,12 +189,14 @@ class Tracks extends Admin {
         		"strack_id" => $d->strack_id,
         		"last" => $d->modified
         	);
+        	++$count;
         }
         $results = ArrayMethods::toObject($results);
 
         $view->set("results", $results);
-		$view->set("total", $count[0]["songs"]);
+		$view->set("total", $total[0]["songs"]);
+		$view->set("count", $count);
 		$view->set("limit", $limit);
-        $view->set("currentPage", (int) $page);  
+        $view->set("page", (int) $page);  
 	}
 }
