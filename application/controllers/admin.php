@@ -176,6 +176,27 @@ class Admin extends Users {
         self::redirect($_SERVER['HTTP_REFERER']);
     }
 
+    /**
+     * @before _secure, changeLayout
+     */
+    public function dataAnalysis() {
+        $this->seo(array("title" => "Data Analysis", "keywords" => "admin", "description" => "admin", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+        if (RequestMethods::get("action") == "dataAnalysis") {
+            $startdate = RequestMethods::get("startdate");
+            $enddate = RequestMethods::get("enddate");
+            $model = ucfirst(RequestMethods::get("model"));
+
+            $diff = date_diff(date_create($startdate), date_create($enddate));
+            for ($i = 0; $i < $diff->format("%a"); $i++) {
+                $date = date('Y-m-d', strtotime($startdate . " +{$i} day"));
+                $count = $model::count(array("created LIKE ?" => "%{$date}%"));
+                $obj[] = array('y' => $date, 'a' => $count);
+            }
+            $view->set("data", \Framework\ArrayMethods::toObject($obj));
+        }
+    }
+
     public function sync($model) {
         $this->noview();
         $db = Framework\Registry::get("database");
