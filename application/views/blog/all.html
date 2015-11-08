@@ -1,0 +1,77 @@
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Blog Posts</h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div>
+                <form class="pull-right form-inline" action="" method="get">
+                    <div class="form-group">
+                        <label for="perPage">Per Page:</label>
+                        <input size="3" type="text" maxlength="3" pattern="[1-9]{1}[0-9}{1,2}" name="limit" value="{echo $limit}" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="pageNo">Page No:</label>
+                        <input size="3" type="text" name="page" class="form-control" value="{echo $page}">
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Go</button>
+                </form>
+                <p class="page-heading pull-left">Total: {echo $count}</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Created</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach $post in $posts}
+                        <tr>
+                            <td>{echo $post->id}</td>
+                            <td>{echo $post->title}</td>
+                            <td>{echo Framework\StringMethods::only_date($post->created)}</td>
+                            <td>
+                                {if($post->live)}
+                                <div class="label label-success">Active</div>
+                                {/if}
+                                {else}
+                                <div class="label label-warning">Inactive</div>
+                                {/else}
+                            </td>
+                            <td>
+                                <a href="/blog/edit/{echo $post->id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                                <a href="/admin/delete/Post/{echo $post->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete</a>
+                            </td>
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+                <div class="panel-body">
+                    <div class="text-center">
+                    {if($page != 1)}
+                        <a href="{echo Shared\Markup::pagination($page - 1)}" class="btn btn-primary"><i class="fa fa-arrow-left"></i> Previous</a>
+                    {/if}
+                    {if($page < $count/$limit)}
+                        <a href="{echo Shared\Markup::pagination($page + 1)}" class="btn btn-primary">Next <i class="fa fa-arrow-right"></i></a>
+                    {/if}
+                    </div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+    </div>
+</div>

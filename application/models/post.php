@@ -18,7 +18,7 @@ class Post extends Shared\Model {
     /**
      * @column
      * @readwrite
-     * @type description
+     * @type text
      */
-    protected $_description;
+    protected $_content;
 }
