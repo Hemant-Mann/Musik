@@ -13,6 +13,9 @@ class Blog extends Admin {
     public function index() {
         $this->seo(array("title" => "Blog | Musik", "keywords" => "Music Blog", "description" => "Music Blog", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
+
+        $posts = \Post::all(array("live = ?" => true), array("title", "content", "id"));
+        $view->set('posts', $posts);
     }
 
     /**

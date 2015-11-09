@@ -22,9 +22,11 @@
         }
     </style>
 </head>
+<!-- This if block changes background for login/register pages -->
 <body class="{if isset($change)} bg-info {/if}">
     <div id="ytplayer" class="hide"></div>
     <section class="vbox">
+    <!-- User playlist Modals (only included when user logged in) -->
     {if isset($user) && isset($playlists)}
         {include users/modals/change_playlist.html}
         {include users/modals/edit_playlist.html}
