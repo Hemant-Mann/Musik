@@ -13,6 +13,7 @@
                         <!-- .page-header -->
                         <div class="row">
                             <div class="col-sm-9">
+                                <!-- Blog Theme Post -->
                                 <article id="post-390" class="post-item post-390 post type-post status-publish format-standard has-post-thumbnail hentry category-blog odd">
                                     <div class="post-media">
                                         <img width="400" height="200" src="http://flatfull.com/wp/musik/wp-content/uploads/2015/07/m44.jpg" class="img-full wp-post-image" alt="m44" /> </div>
@@ -52,22 +53,23 @@
                                         <!-- .entry-footer -->
                                     </div>
                                 </article>
+                                {foreach $p in $posts}
                                 <!-- #post-## -->
-                                <article id="post-388" class="post-item post-388 post type-post status-publish format-standard hentry category-blog even">
+                                <article id="post-{echo $p->id}" class="post-item post-{echo $p->id} post type-post status-publish format-standard hentry category-blog even">
                                     <div class="wrapper-lg">
                                         <header class="entry-header post-title">
                                             <h2 class="entry-title m-t-none">
-                                                <a href="http://flatfull.com/wp/musik/life-style/" rel="bookmark">Life Style</a>
+                                                <a href="#" rel="bookmark">{echo $p->title}</a>
                                             </h2>
                                             <div class="entry-meta m-b-md">
                                                 <span class="posted-on"><i class="icon-clock icon-muted m-r-xs"></i>Posted on
-                                                    <a href="http://flatfull.com/wp/musik/life-style/" rel="bookmark">
-                                                        <time class="entry-date published updated" datetime="2015-07-13T07:07:30+00:00">July 13, 2015</time>
+                                                    <a href="#" rel="bookmark">
+                                                        <time class="entry-date published updated" datetime="">{echo Framework\StringMethods::only_date($p->created)}</time>
                                                     </a>
                                                 </span>
                                                 <span class="byline"><i class="icon-user icon-muted m-r-xs"></i> by
                                                     <span class="author vcard">
-                                                        <a class="url fn n" href="http://flatfull.com/wp/musik/author/admin/">Frank Melin</a>
+                                                        <a class="url fn n" href="http://flatfull.com/wp/musik/author/admin/">User</a>
                                                     </span>
                                                 </span>
                                             </div>
@@ -75,136 +77,21 @@
                                         </header>
                                         <!-- .entry-header -->
                                         <div class="entry-content">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Verum hoc idem saepe faciamus. Qua ex cognitione facilior facta est investigatio rerum occultissimarum. Praeclarae mortes sunt imperatoriae; Beatus sibi videtur esse moriens. Duo Reges: constructio interrete. Non est ista, inquam, Piso, magna dissensio. Summus dolor plures dies manere non potest?...
+                                            {echo $p->content}
                                         </div>
                                         <!-- .entry-content -->
                                         <footer class="entry-footer text-muted m-t-md">
                                             <span class="cat-links"><i class="icon-direction icon-muted m-r-xs"></i>Posted in
-                                                <a href="http://flatfull.com/wp/musik/category/blog/" rel="category tag">Blog</a>
+                                                <a href="#" rel="category tag">Blog</a>
                                             </span>
                                             <span class="comments-link"><i class="icon-speech icon-muted m-r-xs"></i>
-                                                <a href="http://flatfull.com/wp/musik/life-style/#respond">Leave a comment</a>
+                                                <a href="#">Leave a comment</a>
                                             </span>
                                         </footer>
                                         <!-- .entry-footer -->
                                     </div>
                                 </article>
-                                <!-- #post-## -->
-                                <article id="post-386" class="post-item post-386 post type-post status-publish format-standard hentry category-blog odd">
-                                    <div class="wrapper-lg">
-                                        <header class="entry-header post-title">
-                                            <h2 class="entry-title m-t-none">
-                                                <a href="http://flatfull.com/wp/musik/audio-theme/" rel="bookmark">Audio Theme</a>
-                                            </h2>
-                                            <div class="entry-meta m-b-md">
-                                                <span class="posted-on"><i class="icon-clock icon-muted m-r-xs"></i>Posted on
-                                                    <a href="http://flatfull.com/wp/musik/audio-theme/" rel="bookmark">
-                                                        <time class="entry-date published updated" datetime="2015-07-13T07:05:32+00:00">July 13, 2015</time>
-                                                    </a>
-                                                </span>
-                                                <span class="byline"><i class="icon-user icon-muted m-r-xs"></i> by
-                                                    <span class="author vcard">
-                                                        <a class="url fn n" href="http://flatfull.com/wp/musik/author/admin/">Frank Melin</a>
-                                                    </span>
-                                                </span>
-                                            </div>
-                                            <!-- .entry-meta -->
-                                        </header>
-                                        <!-- .entry-header -->
-                                        <div class="entry-content">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Profectus in exilium Tubulus statim nec respondere ausus; Superiores tres erant, quae esse possent, quarum est una sola defensa, eaque vehementer. Si qua in iis corrigere voluit, deteriora fecit. Istam voluptatem perpetuam quis potest praestare sapienti? Inde sermone vario sex illa...
-                                        </div>
-                                        <!-- .entry-content -->
-                                        <footer class="entry-footer text-muted m-t-md">
-                                            <span class="cat-links"><i class="icon-direction icon-muted m-r-xs"></i>Posted in
-                                                <a href="http://flatfull.com/wp/musik/category/blog/" rel="category tag">Blog</a>
-                                            </span>
-                                            <span class="comments-link"><i class="icon-speech icon-muted m-r-xs"></i>
-                                                <a href="http://flatfull.com/wp/musik/audio-theme/#respond">Leave a comment</a>
-                                            </span>
-                                        </footer>
-                                        <!-- .entry-footer -->
-                                    </div>
-                                </article>
-                                <!-- #post-## -->
-                                <article id="post-291" class="post-item post-291 post type-post status-publish format-standard has-post-thumbnail hentry category-blog even">
-                                    <div class="post-media">
-                                    </div>
-                                    <div class="wrapper-lg">
-                                        <header class="entry-header post-title">
-                                            <h2 class="entry-title m-t-none">
-                                                <a href="http://flatfull.com/wp/musik/bootstrap-3-what-you-need-to-know/" rel="bookmark">Bootstrap 3: What you need to know</a>
-                                            </h2>
-                                            <div class="entry-meta m-b-md">
-                                                <span class="posted-on"><i class="icon-clock icon-muted m-r-xs"></i>Posted on
-                                                    <a href="http://flatfull.com/wp/musik/bootstrap-3-what-you-need-to-know/" rel="bookmark">
-                                                        <time class="entry-date published updated" datetime="2015-07-10T12:21:10+00:00">July 10, 2015</time>
-                                                    </a>
-                                                </span>
-                                                <span class="byline"><i class="icon-user icon-muted m-r-xs"></i> by
-                                                    <span class="author vcard">
-                                                        <a class="url fn n" href="http://flatfull.com/wp/musik/author/admin/">Frank Melin</a>
-                                                    </span>
-                                                </span>
-                                            </div>
-                                            <!-- .entry-meta -->
-                                        </header>
-                                        <!-- .entry-header -->
-                                        <div class="entry-content">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum ullamcorper sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat. Html5 and CSS3 Phasellus at ultricies neque, quis malesuada augue. Donec eleifend condimentum nisl eu consectetur. Integer eleifend, nisl...
-                                        </div>
-                                        <!-- .entry-content -->
-                                        <footer class="entry-footer text-muted m-t-md">
-                                            <span class="cat-links"><i class="icon-direction icon-muted m-r-xs"></i>Posted in
-                                                <a href="http://flatfull.com/wp/musik/category/blog/" rel="category tag">Blog</a>
-                                            </span>
-                                            <span class="comments-link"><i class="icon-speech icon-muted m-r-xs"></i>
-                                                <a href="http://flatfull.com/wp/musik/bootstrap-3-what-you-need-to-know/#respond">Leave a comment</a>
-                                            </span>
-                                        </footer>
-                                        <!-- .entry-footer -->
-                                    </div>
-                                </article>
-                                <!-- #post-## -->
-                                <article id="post-425" class="post-item post-425 post type-post status-publish format-video hentry category-blog post_format-post-format-video odd">
-                                    <div class="wrapper-lg">
-                                        <header class="entry-header post-title">
-                                            <h2 class="entry-title m-t-none">
-                                                <a href="http://flatfull.com/wp/musik/hello-world-2/" rel="bookmark">7 things you need to know about the flat design</a>
-                                            </h2>
-                                            <div class="entry-meta m-b-md">
-                                                <span class="posted-on"><i class="icon-clock icon-muted m-r-xs"></i>Posted on
-                                                    <a href="http://flatfull.com/wp/musik/hello-world-2/" rel="bookmark">
-                                                        <time class="entry-date published updated" datetime="2015-06-14T23:34:07+00:00">June 14, 2015</time>
-                                                    </a>
-                                                </span>
-                                                <span class="byline"><i class="icon-user icon-muted m-r-xs"></i> by
-                                                    <span class="author vcard">
-                                                        <a class="url fn n" href="http://flatfull.com/wp/musik/author/admin/">Frank Melin</a>
-                                                    </span>
-                                                </span>
-                                            </div>
-                                            <!-- .entry-meta -->
-                                        </header>
-                                        <!-- .entry-header -->
-                                        <div class="entry-content">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi id neque quam. Aliquam sollicitudin venenatis ipsum ac feugiat. Vestibulum ullamcorper sodales nisi nec condimentum. Mauris convallis mauris at pellentesque volutpat. Phasellus at ultricies neque, quis malesuada augue. Donec eleifend condimentum nisl eu consectetur. Integer eleifend, nisl venenatis consequat iaculis,...
-                                        </div>
-                                        <!-- .entry-content -->
-                                        <footer class="entry-footer text-muted m-t-md">
-                                            <span class="cat-links"><i class="icon-direction icon-muted m-r-xs"></i>Posted in
-                                                <a href="http://flatfull.com/wp/musik/category/blog/" rel="category tag">Blog</a>
-                                            </span>
-                                            <span class="comments-link"><i class="icon-speech icon-muted m-r-xs"></i>
-                                                <a href="http://flatfull.com/wp/musik/hello-world-2/#respond">Leave a comment</a>
-                                            </span>
-                                        </footer>
-                                        <!-- .entry-footer -->
-                                    </div>
-                                </article>
-                                <!-- #post-## -->
-                                <div class="text-center">
-                                </div>
+                                {/foreach}
                             </div>
                             <div class="col-sm-3">
                                 <aside>

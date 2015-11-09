@@ -14,7 +14,10 @@ class Blog extends Admin {
         $this->seo(array("title" => "Blog | Musik", "keywords" => "Music Blog", "description" => "Music Blog", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
-        $posts = \Post::all(array("live = ?" => true), array("title", "content", "id"));
+        $limit = RequestMethods::get("limit", 10);
+        $page = RequestMethods::get("page", 1);
+
+        $posts = \Post::all(array("live = ?" => true), array("title", "content", "id"), "created", "desc", $limit, $page);
         $view->set('posts', $posts);
     }
 
