@@ -43,7 +43,7 @@ class Download {
 
 	protected function haveVideo() {
 		if (!file_exists($this->_file)) {
-			$cmd = "youtube-dl -f 17 -o ". $this->_file . " " . $this->_url;
+			$cmd = "youtube-dl -f 17 --force-ipv4 -o ". $this->_file . " " . $this->_url;
 			exec($cmd, $output, $return);
 
 			if ($return != 0) {
