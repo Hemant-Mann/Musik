@@ -77,6 +77,16 @@ class Blog extends Admin {
 
     public function post($title, $id) {
         $view = $this->getActionView();
+        if (!$id) {
+            self::redirect("/404");
+        }
+
+        $post = \Post::first(array("id = ?" => $id, "live = ?" => true));
+        if (!$post) {
+            self::redirect("/404");
+        }
+        $this->seo(array("title" => "Blog | Post - ". $title, "view" => $this->getLayoutView()));
+        $view->set("post", $post);
     }
 
 }

@@ -1,0 +1,68 @@
+<section class="hbox stretch">
+    {include layouts/navigation/standard.html}
+    <section id="content">
+        <a href="javascript:;" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+        <section class="vbox">
+            <section class="w-f-md" id="ajax-container">
+                <section class="vbox">
+                    <section class="scrollable wrapper-lg">
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <article id="post-{echo $post->id}" class="post-{echo $post->id} post type-post status-publish format-standard hentry category-blog odd">
+                                    <header class="entry-header m-b">
+                                        <h1 class="m-t-none m-b-none text-black">{echo $post->title}</h1>
+                                        <div class="entry-meta padder-v b-b">
+                                            <span class="posted-on"><i class="icon-clock icon-muted m-r-xs"></i>Posted on
+                                                <a href="/blog/post/{echo Framework\StringMethods::url($post->title)}/{echo $post->id}" rel="bookmark">
+                                                    <time class="entry-date published updated" datetime="">{echo Framework\StringMethods::only_date($post->created)}</time>
+                                                </a>
+                                            </span>
+                                        </div>
+                                        <!-- .entry-meta -->
+                                    </header>
+                                    <!-- .entry-header -->
+                                    <div class="entry-content padder-v">
+                                        <p>
+                                            {echo $post->content}
+                                        </p>
+                                    </div>
+
+                                </article>
+                                <!-- #post-## -->
+                            </div>
+                            <div class="col-sm-3">
+                                <aside>
+                                    <div class="widget-1 widget-odd widget_recent_entries widget">
+                                        <h4 class="widget-title">Recent Posts</h4>
+                                        <ul class="list-group list-group-lg">
+                                            <li class="list-group-item">
+                                                <a href="http://flatfull.com/wp/musik/taylor-swift-shake-it-off/">Taylor Swift &#8211; Shake It Off</a>
+                                                <span class="post-date">August 13, 2015</span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <a href="http://flatfull.com/wp/musik/love-me-like-you-do-ellie-goulding-fifty-shades-of-grey-soundtrack-hq/">Love Me Like You Do &#8211; Ellie Goulding (Fifty Shades of Grey Soundtrack) HQ</a>
+                                                <span class="post-date">August 13, 2015</span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <a href="http://flatfull.com/wp/musik/jessie-j-flashlight-from-pitch-perfect-2/">Jessie J &#8211; Flashlight (from Pitch Perfect 2)</a>
+                                                <span class="post-date">August 13, 2015</span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <a href="http://flatfull.com/wp/musik/sol-aint-gon-stop/">Sol &#8211; &#8220;Ain&#8217;t Gon&#8217; Stop&#8221;</a>
+                                                <span class="post-date">August 13, 2015</span>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <a href="http://flatfull.com/wp/musik/eminem-no-love-explicit-version-ft-lil-wayne/">Eminem &#8211; No Love (Explicit Version) ft. Lil Wayne</a>
+                                                <span class="post-date">August 13, 2015</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </aside>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+</section>
