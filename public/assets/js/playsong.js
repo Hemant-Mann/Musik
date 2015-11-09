@@ -370,6 +370,7 @@ $(document).ready(function () {
             artist = self.data('artist'),
             mbid = self.data('mbid');
 
+        track = track.replace(/\./g, "");
         self.html('<i class="fa fa-spinner fa-spin"></i> Please Wait...');
         request.create({
             action: '/home/download/' + yid + '/'  + track,
