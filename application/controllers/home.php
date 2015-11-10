@@ -368,7 +368,7 @@ class Home extends Controller {
                 $file = $download->getFile();
 
                 if (!$track) {
-                    $track = new S\avedTrack(array(
+                    $track = new \SavedTrack(array(
                         "track" => RequestMethods::post("track"),
                         "artist" => RequestMethods::post("artist"),
                         "mbid" => RequestMethods::post("mbid"),
