@@ -177,19 +177,19 @@ class Tracks extends Admin {
         $downloads = \Download::all(array(), array("strack_id", "count", "id", "modified"), $orderBy, "desc", $limit, $page);
         $database = Registry::get("database");
         $total = $database->query()->from("downloads", array("SUM(count)" => "songs"))->all();
+        $count = \Download::count();
 
         $results = array();
-        $count = 0;
         foreach ($downloads as $d) {
-        	$track = \SavedTrack::first(array("id = ?" => $d->strack_id), array("track", "artist"));
+        	$track = \SavedTrack::first(array("id = ?" => $d->strack_id), array("track", "artist", "yid"));
         	$results[] = array(
         		"track" => $track->track,
         		"artist" => $track->artist,
         		"count" => $d->count,
+        		"yid" => $track->yid,
         		"strack_id" => $d->strack_id,
         		"last" => $d->modified
         	);
-        	++$count;
         }
         $results = ArrayMethods::toObject($results);
 

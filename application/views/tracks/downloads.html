@@ -1,7 +1,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Downloads</h1>
+            <h1 class="page-header"><i class="fa fa-cloud-download"></i> Downloaded: {echo $total}</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
@@ -26,7 +26,7 @@
             </div> -->
                 <button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane"></i> Go</button>
             </form>
-            <h4 class="pull-left">Total: {echo $total}</h4>
+            <h3 class="pull-left">Search Result: <div class="label label-success">{echo $count}</div> Songs</h3>
         </div>
     </div>
     <br>
@@ -44,6 +44,7 @@
                             <th>Track</th>
                             <th>Artist</th>
                             <th>Count</th>
+                            <th>Youtube ID</th>
                             <th>Last Downloaded</th>
                         </tr>
                     </thead>
@@ -54,6 +55,7 @@
                             <td>{echo $r->track}</td>
                             <td>{echo $r->artist}</td>
                             <td>{echo $r->count}</td>
+                            <td><a href="https://youtube.com/watch?v={echo $r->yid}" target="_blank">{echo $r->yid}</a></td>
                             <td>{echo Framework\StringMethods::datetime_to_text($r->last)}</td>
                         </tr>
                         {script ++$i} {/foreach}
