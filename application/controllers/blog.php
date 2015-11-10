@@ -18,7 +18,10 @@ class Blog extends Admin {
         $page = RequestMethods::get("page", 1);
 
         $posts = \Post::all(array("live = ?" => true), array("title", "content", "id"), "created", "desc", $limit, $page);
+        $downloads = \Download::all(array("live = ?" => true), array("count", "strack_id", "id"), "count", "desc", 10, 1);
+        
         $view->set('posts', $posts);
+        $view->set("results", $downloads);
     }
 
     /**
@@ -86,7 +89,10 @@ class Blog extends Admin {
             self::redirect("/404");
         }
         $this->seo(array("title" => "Blog | Post - ". $title, "view" => $this->getLayoutView()));
+        $downloads = \Download::all(array("live = ?" => true), array("count", "strack_id", "id"), "count", "desc", 10, 1);
+
         $view->set("post", $post);
+        $view->set("results", $downloads);
     }
 
 }

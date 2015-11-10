@@ -1,6 +1,5 @@
 <section class="hbox stretch">
     {include layouts/navigation/standard.html}
-    <!-- /.aside -->
     <section id="content">
         <a href="javascript:;" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
         <section class="vbox">
@@ -40,9 +39,9 @@
                                             <span class="cat-links"><i class="icon-direction icon-muted m-r-xs"></i>Posted in
                                                 <a href="#" rel="category tag">Blog</a>
                                             </span>
-                                            <span class="comments-link"><i class="icon-speech icon-muted m-r-xs"></i>
+                                            <!-- <span class="comments-link"><i class="icon-speech icon-muted m-r-xs"></i>
                                                 <a href="#">Leave a comment</a>
-                                            </span>
+                                            </span> -->
                                         </footer>
                                         <!-- .entry-footer -->
                                     </div>
@@ -51,30 +50,28 @@
                             </div>
                             <div class="col-sm-3">
                                 <aside>
-                                    <div class="widget-1 widget-odd widget_recent_entries widget">
-                                        <h4 class="widget-title">Recent Posts</h4>
-                                        <ul class="list-group list-group-lg">
-                                            <li class="list-group-item">
-                                                <a href="http://flatfull.com/wp/musik/taylor-swift-shake-it-off/">Taylor Swift &#8211; Shake It Off</a>
-                                                <span class="post-date">August 13, 2015</span>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <a href="http://flatfull.com/wp/musik/love-me-like-you-do-ellie-goulding-fifty-shades-of-grey-soundtrack-hq/">Love Me Like You Do &#8211; Ellie Goulding (Fifty Shades of Grey Soundtrack) HQ</a>
-                                                <span class="post-date">August 13, 2015</span>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <a href="http://flatfull.com/wp/musik/jessie-j-flashlight-from-pitch-perfect-2/">Jessie J &#8211; Flashlight (from Pitch Perfect 2)</a>
-                                                <span class="post-date">August 13, 2015</span>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <a href="http://flatfull.com/wp/musik/sol-aint-gon-stop/">Sol &#8211; &#8220;Ain&#8217;t Gon&#8217; Stop&#8221;</a>
-                                                <span class="post-date">August 13, 2015</span>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <a href="http://flatfull.com/wp/musik/eminem-no-love-explicit-version-ft-lil-wayne/">Eminem &#8211; No Love (Explicit Version) ft. Lil Wayne</a>
-                                                <span class="post-date">August 13, 2015</span>
-                                            </li>
-                                        </ul>
+                                    <div class="widget-2 widget-even widget-alt widget_music_post_widget widget">
+                                        <h4 class="widget-title">Top Downloads</h4>
+                                        <div class="list-group list-group-lg">
+                                            {script $i = 1}
+                                            {foreach $r in $results}
+                                            <div class="list-group-item">
+                                                <article id="post-{echo $r->id}" class="item hover m-b-none clearfix post-{echo $r->id} type-download status-publish has-post-thumbnail hentry even edd-download">
+                                                    <div class="pos-rlt pull-left m-r">
+                                                        {echo $i}
+                                                    </div>
+                                                    {script $track = SavedTrack::first(array("id = ?" => $r->strack_id), array("artist", "track"))}
+                                                    <div class="clear">
+                                                        <a href="/tracks/view/{echo Framework\StringMethods::url($track->track)}/{echo Framework\StringMethods::url($track->artist)}" data-pjax title="{echo $track->track}" target="_blank" class="text-ellipsis font-bold">{echo $track->track}</a>
+                                                        <div class="text-muted text-sm text-ellipsis">by
+                                                            <a href="/artists/view/{echo Framework\StringMethods::url($track->artist)}" target="_blank" rel="tag">{echo $track->artist}</a>
+                                                        </div>
+                                                    </div>
+                                                </article>
+                                            </div>
+                                            {script ++$i}
+                                            {/foreach}
+                                        </div>
                                     </div>
                                 </aside>
                             </div>
