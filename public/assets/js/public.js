@@ -40,9 +40,9 @@ ga('send', 'pageview');
         },
         play: function (selector) {
           var self = this,
-            id = selector.attr('data-yid');
+            yid = selector.attr('data-yid');
 
-          if (id === undefined) {
+          if (yid === undefined) {
             window.request.create({
               action: 'home/findTrack',
               data: {
@@ -56,6 +56,7 @@ ga('send', 'pageview');
                 if (data != "Error") {
                   selector.attr("data-yid", data);
                   self._start(data);
+                  
                 } else {
                   main.bootbox.alert('Something went wrong');
                 }
@@ -63,8 +64,9 @@ ga('send', 'pageview');
             });
           } else {
             selector.removeClass('disabled');
-            self._start(id);
+            self._start(yid);
           }
+          main.download.init({ track: selector.attr('data-track'), artist: selector.attr('data-artist'), yid: selector.attr('data-yid'), mbid: selector.attr('data-mbid'), type: 'video' });
         }
       };
 
@@ -211,7 +213,6 @@ $(document).ready(function () {
     e.preventDefault();
     var self = $(this);
     Home.video.play(self);
-    Home.download.init({ track: self.data('track'), artist: self.data('artist'), yid: self.data('yid'), mbid: self.data('mbid'), type: 'video' });
   });
 
   $('#download-video').on('click', function (e) {
