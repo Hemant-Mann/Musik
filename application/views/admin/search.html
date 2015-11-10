@@ -1,19 +1,20 @@
 <div id="page-wrapper">
     <div class="row col-lg-12">
-        <h1 class="page-header text-center">Search</h1>
+        <h1 class="page-header text-center"><i class="fa fa-search"></i> Search</h1>
         <form class="form-inline text-center" role="form" method="get" action="">
             <div class="form-group">
                 <div class="input-group">
                     <label class="sr-only">Table</label>
                     <select name="model" class="form-control" value="{$model}" id="searchModel">
+                        <option value="Download">Downloads</option>
                         <option value="File">File</option>
                         <option value="Genre">Genre</option>
                         <option value="Lyric">Lyrics</option>
                         <option value="Playlist">Playlists</option>
                         <option value="PlaylistTrack">Playlist Tracks</option>
+                        <option value="Post">Blog Posts</option>
                         <option value="SavedTrack">Saved Tracks</option>
-                        <option value="Download">Downloads</option>
-                        <option value="user" selected="selected">Users</option>
+                        <option value="User" selected="selected">Users</option>
                     </select>
                 </div>
             </div>
