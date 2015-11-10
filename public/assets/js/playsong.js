@@ -370,16 +370,16 @@ $(document).ready(function () {
             artist = self.data('artist'),
             mbid = self.data('mbid');
 
-        track = track.replace(/\./g, "");
+        var urlTrack = track.replace(/\./g, "");
         self.html('<i class="fa fa-spinner fa-spin"></i> Please Wait...');
         request.create({
-            action: '/home/download/' + yid + '/'  + track,
+            action: '/home/download/' + yid + '/'  + urlTrack,
             data: {action: 'downloadMusic', track: track, artist: artist, mbid: mbid},
             callback: function (data) {
                 self.html('<i class="fa fa-download"></i> Download');
                 $("#downloadModal").modal('hide');
                 if (data == "Success") {
-                    window.location.href = '/home/download/' + yid + '/' + track;
+                    window.location.href = '/home/download/' + yid + '/' + urlTrack;
                 } else {
                     $('#alertMessage').html(data);
                     $('#alertModal').modal('show');
