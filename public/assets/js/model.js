@@ -9,7 +9,7 @@
         Model.prototype = {
             create: function (opts) {
                 var self = this,
-                        link = this._clean(this.api) + this._clean(opts.action) + this._clean(this.ext);
+                        link = this.api + this._clean(opts.action) + this.ext;
                 $.ajax({
                     url: link,
                     type: 'POST',
@@ -26,7 +26,7 @@
             },
             read: function (opts) {
                 var self = this,
-                        link = this._clean(this.api) + this._clean(opts.action) + this._clean(this.ext);
+                        link = this.api + this._clean(opts.action) + this.ext;
                 $.ajax({
                     url: link,
                     type: 'GET',
@@ -43,7 +43,10 @@
 
             },
             _clean: function (entity) {
-                return entity || "";
+                if (!entity || entity.length === 0) {
+                    return "";
+                }
+                return entity.replace(/\./g, '');
             }
         };
         return Model;

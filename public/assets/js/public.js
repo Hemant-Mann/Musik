@@ -8,9 +8,10 @@ ga('create', 'UA-55629503-3', 'auto');
 ga('send', 'pageview');
 
 /*** Home Controller ****/
-(function (window, jQ, MakeRequest) {
+(function (window, jQ) {
 	var Home = (function () {
 		function Home() {
+      var main = this;
 			this.bootbox = {
 				_modal: jQ('#alertModal'),
 				_message: jQ('#alertMessage'),
@@ -25,12 +26,15 @@ ga('send', 'pageview');
 					jQ('#embedIt').attr('src', "https://www.youtube.com/embed/" + id);
 					jQ('#play_video').modal('show');
 				},
+        hide: function () {
+          jQ('#play_video').modal('hide');
+        },
 				play: function (selector) {
 					var self = this,
 						id = selector.attr('data-yid');
 					
 					if (id === undefined) {
-						MakeRequest.create({
+						window.request.create({
 							action: 'home/findTrack',
 							data: { action: 'findTrack', track: selector.attr('data-track'), artist: selector.attr('data-artist'), videoType: "Official Video" },
 							callback: function (data) {
@@ -39,7 +43,7 @@ ga('send', 'pageview');
 									selector.attr("data-yid", data);
 									self._start(data);
 								} else {
-									Home.bootbox.alert('Something went wrong');
+									main.bootbox.alert('Something went wrong');
 								}
 							}
 						});
@@ -47,10 +51,57 @@ ga('send', 'pageview');
 						selector.removeClass('disabled');
 						self._start(id);
 					}
-				},
-				download: function (opts) {
-
 				}
+			};
+
+			this.download = {
+				_modal: jQ("#downloadModal"),
+				_btn: jQ("#startDownloading"),
+        _check: function (opts) {
+          // This means user is downloading a video not a song from playlist
+          if (opts.type !== 'playlist' && !opts.artist) {
+            var result = opts.track.split('|');
+            if (result.length > 1) {
+              opts.artist = result.pop().trim();
+              opts.track = result.join('');  
+            } else {
+              opts.artist = 'Video Song';
+            }
+          }
+          return opts;
+        },
+				init: function (opts) {
+          opts = this._check(opts);
+					this._btn.data('yid', opts.yid);
+					this._btn.data('track', opts.track);
+					this._btn.data('artist', opts.artist);
+					this._btn.data('mbid', opts.mbid);
+          this._btn.data('type', opts.type);
+
+          this._modal.find('.modal-title').html(opts.artist + ' - ' + opts.track);
+          if (opts.type == 'playlist') {
+            this._modal.modal('show');  
+          }
+				},
+        start: function () {
+          var self = this;
+
+          self._btn.html('<i class="fa fa-spinner fa-spin"></i> Please Wait...');
+          window.request.create({
+              action: 'home/download/' + this._btn.data('yid') + '/'  + this._btn.data('track'),
+              data: {action: 'downloadMusic', track: this._btn.data('track'), artist: this._btn.data('artist'), mbid: this._btn.data('mbid')},
+              callback: function (data) {
+                  self._btn.html('<i class="fa fa-download"></i> Download');
+                  self._modal.modal('hide');
+
+                  if (data == "Success") {
+                    window.location.href = '/home/download/' + self._btn.data('yid') + '/' + self._btn.data('track').replace(/\./g,'');
+                  } else {
+                    main.bootbox.alert(data);
+                  }
+              }
+          });
+        }
 			};
 		}
 
@@ -61,7 +112,7 @@ ga('send', 'pageview');
 	}());
 
 	window.Home = new Home();
-}(window, $, window.request));
+}(window, $));
 
 /**** FbModel: Controls facebook login/authentication ******/
 (function (window, Home) {
@@ -131,9 +182,16 @@ $(document).ready(function () {
 
 	$("a.playThisVideo").on("click", function (e) {
 		e.preventDefault();
-
-		Home.video.play($(this));
+    var self = $(this);
+		Home.video.play(self);
+    Home.download.init({track: self.data('track'), artist: self.data('artist'), yid: self.data('yid'), mbid: self.data('mbid'), type: 'video'});
 	});
+
+  $('#download-video').on('click', function (e) {
+    e.preventDefault();
+    Home.video.hide();
+    Home.download._modal.modal('show');
+  });
 
 	$(".findLyrics").on("click", function (e) {
 		e.preventDefault();

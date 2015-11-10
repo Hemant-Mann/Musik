@@ -351,41 +351,13 @@ $(document).ready(function () {
         if (emptyPlaylist() || index === -1) {
             return false;
         }
-        var download = $("#downloadModal"),
-            btn = $("#startDownloading");
-        
-        download.find('.modal-title').html(playlist[index].artist + ' - ' + playlist[index].track);
-        btn.data('yid', playlist[index].yid);
-        btn.data('track', playlist[index].track);
-        btn.data('artist', playlist[index].artist);
-        btn.data('mbid', playlist[index].mbid);
-        download.modal('show');
+        var opts = playlist[index];
+        opts.type = 'playlist';
+        Home.download.init(opts);
     });
 
     $("#startDownloading").on('click', function(e) {
-        e.preventDefault();
-        var self = $(this),
-            yid = self.data('yid'),
-            track = self.data('track'),
-            artist = self.data('artist'),
-            mbid = self.data('mbid');
-
-        var urlTrack = track.replace(/\./g, "");
-        self.html('<i class="fa fa-spinner fa-spin"></i> Please Wait...');
-        request.create({
-            action: '/home/download/' + yid + '/'  + urlTrack,
-            data: {action: 'downloadMusic', track: track, artist: artist, mbid: mbid},
-            callback: function (data) {
-                self.html('<i class="fa fa-download"></i> Download');
-                $("#downloadModal").modal('hide');
-                if (data == "Success") {
-                    window.location.href = '/home/download/' + yid + '/' + urlTrack;
-                } else {
-                    $('#alertMessage').html(data);
-                    $('#alertModal').modal('show');
-                }
-            }
-        })
+        Home.download.start();
     });
 
     // Find Artist/Track Info
@@ -516,7 +488,7 @@ function onPlayerStateChange(event) {
 function findSong(track, artist, mbid, selector) {
     var playingIndex;
     request.create({
-        action: '/home/findTrack',
+        action: 'home/findTrack',
         data: {action: 'findTrack', track: track, artist: artist},
         callback: function (yid) {
             if (yid != "Error") {
@@ -576,17 +548,15 @@ function inPlaylist(track, artist, yid) {
 
 function savePlaylist() {
     request.create({
-        action: '/users/savePlaylist',
+        action: 'users/savePlaylist',
         data: {action: 'savePlaylist', playlist: playlist, playlistId: $('#currentPlaylist').data('id')},
         callback: function (data) {
             if (data == "Success") {
-                $('#alertMessage').html("Your playlist has been saved");
-                $('#alertModal').modal('show');
+                Home.bootbox.alert('Your playlist has been saved');
             } else if (data == "Login") {
                 // alert('Login to save Playlist!');
             } else {
-                $('#alertMessage').html("Your Playlist could not be saved");
-                $('#alertModal').modal('show');
+                Home.bootbox.alert("Your Playlist could not be saved");
             }
         }
     });
