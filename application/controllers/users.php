@@ -28,6 +28,7 @@ class Users extends Home {
 
         // find all the playlists
         $playlists = Playlist::all(array("user_id = ?" => $this->user->id, "live = ?" => true), array("id", "name", "genre", "view", "created"));
+        $downloads = \Download::all(array("live = ?" => true), array("id", "strack_id", "count"), "count", "desc", 10, 1);
         foreach ($playlists as $p) {
             $count = PlaylistTrack::count(array("playlist_id = ?" => $p->id));
             $content["playlists"][] = array(
@@ -44,6 +45,7 @@ class Users extends Home {
         // @todo => Display what tracks the user added last time
         $content = ArrayMethods::toObject($content);
         $view->set("content", $content);
+        $view->set("downloads", $downloads);
     }
 
     public function login() {

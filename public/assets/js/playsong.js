@@ -255,6 +255,8 @@ $(document).ready(function () {
                     playlist[i].deleted = false;
                     var x = playlistItems.find('[data-index="' + i + '"]');
                     x.parent().removeClass('hide');
+                } else {
+                    i = addToPlaylist(track, artist, mbid, yid);
                 }
             }
             self.removeClass('disabled');
@@ -304,6 +306,8 @@ $(document).ready(function () {
                     playlist[i].deleted = false;
                     var x = playlistItems.find('[data-index="' + i + '"]');
                     x.parent().removeClass('hide');
+                } else {
+                    i = addToPlaylist(track, artist, mbid, yid);
                 }
             }
             playThis(track, i);

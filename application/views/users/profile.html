@@ -2,98 +2,95 @@
     {include layouts/navigation/standard.html}
     {include users/modals/create_playlist.html}
     <section id="content">
-        <section class="vbox">
-            <section class="scrollable">
-                <section class="hbox stretch">
-                    <aside class="aside-lg bg-light lter b-r">
-                        <section class="vbox">
-                            <section class="scrollable">
-                                <div class="wrapper">
-                                    <div class="text-center m-b m-t">
-                                        <div>
-                                            <div class="h3 m-t-xs m-b-xs">{echo $user->name}</div> 
-                                        </div>
-                                    </div>
-                                    <div class="panel wrapper">
-                                        <div class="row text-center">
-                                            <div class="col-xs-6">
-                                                <a href="#"> <span class="m-b-xs h4 block"></span> <small class="text-muted"></small> </a>
-                                            </div>
-                                            <div class="col-xs-6">
-                                                <a href="#"> <span class="m-b-xs h4 block"></span> <small class="text-muted"></small> </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div> <small class="text-uc text-xs text-muted">About Me</small>
-                                        <p>{echo $user->name}</p>
-                                        <small class="text-uc text-xs text-muted">Info</small>
-                                        <p>About the user</p>
-                                        <div class="line"></div> <small class="text-uc text-xs text-muted">Connections</small>
-                                        <p class="m-t-sm"> <a href="#" class="btn btn-rounded btn-twitter btn-icon"><i class="fa fa-twitter"></i></a> <a href="#" class="btn btn-rounded btn-facebook btn-icon"><i class="fa fa-facebook"></i></a> <a href="#" class="btn btn-rounded btn-gplus btn-icon"><i class="fa fa-google-plus"></i></a> </p>
+        <section class="hbox stretch">
+            <section>
+                <section class="vbox">
+                    <section class="scrollable wrapper-lg">
+                        <div class="row">
+                            <aside class="aside-lg bg-light lter b-r col-lg-4 col-md-4">
+                                <div class="text-center m-b m-t">
+                                    <div>
+                                        <div class="h3 m-t-xs m-b-xs">{echo $user->name}</div> 
                                     </div>
                                 </div>
-                            </section>
-                        </section>
-                    </aside>
-                    <aside class="bg-white">
-                        <section class="vbox">
-                            <header class="header bg-light lt">
-                                <ul class="nav nav-tabs nav-white">
-                                    <li class="active"><a href="#playlists" data-toggle="tab">Playlists</a></li>
-                                    <li class=""><a href="#activity" data-toggle="tab">Activity</a></li>
-                                </ul>
-                            </header>
-                            <section class="scrollable">
-                                <div class="tab-content">
-                                    <div class="tab-pane" id="activity">
-                                        <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
-                                            <li class="list-group-item">
-                                                Your Activities will be shown here
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="tab-pane active" id="playlists">
-                                        <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
-                                            {if isset($content->playlists)}
-                                                {script $i = 1}
-                                                {foreach $p in $content->playlists}
-                                                <li class="list-group-item">
-                                                    <h4 class="page-heading">{echo $i}. {echo $p->name}</h4>
-                                                    <a href="/" class="clear"> <span class="block">Genre: <strong>{echo $p->genre}</strong></span> <small class="block">Tracks: {echo $p->tracks}</small><small class="block">Created: {echo $p->created}</small><small class="block">Visibility: {echo $p->view}</small> </a>
-                                                {script ++$i}
-                                                </li>
-                                                {/foreach}
-                                            {/if}
-                                        </ul>
-                                        <br>
-                                        <a data-toggle="modal" data-target="#createPlaylist" href="#" class="btn btn-info"><i class="fa fa-location-arrow"></i> Create a New Playlist</a>
+                                <div class="panel wrapper">
+                                    <div class="row text-center">
+                                        <div class="col-xs-6">
+                                            <a href="#"> <span class="m-b-xs h4 block"></span> <small class="text-muted"></small> </a>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a href="#"> <span class="m-b-xs h4 block"></span> <small class="text-muted"></small> </a>
+                                        </div>
                                     </div>
                                 </div>
-                            </section>
-                        </section>
-                    </aside>
-                    <aside class="col-lg-3 b-l">
-                        <section class="vbox">
-                            <section class="scrollable padder-v">
-                                <div class="panel">
-                                    <h4 class="font-thin padder">Latest Tweets</h4>
-                                    <ul class="list-group">
-                                        <li class="list-group-item">
-                                            <p>Test Tweet</p> <small class="block text-muted"><i class="fa fa-clock-o"></i> 2 minutes ago</small>
-                                        </li>
+                                <div> <small class="text-uc text-xs text-muted">About Me</small>
+                                    <p>{echo $user->name}</p>
+                                    <small class="text-uc text-xs text-muted">Info</small>
+                                    <p>About the user</p>
+                                    <div class="line"></div> <small class="text-uc text-xs text-muted">Connections</small>
+                                    <p class="m-t-sm"> <a href="#" class="btn btn-rounded btn-twitter btn-icon"><i class="fa fa-twitter"></i></a> <a href="#" class="btn btn-rounded btn-facebook btn-icon"><i class="fa fa-facebook"></i></a> <a href="#" class="btn btn-rounded btn-gplus btn-icon"><i class="fa fa-google-plus"></i></a> </p>
+                                </div>
+                            </aside>
+                            <aside class="bg-white col-lg-8 col-md-8">
+                                <header class="header bg-light lt">
+                                    <ul class="nav nav-tabs nav-white">
+                                        <li class="active"><a href="#playlists" data-toggle="tab">Playlists</a></li>
+                                        <li class=""><a href="#activity" data-toggle="tab">Trending Downloads</a></li>
                                     </ul>
-                                </div>
-                                <div class="panel clearfix">
-                                    <div class="panel-body">
-                                        <a href="#" class="thumb pull-left m-r"> <img src="" class="img-circle"> </a>
-                                        <div class="clear"> <a href="#" class="text-info">@nutsforsports <i class="fa fa-twitter"></i></a> <small class="block text-muted">2,415 followers / 225 tweets</small> <a href="#" class="btn btn-xs btn-success m-t-xs">Follow</a> </div>
+                                </header>
+                                <section class="scrollable">
+                                    <div class="tab-content">
+                                        <div class="tab-pane" id="activity">
+                                            <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
+                                                {script $i = 1}
+                                                {foreach $d in $downloads}
+                                                {script $track = SavedTrack::first(array("id = ?" => $d->strack_id), array("track", "artist", "yid", "mbid"))}
+                                                <li class="list-group-item">
+                                                    <div class="pull-right m-l">
+                                                        <a href="#jp_container_N" data-artist="{echo $track->artist}" data-track="{echo $track->track}" data-yid="{echo $track->yid}" data-mbid="{echo $track->mbid}" class="addToPlaylist"><i class="fa fa-plus-circle"></i></a>
+                                                    </div>
+                                                    <div class="pull-right m-l">
+                                                        <a href="#jp_container_N" data-artist="{echo $track->artist}" data-track="{echo $track->track}" data-yid="{echo $track->yid}" data-mbid="{echo $track->mbid}" class="pull-right playThisTrack"><i class="fa fa-play"></i></a>
+                                                    </div>                                                
+                                                    <h4 class="page-heading"><a href="/tracks/view/{echo Framework\StringMethods::url($track->track)}/{echo Framework\StringMethods::url($track->artist)}"></a>{echo $i}. {echo $track->track}</h4>
+                                                    <h5 class="page-heading">By {echo $track->artist}</h5>
+                                                </li>
+                                                {script ++$i}
+                                                {/foreach}
+                                            </ul>
+                                        </div>
+                                        <div class="tab-pane active" id="playlists">
+                                            <ul class="list-group no-radius m-b-none m-t-n-xxs list-group-lg no-border">
+                                                {if isset($content->playlists)}
+                                                    {script $i = 1}
+                                                    {foreach $p in $content->playlists}
+                                                    <li class="list-group-item">
+                                                        <h4 class="page-heading">{echo $i}. {echo $p->name}</h4>
+                                                        <a href="/" class="clear"> <span class="block">Genre: <strong>{echo $p->genre}</strong></span> <small class="block">Tracks: {echo $p->tracks}</small><small class="block">Created: {echo $p->created}</small><small class="block">Visibility: {echo $p->view}</small> </a>
+                                                    {script ++$i}
+                                                    </li>
+                                                    {/foreach}
+                                                {/if}
+                                            </ul>
+                                            <br>
+                                            <a data-toggle="modal" data-target="#createPlaylist" href="#" class="btn btn-info"><i class="fa fa-location-arrow"></i> Create a New Playlist</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </section>
-                        </section>
-                    </aside>
+                                </section>
+                            
+                            </aside>
+                        </div>
+                    </section>
+                    <footer class="footer bg-info dker">
+                        {include layouts/navigation/footers.html}
+                    </footer>
                 </section>
             </section>
+            <!-- side content -->
+            <aside class="aside-md bg-light dk" id="sidebar">
+                {include layouts/navigation/sidebar.html}
+            </aside>
+            <!-- / side content -->
         </section>
         <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
     </section>
