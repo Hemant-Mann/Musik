@@ -18,7 +18,7 @@
                                                 <a href="#jp_container_N" class="playThisTrack" data-track="{echo $track->name}" data-mbid="{echo $track->mbid}" data-artist="{echo $track->artist}"><i class="fa fa-play-circle i-2x"></i></a>
                                             </div>
                                             <div class="bottom padder m-b-sm">
-                                                <a href="/tracks/view/{echo Framework\StringMethods::url($track->name)}/{echo Framework\StringMethods::url($track->artist)}" target="_blank" class="pull-right"> <i class="fa fa-info"></i> </a>
+                                                <a href="/tracks/view/{echo Framework\StringMethods::url($track->name)}/{echo Framework\StringMethods::url($track->artist)}" class="pull-right"> <i class="fa fa-info"></i> </a>
                                                 <a href="#" data-track="{echo $track->name}" data-mbid="{echo $track->mbid}" data-artist="{echo $track->artist}" class="addToPlaylist"> <i class="fa fa-plus-circle"></i> </a>
                                             </div>
                                         </div>

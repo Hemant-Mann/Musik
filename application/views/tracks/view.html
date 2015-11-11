@@ -41,7 +41,7 @@
                                     {foreach $t in $tracks}
                                         <li class="list-group-item">
                                             <div class="pull-right m-l">
-                                                <a href="/tracks/view/{echo Framework\StringMethods::url($t->name)}/{echo Framework\StringMethods::url($track->artist)}" target="_blank" data-artist="{echo $track->artist}" data-track="{echo $t->name}" data-mbid="{echo $t->mbid}">
+                                                <a href="/tracks/view/{echo Framework\StringMethods::url($t->name)}/{echo Framework\StringMethods::url($track->artist)}" data-artist="{echo $track->artist}" data-track="{echo $t->name}" data-mbid="{echo $t->mbid}">
                                                     <i class="m-r-sm icon-info fa-lg"></i>
                                                 </a>
                                                 <a href="#" class="m-r-sm addToPlaylist" data-artist="{echo $track->artist}" data-track="{echo $t->name}" data-mbid="{echo $t->mbid}">
@@ -52,7 +52,7 @@
                                                 <i class="icon-control-play fa-lg text"></i>
                                             </a>
                                             <div class="clear text-ellipsis">
-                                                <a href="/tracks/view/{echo Framework\StringMethods::url($t->name)}/{echo Framework\StringMethods::url($track->artist)}" target="_blank" data-artist="{echo $track->artist}" data-track="{echo $t->name}" data-mbid="{echo $t->mbid}">
+                                                <a href="/tracks/view/{echo Framework\StringMethods::url($t->name)}/{echo Framework\StringMethods::url($track->artist)}" data-artist="{echo $track->artist}" data-track="{echo $t->name}" data-mbid="{echo $t->mbid}">
                                                     <span class="trackName">{echo $t->name}</span>
                                                 </a>
                                             </div>
@@ -70,9 +70,9 @@
                                             <a href="#" class="pull-left thumb-md m-t-xs">
                                                 <img src="{echo $s->thumbnail}"> </a>
                                             <div class="media-body">
-                                                <a target="_blank" href="/tracks/view/{echo Framework\StringMethods::url($s->name)}/{echo Framework\StringMethods::url($s->artist)}" data-mbid="{echo $s->mbid}" class="font-semibold">{echo $s->name}</a>
+                                                <a href="/tracks/view/{echo Framework\StringMethods::url($s->name)}/{echo Framework\StringMethods::url($s->artist)}" data-mbid="{echo $s->mbid}" class="font-semibold">{echo $s->name}</a>
                                                 <div class="block m-t-xs">
-                                                    <a target="_blank" href="/artists/view/{echo Framework\StringMethods::url($s->artist)}">{echo $s->artist}</a>
+                                                    <a href="/artists/view/{echo Framework\StringMethods::url($s->artist)}">{echo $s->artist}</a>
                                                 </div>
                                                 <a href="#jp_container_N" class="playThisTrack" data-artist="{echo $s->artist}" data-track="{echo $s->name}" data-mbid="{echo $s->mbid}" class="jp-play-me m-r-sm pull-left playThisTrack"> <i class="fa fa-play text"></i> <i class="icon-control-pause text-active"></i> Play</a>
                                             </div>

@@ -28,7 +28,7 @@
                                             </div>
                                             <div> Tags:
                                             {foreach $tag in $artist->tags}
-                                                <a target="_blank" href="/genres/{echo Framework\StringMethods::url($tag->name)}" class="badge bg-light">{echo $tag->name}</a>
+                                                <a href="/genres/{echo Framework\StringMethods::url($tag->name)}" class="badge bg-light">{echo $tag->name}</a>
                                             {/foreach}
                                             </div>
                                         </div>
@@ -41,7 +41,7 @@
                                     {foreach $track in $tracks}
                                         <li class="list-group-item">
                                             <div class="pull-right m-l">
-                                                <a target="_blank" href="/tracks/view/{echo Framework\StringMethods::url($track->name)}/{echo Framework\StringMethods::url($artist->name)}" data-mbid="{echo $track->mbid}" data-artist="{echo $artist->name}" data-track="{echo $track->name}">
+                                                <a href="/tracks/view/{echo Framework\StringMethods::url($track->name)}/{echo Framework\StringMethods::url($artist->name)}" data-mbid="{echo $track->mbid}" data-artist="{echo $artist->name}" data-track="{echo $track->name}">
                                                     <i class="m-r-sm icon-info fa-lg"></i>
                                                 </a>
                                                 <a href="#jp_container_N" class="m-r-sm addToPlaylist" data-mbid="{echo $track->mbid}" data-artist="{echo $artist->name}" data-track="{echo $track->name}">
@@ -52,7 +52,7 @@
                                                 <i class="icon-control-play fa-lg text"></i>
                                             </a>
                                             <div class="clear text-ellipsis"> 
-                                                <a target="_blank" href="/tracks/view/{echo Framework\StringMethods::url($track->name)}/{echo Framework\StringMethods::url($artist->name)}" data-mbid="{echo $track->mbid}" data-artist="{echo $artist->name}" data-track="{echo $track->name}">
+                                                <a href="/tracks/view/{echo Framework\StringMethods::url($track->name)}/{echo Framework\StringMethods::url($artist->name)}" data-mbid="{echo $track->mbid}" data-artist="{echo $artist->name}" data-track="{echo $track->name}">
                                                     <span class="trackName">{echo $track->name}</span>
                                                 </a>
                                             </div>
@@ -68,10 +68,10 @@
                                     <div class="panel-body">
                                     {foreach $s in $similar}
                                         <article class="media">
-                                            <a target="_blank" href="/artists/view/{echo Framework\StringMethods::url($s->name)}" class="pull-left thumb-md m-t-xs">
+                                            <a href="/artists/view/{echo Framework\StringMethods::url($s->name)}" class="pull-left thumb-md m-t-xs">
                                                 <img src="{echo $s->thumbnail}"> </a>
                                             <div class="media-body">
-                                                <a target="_blank" href="/artists/view/{echo Framework\StringMethods::url($s->name)}" class="font-semibold">{echo $s->name}</a>
+                                                <a href="/artists/view/{echo Framework\StringMethods::url($s->name)}" class="font-semibold">{echo $s->name}</a>
                                             </div>
                                         </article>
                                     {/foreach}
