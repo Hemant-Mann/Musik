@@ -44,6 +44,11 @@ $routes = array(
         "controller" => "home",
         "action" => "videos"
     ),
+    array(
+        "pattern" => "search/music",
+        "controller" => "home",
+        "action" => "searchMusic"
+    ),
 
     // user routes
     array(

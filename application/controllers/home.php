@@ -284,15 +284,11 @@ class Home extends Controller {
     /**
      * Searches for music from the supplied query on last.fm | Youtube
      */
-    public function searchMusic($page = 1) {
+    public function searchMusic() {
         $seo = $this->seoOptimize();
-        $this->seo(array(
-            "title" => "Musik | Videos - Search Music",
-            "keywords" => $seo["keywords"],
-            "description" => $seo["description"],
-            "view" => $this->getLayoutView()
-        ));
         $view = $this->getActionView();
+        
+        $page = RequestMethods::get("page", 1);
         if (is_numeric($page) === FALSE) { self::redirect("/"); }
 
         $page = (int) $page; $pageMax = 7;
@@ -301,52 +297,38 @@ class Home extends Controller {
         } elseif ($page === 0) {
             $page = 1;
         }
-        $session = Registry::get("session");
-        $stored = $session->get('Home\searchMusic:$vars');
 
-        if (RequestMethods::post("action") == "searchMusic") {
-            $type = RequestMethods::post("type");
-            $q = RequestMethods::post("q");
-
-            if ($stored['q'] !== $q || $stored['type'] !== $type) {
-                $this->setResults($type, $q, $page);
-            }
-        } elseif (!$stored || !$stored['results']) {
-            self::redirect("/");
+        $q = RequestMethods::get("q");
+        $type = RequestMethods::get("type");
+        if (!$q && !$type) {
+            $q = 'latest music';
+            $type = 'song';
+            self::redirect("/search/music?q={$q}&type={$type}");
         }
-
-        if ($stored['page'] != $page && $stored['type'] == 'song') {
-            $this->setResults($stored['type'], $stored['q'], $page);
-        }
-
-        $stored = $session->get('Home\searchMusic:$vars');
-        if ($stored['error']) {
-            $view->set('error', $stored['error']);
+        $this->seo(array(
+            "title" => "Musik | Search - " . $q,
+            "keywords" => $seo["keywords"],
+            "description" => $seo["description"],
+            "view" => $this->getLayoutView()
+        ));
+        $results = $this->setResults($type, $q, $page);
+        if ($results == "Error") {
+            $view->set("Error", "Something went wrong! Please try again later");
         } else {
-            $view->set('type', $stored['type']);
-            $view->set('results', $stored['results']);
+            $view->set("type", $type);
+            $view->set("results", $results);
         }
 
-        $view->set('pagination', $this->setPagination('/home/searchMusic/', $page, 1, $pageMax));
+        $view->set('pagination', $this->setPagination("/search/music?q=".urlencode($q)."&type={$type}", $page, 1, $pageMax));
     }
 
     protected function setResults($type, $q, $page = 1, $limit = 50) {
-        $session = Registry::get("session");
- 
         switch ($type) {
             case 'song':
-                $results = $this->searchLastFm($q, $page);
-                break;
+                return $this->searchLastFm($q, $page);
             
             case 'video':
-                $results = $this->searchYoutube($q, $limit);
-                break;
-        }
-
-        if ($results == "Error") {
-            $session->set('Home\searchMusic:$vars', array('error' => 'Error'));
-        } else {
-            $session->set('Home\searchMusic:$vars', array('q' => $q, 'type' => $type, 'results' => $results, 'page' => $page));
+                return $this->searchYoutube($q, $limit);
         }
     }
 
@@ -408,6 +390,8 @@ class Home extends Controller {
             header("Content-Type: audio/mpeg, audio/x-mpeg, audio/x-mpeg-3, audio/mpeg3");
 
             readfile($file);
+        } elseif ($sendFile) {
+            self::redirect("/404");
         }
     }
 
