@@ -36,7 +36,7 @@
 | $config['img_path'] = '/images/somefolder';
 | 
 | -------------------------------------------------------------------*/
-        define("APP_PATH", "/home/uditverma/web/swiftintern.com/public_html");
+        define("APP_PATH", "/home/singer/public_html");
 	
 	$config['img_path'] = '/public/assets/uploads/images'; // Relative to domain name
 	$config['upload_path'] = APP_PATH . $config['img_path']; // Physical path. [Usually works fine like this]

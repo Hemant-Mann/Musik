@@ -41,19 +41,25 @@
                         {foreach $post in $posts}
                         <tr>
                             <td>{echo $post->id}</td>
-                            <td>{echo $post->title}</td>
+                            <td><a href="/blog/post/{echo Framework\StringMethods::url($post->title)}/{echo $post->id}" target="_blank">{echo $post->title}</a></td>
                             <td>{echo Framework\StringMethods::only_date($post->created)}</td>
                             <td>
                                 {if($post->live)}
-                                <div class="label label-success">Active</div>
+                                <div class="label label-success">Published</div>
                                 {/if}
                                 {else}
-                                <div class="label label-warning">Inactive</div>
+                                <div class="label label-warning">UnPublished</div>
                                 {/else}
                             </td>
                             <td>
+                                {if($post->live)}
+                                <a href="/admin/edit/post/{echo $post->id}/live/null" class="btn btn-info btn-xs"><i class="fa fa-ban"></i> UnPublish</a>
+                                {/if}
+                                {else}
+                                <a href="/admin/edit/post/{echo $post->id}/live/1" class="btn btn-info btn-xs"><i class="fa fa-check"></i> Publish</a>
+                                {/else}
                                 <a href="/blog/edit/{echo $post->id}" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
-                                <a href="/admin/delete/Post/{echo $post->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete</a>
+                                <a href="/admin/delete/post/{echo $post->id}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete</a>
                             </td>
                         </tr>
                         {/foreach}

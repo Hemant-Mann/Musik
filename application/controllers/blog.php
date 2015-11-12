@@ -17,7 +17,7 @@ class Blog extends Admin {
         $limit = RequestMethods::get("limit", 10);
         $page = RequestMethods::get("page", 1);
 
-        $posts = \Post::all(array("live = ?" => true), array("title", "content", "id"), "created", "desc", $limit, $page);
+        $posts = \Post::all(array("live = ?" => true), array("title", "content", "id", "created"), "created", "desc", $limit, $page);
         $downloads = \Download::all(array("live = ?" => true), array("count", "strack_id", "id"), "count", "desc", 10, 1);
         
         $view->set('posts', $posts);
