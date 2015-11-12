@@ -124,6 +124,14 @@ ga('send', 'pageview');
           });
         }
       };
+
+      this.checkURL = function () {
+        var url = window.location.href;
+        var video = url.indexOf("type=video");
+        if (video !== -1){
+          jQ("#searchMusic input[value=video]").prop("checked", true);
+        }
+      };
     }
 
     Home.prototype = {
@@ -206,6 +214,7 @@ var lyrics = false,
   thisVideoId = null;
 
 $(document).ready(function () {
+  Home.checkURL();
   $.ajaxSetup({ cache: true });
   $.getScript('//connect.facebook.net/en_US/sdk.js', FbModel.init(window.FB));
 
