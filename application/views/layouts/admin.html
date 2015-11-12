@@ -17,20 +17,21 @@
         <!-- SB Admin CSS - Include with every page -->
         <link href="{echo CDN}css/admin.css" rel="stylesheet">
 
-        <script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
+        <script src="/public/assets/plugins/tinymce/tinymce.min.js"></script>
         <script type="text/javascript">
             tinymce.init({
                 selector: ".editor",
                 plugins: [
                     "advlist autolink lists link image charmap print preview anchor",
                     "searchreplace visualblocks code fullscreen",
-                    "insertdatetime media table contextmenu"
+                    "insertdatetime media table contextmenu jbimages"
                 ],
-                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media jbimages",
                 autosave_ask_before_unload: false,
-                max_height: 200,
+                max_height: 250,
                 min_height: 160,
-                height: 180
+                height: 200,
+                relative_urls: false
             });
         </script>
 
