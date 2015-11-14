@@ -104,12 +104,12 @@ ga('send', 'pageview');
 
           self._btn.html('<i class="fa fa-spinner fa-spin"></i> Please Wait...');
           window.request.create({
-            action: 'home/download/' + this._btn.data('yid') + '/' + this._btn.data('track'),
+            action: 'home/download/' + self._btn.data('yid') + '/' + self._btn.data('track'),
             data: {
               action: 'downloadMusic',
-              track: this._btn.data('track'),
-              artist: this._btn.data('artist'),
-              mbid: this._btn.data('mbid')
+              track: self._btn.data('track'),
+              artist: self._btn.data('artist'),
+              mbid: self._btn.data('mbid')
             },
             callback: function (data) {
               self._btn.html('<i class="fa fa-download"></i> Download');
