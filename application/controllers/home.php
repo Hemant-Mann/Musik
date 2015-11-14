@@ -347,7 +347,6 @@ class Home extends Controller {
         if (RequestMethods::post("action") == "downloadMusic") {
             try {
                 $download->convert();
-                $file = $download->getFile();
 
                 if (!$track) {
                     $track = new \SavedTrack(array(

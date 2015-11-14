@@ -41,21 +41,24 @@ class Download {
 		$this->_file = $this->_root . $this->_videoId . ".mp4";
 	}
 
-	protected function haveVideo() {
-		if (!file_exists($this->_file)) {
-			$cmd = "youtube-dl -f 17 --force-ipv4 -o ". $this->_file . " " . $this->_url;
-			exec($cmd, $output, $return);
+	protected function downloadVideo() {
+		$cmd = "youtube-dl -f 18 --force-ipv4 -o ". $this->_file . " " . $this->_url;
+		exec($cmd, $output, $return);
 
-			if ($return != 0) {
-				throw new YoutubeDL("Unable to download the track file");	
-			}	
+		if ($return != 0) {
+			throw new YoutubeDL("Unable to download the track file");	
 		}
 	}
 
 	public function convert($fmt = "mp3") {
-		$this->haveVideo();
 		$this->_converted = $this->_root . $this->_videoId . ".{$fmt}";
+		if (file_exists($this->_converted)) {
+			return;
+		}
+
+		$this->downloadVideo();
 		Conversion::To($fmt, $this->_file, $this->_converted);
+		unlink($this->_file);
 	}
 
 	public function getUrl() {
