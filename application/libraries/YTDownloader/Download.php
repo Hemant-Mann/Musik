@@ -46,7 +46,13 @@ class Download {
 		exec($cmd, $output, $return);
 
 		if ($return != 0) {
+			$logfile = \Shared\Markup::logfile();
+			\Shared\Markup::log('********************* Error Occured *********************');
+			$cmd .= ' &> ' . $logfile;
+			exec($cmd, $output, $return);
 			throw new YoutubeDL("Unable to download the track file");	
+		} else {
+			\Shared\Markup::log($output);
 		}
 	}
 

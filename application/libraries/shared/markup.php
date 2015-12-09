@@ -41,6 +41,30 @@ namespace Shared {
             return "";
         }
 
+        public static function log($message = "") {
+            $logfile = self::logfile();
+            
+            if ($handle = fopen($logfile, 'a')) {
+                $timestamp = strftime("%Y-%m-%d %H:%M:%S", time());
+                $content = "[{$timestamp}]{$message}\n";
+                fwrite($handle, $content);
+                fclose($handle);
+            } else {
+            echo "Could not open log file for writing";
+            }
+        }
+
+        public static function logfile() {
+            $logfile = APP_PATH . "/logs/" . date("Y-m-d") . ".txt";
+            $new = file_exists($logfile) ? false : true;
+
+            if ($new) {
+                exec('touch '. $logfile);
+                chmod($logfile, 0755);
+            }
+            return $logfile;
+        }
+
     }
 
 }

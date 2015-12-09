@@ -251,4 +251,25 @@ class Admin extends Users {
         return;
     }
 
+
+    /**
+     * @before _secure, changeLayout
+     */
+    public function logs() {
+        $this->seo(array("title" => "Activity Logs", "view" => $this->getLayoutView()));
+        $view = $this->getActionView();
+
+        $logs = array();
+        $path = APP_PATH . "/logs";
+        $iterator = new DirectoryIterator($path);
+
+        foreach ($iterator as $item) {
+            if (!$item->isDot()) {
+                array_push($logs, $item->getFilename());
+            }
+        }
+
+        $view->set("logs", $logs);
+    }
+
 }
