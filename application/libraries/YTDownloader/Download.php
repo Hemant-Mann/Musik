@@ -48,10 +48,11 @@ class Download {
 		if ($return != 0) {
 			$logfile = \Shared\Markup::logfile();
 			\Shared\Markup::log('********************* Error Occured *********************');
-			$cmd .= ' &> ' . $logfile;
+			$cmd .= ' &>> ' . $logfile;
 			exec($cmd, $output, $return);
 			throw new YoutubeDL("Unable to download the track file");	
 		} else {
+			$output = '<pre>'. print_r($output, true). '</pre>';
 			\Shared\Markup::log($output);
 		}
 	}

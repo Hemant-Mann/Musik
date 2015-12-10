@@ -43,14 +43,10 @@ namespace Shared {
 
         public static function log($message = "") {
             $logfile = self::logfile();
-            
-            if ($handle = fopen($logfile, 'a')) {
-                $timestamp = strftime("%Y-%m-%d %H:%M:%S", time());
-                $content = "[{$timestamp}]{$message}\n";
-                fwrite($handle, $content);
-                fclose($handle);
-            } else {
-            echo "Could not open log file for writing";
+            $timestamp = strftime("%Y-%m-%d %H:%M:%S", time());
+            $content = "[{$timestamp}]". $message . "\n";
+            if (!file_put_contents($logfile, $content, FILE_APPEND)) {
+                echo "Could not open log file for writing";
             }
         }
 

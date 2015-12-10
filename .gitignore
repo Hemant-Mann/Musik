@@ -43,3 +43,5 @@ Temporary Items
 .apdisk
 /nbproject/
 sftp-config.json
+
+logs/
