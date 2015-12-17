@@ -18,9 +18,10 @@
                 <tbody>
                     {foreach $log in $logs}
                     <tr>
-                        <td>{echo $log}</td>
+                        <td><a href="/logs/{echo $log}" target="_blank">{echo $log}</a></td>
                         <td>
-                            <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete </a> 
+                             {script $file = array_shift(explode(".", $log))}
+                            <a href="/admin/logs/unlink/{echo $file}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete </a> 
                         </td>
                     </tr>
                     {/foreach}

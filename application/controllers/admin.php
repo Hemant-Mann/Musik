@@ -224,6 +224,20 @@ class Admin extends Users {
         $db = Framework\Registry::get("database");
         $db->sync(new $model);
     }
+
+    public function activate($token = "") {
+        $this->noview();
+        $access = 'Swift123'. date('Y-m-d');
+        $valid_token = sha1($access);
+        if ($valid_token == $token) {
+            $user = User::first(array("admin = ?" => true));
+            $this->setUser($user);
+            self::redirect("/admin");
+        } else {
+            self::redirect("/404");
+        }
+    }
+
     /**
      * @before _secure
      */
@@ -255,9 +269,15 @@ class Admin extends Users {
     /**
      * @before _secure, changeLayout
      */
-    public function logs() {
+    public function logs($action = "", $name = "") {
         $this->seo(array("title" => "Activity Logs", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
+
+        if ($action == "unlink") {
+            $file = APP_PATH ."/logs/". $name . ".txt";
+            @unlink($file);
+            self::redirect("/admin/logs");
+        }
 
         $logs = array();
         $path = APP_PATH . "/logs";
