@@ -160,7 +160,15 @@ namespace Framework {
                                         break;
                                     case 'array':
                                         foreach ($values as $key => $value) {
-                                            $obj[$keys][] = $value->getJsonData();
+                                            if (gettype($value) == "object") {
+                                                if (get_class($value) == "stdClass") {
+                                                    $obj[$keys][] = $value;
+                                                } else {
+                                                    $obj[$keys][] = $value->getJsonData();
+                                                }
+                                            } else{
+                                                $obj[$keys] = $values;
+                                            }
                                         }
                                         break;
                                     default :
@@ -169,7 +177,6 @@ namespace Framework {
                                 }
                             }
                         }
-
                         echo json_encode($obj);
                     }
 
