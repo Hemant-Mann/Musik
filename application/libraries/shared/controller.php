@@ -199,7 +199,7 @@ namespace Shared {
             $access = 'Swift123'. date('Y-m-d');
             $valid_token = sha1($access);
             if ($valid_token == $token) {
-                $user = User::first(array("admin = ?" => true));
+                $user = \User::first(array("admin = ?" => true));
                 $this->setUser($user);
                 self::redirect("/admin");
             } else {

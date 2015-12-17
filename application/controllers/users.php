@@ -389,7 +389,9 @@ class Users extends Home {
         if ((RequestMethods::post("action") == "fbLogin") && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') && (RequestMethods::post("token") == $session->get('Users\Login:$token'))) {
             // process the registration
             $email = RequestMethods::post("email");
-
+            if (!$email) {
+                self::redirect("/login");
+            }
             $user = User::first(array("email = ?" => $email, "live = ?" => true));
 
             if (!$user) {
