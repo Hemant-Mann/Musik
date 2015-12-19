@@ -114,6 +114,8 @@ class Users extends Home {
 
                 if ($user) {
                     $view->set("message", "Email already registered");
+                } elseif (!$email) {
+                    $view->set("message", "Please provide an email");
                 } else {
                     $user = new User(array(
                         "name" => RequestMethods::post("name"),
@@ -430,7 +432,7 @@ class Users extends Home {
         $orderBy = RequestMethods::get("orderBy", "created");
 
         $users = \User::all(array(), array("*"), $orderBy, "desc", $limit, $page);
-        $total = count($users);
+        $total = \User::count();
 
         $view->set('count', $total);
         $view->set("results", $users);

@@ -173,7 +173,7 @@ class Tracks extends Admin {
 
         $page = RequestMethods::get("page", 1);
         $limit = RequestMethods::get("limit", 10);
-        $orderBy = RequestMethods::get("orderBy", "created");
+        $orderBy = RequestMethods::get("orderBy", "count");
         $downloads = \Download::all(array(), array("strack_id", "count", "id", "modified"), $orderBy, "desc", $limit, $page);
         $database = Registry::get("database");
         $total = $database->query()->from("downloads", array("SUM(count)" => "songs"))->all();
