@@ -1,3 +1,4 @@
+<?php header($_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404); ?>
 <!DOCTYPE html>
 <html lang="en" class="app">
 

@@ -179,6 +179,16 @@ class Tracks extends Admin {
         $total = $database->query()->from("downloads", array("SUM(count)" => "songs"))->all();
         $count = \Download::count();
 
+        // find the directory size
+        exec('du -h '. APP_PATH.'/application/libraries/YTDownloader/downloads', $output, $return);
+        if ($return == 0) {
+        	$output = array_pop($output);
+        	$size = array_shift(explode("/", $output));
+        	$size = trim($size);
+        } else {
+        	$size = 'Failed to get size';
+        }
+
         $results = array();
         foreach ($downloads as $d) {
         	$track = \SavedTrack::first(array("id = ?" => $d->strack_id), array("track", "artist", "yid"));
@@ -193,6 +203,7 @@ class Tracks extends Admin {
         }
         $results = ArrayMethods::toObject($results);
 
+        $view->set("size", $size);
         $view->set("results", $results);
 		$view->set("total", $total[0]["songs"]);
 		$view->set("count", $count);

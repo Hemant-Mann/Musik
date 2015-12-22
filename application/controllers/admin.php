@@ -276,6 +276,17 @@ class Admin extends Users {
             }
         }
 
+        // find the directory size
+        exec('du -h '. $path, $output, $return);
+        if ($return == 0) {
+            $output = array_pop($output);
+            $size = array_shift(explode("/", $output));
+            $size = trim($size);
+        } else {
+            $size = 'Failed to get size';
+        }
+
+        $view->set("size", $size);
         $view->set("logs", $logs);
     }
 
