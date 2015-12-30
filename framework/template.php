@@ -298,6 +298,7 @@ namespace Framework {
             $tree = $this->_tree($array["all"]);
 
             $this->_code = $this->header . $this->_script($tree) . $this->footer;
+            $this->_code = preg_replace("/\\\'/", "'", $this->_code);
             $this->_function = create_function("\$_data", $this->code);
 
             return $this;
