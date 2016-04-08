@@ -14,7 +14,7 @@ class Admin extends Users {
     /**
      * @before _secure, changeLayout
      */
-    public function index() {
+    public function index($page = 1) {
         $this->seo(array("title" => "Dashboard", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
@@ -271,21 +271,22 @@ class Admin extends Users {
         $iterator = new DirectoryIterator($path);
 
         foreach ($iterator as $item) {
-            if (!$item->isDot()) {
-                array_push($logs, $item->getFilename());
+            if (!$item->isDot() && substr($item->getFilename(), 0, 1) != ".") {
+                $logs[] = $item->getFilename();
             }
         }
+        arsort($logs);
 
         // find the directory size
         exec('du -h '. $path, $output, $return);
         if ($return == 0) {
             $output = array_pop($output);
-            $size = array_shift(explode("/", $output));
+            $output = explode("/", $output);
+            $size = array_shift($output);
             $size = trim($size);
         } else {
             $size = 'Failed to get size';
         }
-
         $view->set("size", $size);
         $view->set("logs", $logs);
     }

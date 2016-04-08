@@ -1,33 +1,36 @@
 <div id="page-wrapper">
-    <div class="row col-lg-12">
-        <h1 class="page-header text-center">Logs Manager</h1>
-        {if isset($message)}
-            <div class="alert alert-success alert-dismissible fade in" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                {$message}
+    <div class="container-fluid">
+        <div class="row col-lg-12">
+            <h1 class="page-header text-center">Logs Manager</h1>
+            {if isset($message)}
+                <div class="alert alert-success alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    {$message}
+                </div>
+            {/if}
+            <h4 class="page-heading">Total Size: <strong>{echo $size}</strong></h4>
+            <div class="panel panel-default">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Log File</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach $log in $logs}
+                        <tr>
+                            <td><a href="/logs/{echo $log}" target="_blank">{echo $log}</a></td>
+                            <td>
+                                 {script $output = explode(".", $log)}
+                                 {script $file = array_shift($output)}
+                                <a href="/admin/logs/unlink/{echo $file}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete </a> 
+                            </td>
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
             </div>
-        {/if}
-        <h4 class="page-heading">Total Size: <strong>{echo $size}</strong></h4>
-        <div class="panel panel-default">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Log File</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {foreach $log in $logs}
-                    <tr>
-                        <td><a href="/logs/{echo $log}" target="_blank">{echo $log}</a></td>
-                        <td>
-                             {script $file = array_shift(explode(".", $log))}
-                            <a href="/admin/logs/unlink/{echo $file}" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete </a> 
-                        </td>
-                    </tr>
-                    {/foreach}
-                </tbody>
-            </table>
         </div>
     </div>
 </div>

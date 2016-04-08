@@ -10,7 +10,7 @@ use Framework\Registry as Registry;
 
 class Blog extends Admin {
 
-    public function index() {
+    public function index($page = 1) {
         $this->seo(array("title" => "Blog | Musik", "keywords" => "Music Blog", "description" => "Music Blog", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
 
@@ -63,7 +63,7 @@ class Blog extends Admin {
     /**
      * @before _secure, changeLayout
      */
-    public function edit($id) {
+    public function edit($id, $m = null, $p = null, $v = null) {
         $this->seo(array("title" => "Create Blog Post", "view" => $this->getLayoutView()));
         $view = $this->getActionView();
         $post = Post::first(array("id = ?" => $id));

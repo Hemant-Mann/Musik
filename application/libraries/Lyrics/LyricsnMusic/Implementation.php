@@ -47,7 +47,8 @@ class Implementation {
 	protected function _getLyricsPage($url) {
 		$bot = new Bot(array('lyrics_page' => $url));
 		$bot->execute();
-		$document = array_shift($bot->getDocuments());
+		$docs = $bot->getDocuments();
+		$document = array_shift($docs);
 		if (!$document) {
 			throw new Req("Failed to get the lyrics page");
 		}
@@ -56,8 +57,8 @@ class Implementation {
 
 	protected function _query($string) {
 		$el = $this->_xPath->query($string)->item(0);
-
-		if (!$el) {
+		
+		if (!$el || $el->getAttribute('itemprop') != 'description') {
 			throw new Response('Could Not find the lyrics');
 		}
 
@@ -73,7 +74,7 @@ class Implementation {
 	protected function _parse() {
 		$this->_getLyricsPage($this->_url);
 
-		$result = $this->_query('//*[@id="main"]/pre');
+		$result = $this->_query('//pre');
 
 		$this->_lyrics = '<pre>' . $result . '</pre>';
 	}

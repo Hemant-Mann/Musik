@@ -183,7 +183,8 @@ class Tracks extends Admin {
         exec('du -h '. APP_PATH.'/application/libraries/YTDownloader/downloads', $output, $return);
         if ($return == 0) {
         	$output = array_pop($output);
-        	$size = array_shift(explode("/", $output));
+        	$output = explode("/", $output);
+        	$size = array_shift($output);
         	$size = trim($size);
         } else {
         	$size = 'Failed to get size';

@@ -42,7 +42,7 @@ class Download {
 	}
 
 	protected function downloadVideo() {
-		$cmd = "youtube-dl -f 18 --force-ipv4 -o ". $this->_file . " " . $this->_url;
+		$cmd = "/usr/local/bin/youtube-dl -f 18 --force-ipv4 -o ". $this->_file . " " . $this->_url;
 		exec($cmd, $output, $return);
 
 		if ($return != 0) {

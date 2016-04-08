@@ -403,7 +403,8 @@ class Home extends Controller {
         $url = 'http://www.geoplugin.net/json.gp?ip='.$ip;
         $bot = new Bot(array('country' => $url));
         $bot->execute();
-        $document = array_shift($bot->getDocuments());
+        $docs = $bot->getDocuments();
+        $document = array_shift($docs);
         $data = json_decode($document->getHttpResponse()->getBody());
 
         return $data->geoplugin_countryName;

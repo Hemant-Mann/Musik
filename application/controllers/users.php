@@ -45,7 +45,8 @@ class Users extends Home {
         // @todo => Display what tracks the user added last time
         $content = ArrayMethods::toObject($content);
         $view->set("content", $content);
-        $view->set("downloads", $downloads);
+        $view->set("downloads", $downloads)
+            ->set("playlists", $playlists);
     }
 
     public function login() {
@@ -305,14 +306,14 @@ class Users extends Home {
             $p = $object;
         }
         
-
-        $playlist = array();
-        $playlist["id"] = $id;
-        $playlist["user_id"] = $p->user_id;
-        $playlist["name"] = $p->name;
-        $playlist["genre"] = $p->genre;
-        $playlist["view"] = $p->view;
-        $playlist = ArrayMethods::toObject($playlist);
+        $d = array(
+            "id" => $id,
+            "user_id" => $p->user_id,
+            "name" => $p->name,
+            "genre" => $p->genre,
+            "view" => $p->view
+        );
+        $playlist = ArrayMethods::toObject($d);
 
         $session->set('Users:$currentPlaylist', $playlist);
         $this->setTracks($id);

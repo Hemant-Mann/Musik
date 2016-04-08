@@ -48,7 +48,7 @@ class Lyrics extends Admin {
 	/**
 	 * @before _secure, changeLayout
 	 */
-	public function edit($id) {
+	public function edit($id, $m = null, $p = null, $v = null) {
 		$id = (int) $id;
 		if (!$id) {
 			self::redirect("/lyrics/all");
@@ -69,7 +69,7 @@ class Lyrics extends Admin {
 			$track->artist = RequestMethods::post("artist");
 			$track->save();
 
-			$lyrics->lyrics = stripslashes(RequestMethods::post("lyrics"));
+			$lyrics->lyrics = htmlspecialchars(RequestMethods::post("lyrics"));
 			$lyrics->save();
 
 			$view->set("success", "Lyrics Saved Successfully!!");
@@ -114,7 +114,7 @@ class Lyrics extends Admin {
 			} else {
 				$lyrics = new \Lyric(array(
 					"strack_id" => $strack->id,
-					"lyrics" => stripslashes(RequestMethods::post("lyrics"))
+					"lyrics" => htmlspecialchars(RequestMethods::post("lyrics"))
 				));
 				$lyrics->save();
 				$view->set("message", 'Lyrics saved Successfully!! Go to <a href="/lyrics/all">All Lyrics</a>');
