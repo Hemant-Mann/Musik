@@ -226,6 +226,21 @@ class Admin extends Users {
     }
 
     /**
+     * This function will install Database
+     */
+    public function install() {
+        $this->noview();
+
+        if (php_sapi_name() !== 'cli') {
+            die('Not found');
+        }
+        $models = Shared\Markup::models();
+        foreach ($models as $m) {
+            $this->sync($m);
+        }
+    }
+
+    /**
      * @before _secure
      */
     public function fields($model = "user") {

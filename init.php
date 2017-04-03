@@ -1,12 +1,8 @@
 <?php
+
 ob_start();
-define("DEBUG", FALSE);
-
-// 1. define the default path for includes
-//define("APP_PATH", dirname(dirname(__FILE__)));
-
-define("APP_PATH", str_replace(DIRECTORY_SEPARATOR, "/", dirname(__FILE__)));
-define("URL", "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+define("DEBUG", TRUE);
+define("APP_PATH", dirname(__FILE__));
 define("CDN", "/public/assets/");
 
 try {
@@ -36,9 +32,9 @@ try {
             require_once($filePath);
         }
     });
-    
+
     // 2. load the Core class that includes an autoloader
-    require("framework/core.php");
+    require(APP_PATH . "/framework/core.php");
     Framework\Core::initialize();
 
     // plugins
@@ -68,10 +64,16 @@ try {
     // 6. load and initialize the Session class 
     $session = new Framework\Session();
     Framework\Registry::set("session", $session->initialize());
+
+    if (php_sapi_name() !== 'cli') {
+        throw new Framework\Router\Exception\Controller("Invalid action", 1);
+    }
     
     // 7. load the Router class and provide the url + extension
+    $c = (isset($argv[1])) ? $argv[1] : "admin";
+    $a = (isset($argv[2])) ? $argv[2] : "install";
     $router = new Framework\Router(array(
-        "url" => isset($_GET["url"]) ? $_GET["url"] : "home/index/1",
+        "url" => "$c/$a",
         "extension" => !empty($_GET["extension"]) ? $_GET["extension"] : "html"
     ));
     Framework\Registry::set("router", $router);
@@ -176,7 +178,35 @@ try {
     
     // render fallback template
     header("Content-type: text/html");
-    echo "An error occurred.". $e;
+    include(APP_PATH . "/application/views/errors/500.php");
     exit;
 }
-?>
+
+
+if (isset($argv[3])) {
+	$apiKey = $argv[3];
+	$lastFmConfig = APP_PATH . "/application/plugins/lastfm/initialize.php";
+	$content = "<?php
+use LastFm\Src\Caller\CallerFactory as CallerFactory;
+CallerFactory::getDefaultCaller()->setApiKey('$apiKey');";
+
+	file_put_contents($lastFmConfig, $content);
+}
+
+if (isset($argv[4])) {
+	$apiKey = $argv[4];
+	$googleConfig = APP_PATH . "/application/plugins/google/initialize.php";
+	$content = '<?php
+$client_id = "<Client Id>";
+$client_secret = "<Client Secret>";
+$developer_key = "'.$apiKey.'";
+
+$client = new Google_Client();
+$client->setDeveloperKey($developer_key);
+$youtube = new Google_Service_YouTube($client);
+
+Framework\Registry::set("gClient", $client);
+Framework\Registry::set("youtube", $youtube);';
+
+	file_put_contents($googleConfig, $content);
+}

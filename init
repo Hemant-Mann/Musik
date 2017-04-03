@@ -1,0 +1,44 @@
+#!/bin/bash
+
+db_name=
+db_user=
+db_password=
+db_host="localhost"
+
+echo "****** WARNING RE-RUNNIG THIS SCRIPT WILL DESTROY THE WHOLE DATABASE"
+
+read -p "Database User: " db_user
+read -p "Database Password: " db_password
+read -p "Database Host (Eg: localhost): " db_host
+read -p "Database Name: " db_name
+
+cat > ./application/configuration/database.ini << EOF
+database.default.type     = mysql
+database.default.host     = ${db_host}
+database.default.username = ${db_user}
+database.default.password = ${db_password}
+database.default.port     = 3306
+database.default.schema   = ${db_name}
+EOF
+
+lastfm_api_key=
+google_dev_key=
+read -p "Last.fm API key (From last.fm panel): " lastfm_api_key
+read -p "Google Developer Key (Google Developer Console): " google_dev_key
+
+# Install Database and main config
+php init.php admin install ${lastfm_api_key} ${google_dev_key}
+
+echo "Setup Virtual Host for this website to work properly"
+cat << EOF
+<VirtualHost *:80>
+    ServerAdmin admin@musik.io
+    DocumentRoot "/path/to/clone/repo/"
+    ServerName musik.io
+    ServerAlias www.musik.io
+</VirtualHost>
+EOF
+
+echo "Also Make Sure: youtube-dl and ffmpeg are installed and available in your \$PATH"
+echo "----------Happy Coding----------"
+
