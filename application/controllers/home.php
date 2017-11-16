@@ -50,7 +50,7 @@ class Home extends Controller {
         }
 
         if (!$session->get('Home\Index:$topArtists') || $session->get('Home\Index:page') != $page) {
-            $topArtists = Geo::getTopArtists($session->get("country"), $page);
+            $topArtists = Geo::getTopArtists($session->get("country", "US"), $page);
             $artists = array();
             $i = 1;
             foreach ($topArtists as $art) {
@@ -407,7 +407,7 @@ class Home extends Controller {
         $document = array_shift($docs);
         $data = json_decode($document->getHttpResponse()->getBody());
 
-        return $data->geoplugin_countryName;
+        return isset($data->geoplugin_countryName) ? $data->geoplugin_countryName : "US";
     }
 
     /**
