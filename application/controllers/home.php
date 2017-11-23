@@ -50,7 +50,7 @@ class Home extends Controller {
         }
 
         if (!$session->get('Home\Index:$topArtists') || $session->get('Home\Index:page') != $page) {
-            $topArtists = Geo::getTopArtists($session->get("country", "US"), $page);
+            $topArtists = Geo::getTopArtists($session->get("country", "United States"), $page);
             $artists = array();
             $i = 1;
             foreach ($topArtists as $art) {
@@ -398,7 +398,7 @@ class Home extends Controller {
      * Searches for country name based on client's IP Address
      */
     protected function getCountry($ip) {
-        $ip = ($ip == '127.0.0.1') ? '203.122.5.25' : $ip;
+        $ip = ($ip == '127.0.0.1') ? '72.229.28.185' : $ip;
 
         $url = 'http://www.geoplugin.net/json.gp?ip='.$ip;
         $bot = new Bot(array('country' => $url));
@@ -407,7 +407,7 @@ class Home extends Controller {
         $document = array_shift($docs);
         $data = json_decode($document->getHttpResponse()->getBody());
 
-        return isset($data->geoplugin_countryName) ? $data->geoplugin_countryName : "US";
+        return isset($data->geoplugin_countryName) ? $data->geoplugin_countryName : "United States";
     }
 
     /**
