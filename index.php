@@ -1,5 +1,6 @@
 <?php
 ob_start();
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 define("DEBUG", FALSE);
 
 // 1. define the default path for includes

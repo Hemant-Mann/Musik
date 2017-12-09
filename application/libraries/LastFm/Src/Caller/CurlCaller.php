@@ -136,10 +136,16 @@ final class CurlCaller extends Caller {
 		$response = new \SimpleXMLElement($response);
 
 		/* Return response or throw an error. */
-		if(Util::toString($response['status']) === 'ok'){
-			if($response->children()->{0}){
-				return $response->children()->{0};
+		if(Util::toString($response['status']) === 'ok' && $response->children()) {
+			$resp = null;
+			foreach ($response->children() as $obj) {
+				$resp = $obj;
+				break;
 			}
+			if ($resp) {
+				return $resp;
+			}
+			return $response->children();
 		}
 		else{
 			throw new Error(
